@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Заклинання</title>
+</head>
+<body>
+    <div class="filters">
+        <form action="spells" method="POST">
+            <label for="name">Назва заклинання:</label>
+            <br>
+            <input type="text" name="name" id="name" value="{{filters.name_filter}}" placeholder="{{filters.name_filter}}">
+            <br>
+            <br>
+            <select name="class">
+                <option value="">Клас</option>
+                {% for class in form.classes %}
+                    {% if class == filters.class_filter %}
+                        <option selected value="{{class}}">{{class}}</option>
+                    {% else %}
+                        <option value="{{class}}">{{class}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <select name="level">
+                <option value="">Рівень</option>
+                {% for level in form.levels %}
+                    {% if level == filters.level_filter %}
+                        <option selected value="{{level}}">{{level}}</option>
+                    {% else %}
+                        <option value="{{level}}">{{level}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <select name="school">
+                <option value="">Школа магії</option>
+                {% for school in form.schools %}
+                    {% if school == filters.school_filter %}
+                        <option selected value="{{school}}">{{school}}</option>
+                    {% else %}
+                        <option value="{{school}}">{{school}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <select name="casting_time">
+                <option value="">Час використання</option>
+                {% for casting_time in form.casting_times %}
+                    {% if casting_time == filters.casting_time_filter %}
+                        <option selected value="{{casting_time}}">{{casting_time}}</option>
+                    {% else %}
+                        <option value="{{casting_time}}">{{casting_time}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <select name="ritual">
+                <option value="">Ритуал</option>
+                {% for ritual in form.rituals %}
+                    {% if ritual == filters.ritual_filter %}
+                        <option selected value="{{ritual}}">{{ritual}}</option>
+                    {% else %}
+                        <option value="{{ritual}}">{{ritual}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <select name="concentration">
+                <option value="">Концентрація</option>
+                {% for concentration in form.concentrations %}
+                    {% if concentration == filters.concentration_filter %}
+                        <option selected value="{{concentration}}">{{concentration}}</option>
+                    {% else %}
+                        <option value="{{concentration}}">{{concentration}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <input type="submit" value="Застосувати фільтри">
+            <button> <a href="/spells">Скинути фільтри</a> </button>
+        </form>
+    </div>
+    <table class="spells-table" border="1 px">
+        <caption>Заклинання</caption>
+        <tr>
+            <th>Назва</th>
+            <th>Рівень</th>
+            <th>Школа</th>
+            <th>Час використання</th>
+            <th>Ритуал</th>
+            <th>Концентрація</th>
+        </tr>
+        {% for spell in spells %}
+            <tr>
+                <td> <a href="/spell/{{spell.spell_id}}">{{spell.name}}</a> </td>
+                <td>{{spell.level}}</td>
+                <td>{{spell.school}}</td>
+                <td>{{spell.casting_time}}</td>
+                <td>{{spell.has_ritual}}</td>
+                <td>{{spell.has_concentration}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

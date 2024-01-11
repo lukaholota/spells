@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>{{spell_name}}</title>
+</head>
+<body>
+    <div class="page">
+        <div class="spell-name">
+            <span><strong>{{spell_name}}</strong></span>
+        </div>
+        <div class="spell-usage-information">
+            <p>
+                {{school}}; {{level}}
+            </p>
+            <p>
+                Час використання:
+                <strong>{{casting_time}}</strong>
+                <br>
+                Дальність:
+                <strong>{{range}}</strong>
+                <br>
+                Компоненти:
+                <strong>{{components}}</strong>
+                <br>
+                Тривалість:
+                <strong>{{duration}}</strong>
+                <br>
+            </p>
+        </div>
+        <hr>
+        <div class="spell-description">
+            {{spell_description | safe}}
+        </div>
+        <br>
+        <div class="spell-classes">
+            <strong>{{spell_classes}}</strong>
+        </div>
+    </div>
+</body>
+</html>
