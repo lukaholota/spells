@@ -1,5 +1,5 @@
 from app.app import app
-from flask import render_template, request
+from flask import render_template, request, redirect
 from app.logic.SpellLoader import SpellLoader
 from app.logic.SpellsListLoader import SpellsListLoader
 from app.logic.SpellsFilters import SpellsFilters
@@ -45,12 +45,32 @@ def load_spells_list():
 def add_spell():
     results = request.form
     results.selected_classes = results.getlist('classes')
+    form = SpellsForm()
     if request.method == 'POST':
         spell_data_saver = SpellDataSaver(results)
         spell_data_saver.add_new_spell()
+        return redirect(f'edit-spell/{spell_data_saver.spell_id}')
 
-    form = SpellsForm()
     return render_template('add-spell.html',
                            results=results,
+                           form=form
+                           )
+
+
+@app.route('/edit-spell/<spell_id>',  methods=['GET', 'POST'])
+def edit_spell(spell_id):
+    results = request.form
+    results.selected_classes = results.getlist('classes')
+    spell_data_saver = SpellDataSaver(results)
+    spell = spell_data_saver.get_spell(spell_id)
+    if request.method == 'POST':
+        spell_data_saver.edit_spell()
+
+    form = SpellsForm()
+    classes_list = [spell_class.class_name for spell_class in spell.classes]
+    spell.classes_list = classes_list
+
+    return render_template('edit-spell.html',
+                           spell=spell,
                            form=form
                            )

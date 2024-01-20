@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Редагувати заклинання</title>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/medium-editor@5.23.3/dist/js/medium-editor.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/medium-editor@5.23.3/dist/css/medium-editor.min.css" rel="stylesheet">
+
+<body>
+        <form name="edit-spell" id="edit-spell" method="POST" onsubmit="return submitForm()">
+
+        <div class="spell-name">
+            <span><strong>Назва заклинання = назва [англійська назва]:</strong>
+                <input type="text" name="spell_name" value="{{spell.name}}" placeholder="{{spell.name}}" required>
+            </span>
+        </div>
+        <div class="spell-usage-information">
+                <strong>Школа:</strong>
+                <select name="school" required>
+                    <option value="">Школа магії</option>
+                        {% for school in form.schools %}
+                            {% if school == spell.school %}
+                                <option selected value="{{school}}">{{school}}</option>
+                            {% else %}
+                                <option value="{{school}}">{{school}}</option>
+                            {% endif %}
+                        {% endfor %}
+                </select>
+            <br>
+                <strong>Рівень:</strong>
+                <select name="level" required>
+                    <option value="">Рівень</option>
+                        {% for level in form.levels %}
+                            {% if level in spell.level %}
+                                 <option selected value="{{level}}">{{level}}</option>
+                            {% else %}
+                                <option value="{{level}}">{{level}}</option>
+                            {% endif %}
+                        {% endfor %}
+                </select>
+            <br>
+                {% if spell.has_ritual == 'так' %}
+                    <input type="checkbox" checked name="has_ritual_checkbox" id="has-ritual-checkbox"> <label for="has-ritual-checkbox"><strong>Потрібен ритуал</strong></label>
+                {% else %}
+                    <input type="checkbox" name="has_ritual_checkbox" id="has-ritual-checkbox"> <label for="has-ritual-checkbox">Потрібен ритуал</label>
+                {% endif %}
+                <input type="hidden" name="has_ritual" id="has-ritual">
+            <br>
+                <strong>Час використання - приклади = (1 дія; 1 бонусна дія; 1 година; 1 реакція, яку ви здійснюєте...):</strong>
+                <input type="text" name="casting_time" value="{{spell.casting_time}}" placeholder="{{spell.casting_time}}" required>
+            <br>
+                <strong>Тривалість - приклади = (Миттєво; 10 хвилин; 8 годин; Концентрація, до 1 хвилини...; Поки не розвіють):</strong>
+                <input type="text" name="duration" value="{{spell.duration}}" placeholder="{{spell.duration}}" required>
+            <br>
+                <strong>Дальність - приклади = (15 футів, На себе, Дотик):</strong>
+                <input type="text" name="range" value="{{spell.range}}" placeholder="{{spell.range}}" required>
+            <br>
+                <strong>Компоненти - приклади (не додавати крапки з комами) = (В; В, С, М (тисовий листок)):</strong>
+                <input type="text" name="components" value="{{spell.components}}" placeholder="{{spell.components}}" required>
+        </div>
+        <hr>
+        <div class="spell-description">
+            <label>Опис заклинання. Можна виділяти текст, аби його редагувати</label>
+            <input type="hidden" id="description" name="spell_description" value="">
+            <div class="editable" id="description-text">asdasdasdasda</div>
+        </div>
+        <br>
+        <div class="spell-classes">
+            <label for="classes">Класи. Щоб обрати декілька, потрібно затиснути ctrl на віндовс, command на маці та тицьнути на потрібні класи</label>
+            <br>
+            <select multiple name="classes" id="classes" size="9" required>
+                    {% for class_name in form.classes %}
+                        {% if class_name in spell.classes_list %}
+                            <option selected value="{{class_name}}">{{class_name}}</option>
+                        {% else %}
+                            <option value="{{class_name}}">{{class_name}}</option>
+                        {% endif %}
+                    {% endfor %}
+            </select>
+        </div>
+            <button type="submit" value="Зберегти">Зберегти</button>
+    </form>
+
+    <script>
+        var editor = new MediumEditor('.editable');
+        document.getElementById('description-text').innerHTML = "{{ spell.description| safe }}";
+        function submitForm() {
+          document.getElementById('description').value = editor.getContent();
+          if (document.getElementById('description-text').innerHTML == '') {return false;}
+          document.getElementById('has-ritual').value = document.getElementById('has-ritual-checkbox').checked
+          return validateForm()
+        }
+        function validateForm() {
+            var requiredFields = document.querySelectorAll('[required]');
+            var isValid = true;
+
+            requiredFields.forEach(function (field) {
+                if (field.value.trim() === '') {
+                    isValid = false;
+                }
+            });
+
+            return isValid
+        }
+    </script>
+</body>
+</html>
