@@ -40,7 +40,8 @@ class SpellDataSaver:
         self.spell_id = spell.spell_id
 
     def process_data(self):
-        self.name = (self.name[0].upper() + self.name[1:]).strip()
+        if self.name:
+            self.name = (self.name[0].upper() + self.name[1:]).strip()
         self.range = self.range.capitalize().strip()
         self.duration = self.duration.capitalize().strip()
 
