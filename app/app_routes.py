@@ -4,6 +4,7 @@ from app.logic.SpellLoader import SpellLoader
 from app.logic.SpellsListLoader import SpellsListLoader
 from app.logic.SpellsFilters import SpellsFilters
 from app.logic.SpellsForm import SpellsForm
+from app.logic.SpellDataSaver import SpellDataSaver
 
 
 @app.route('/')
@@ -37,4 +38,19 @@ def load_spells_list():
                            spells=spells_list_loader.spells,
                            form=spells_form,
                            filters=spells_filters
+                           )
+
+
+@app.route('/add-spell',  methods=['GET', 'POST'])
+def add_spell():
+    results = request.form
+    results.selected_classes = results.getlist('classes')
+    if request.method == 'POST':
+        spell_data_saver = SpellDataSaver(results)
+        spell_data_saver.add_new_spell()
+
+    form = SpellsForm()
+    return render_template('add-spell.html',
+                           results=results,
+                           form=form
                            )
