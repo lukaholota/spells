@@ -14,6 +14,7 @@ class Spell(db.Model):
     classes = db.relationship('SpellClasses', backref='spell')
     has_ritual = db.Column(db.String)
     has_concentration = db.Column(db.String)
+    source = db.Column(db.String, nullable=False, server_default='Книга гравця')
 
 
 class SpellClasses(db.Model):

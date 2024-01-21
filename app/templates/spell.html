@@ -6,10 +6,10 @@
 </head>
 <body>
     <div class="page">
-        <div class="spell-name">
+        <div id="spell-name">
             <span><strong>{{spell_name}}</strong></span>
         </div>
-        <div class="spell-usage-information">
+        <div id="spell-usage-information">
             <p>
                 {{school}}; {{level}}
             </p>
@@ -29,12 +29,15 @@
             </p>
         </div>
         <hr>
-        <div class="spell-description">
+        <div id="spell-description">
             {{spell_description | safe}}
         </div>
         <br>
-        <div class="spell-classes">
+        <div id="spell-classes">
             <strong>{{spell_classes}}</strong>
+        </div>
+        <div id="source">
+            Джерело: <strong>{{source}}</strong>
         </div>
     </div>
 </body>

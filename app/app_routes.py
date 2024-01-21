@@ -9,7 +9,7 @@ from app.logic.SpellDataSaver import SpellDataSaver
 
 @app.route('/')
 def home():
-    return render_template('main.html')
+    return redirect('spells')
 
 
 @app.route('/spell/<spell_id>')
@@ -25,6 +25,7 @@ def load_spell(spell_id):
                            duration=spell_loader.duration,
                            spell_description=spell_loader.description,
                            spell_classes=spell_loader.classes,
+                           source=spell_loader.source
                            )
 
 

@@ -58,6 +58,17 @@
             <br>
                 <strong>Компоненти - приклади (не додавати крапки з комами) = (В; В, С, М (тисовий листок)):</strong>
                 <input type="text" name="components" value="{{spell.components}}" placeholder="{{spell.components}}" required>
+            <br>
+            <strong>Джерело: </strong>
+            <select name="source" required>
+                    {% for source in form.sources %}
+                        {% if source in spell.source %}
+                            <option selected value="{{source}}">{{source}}</option>
+                        {% else %}
+                            <option value="{{source}}">{{source}}</option>
+                        {% endif %}
+                    {% endfor %}
+            </select>
         </div>
         <hr>
         <div class="spell-description">

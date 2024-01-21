@@ -17,6 +17,7 @@ class SpellLoader:
         self.duration = spell.duration
         self.description = spell.description
         self.classes = self.get_classes_names(spell)
+        self.source = spell.source
 
     def get_classes_names(self, spell):
         classes = spell.classes

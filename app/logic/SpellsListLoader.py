@@ -37,6 +37,9 @@ class SpellsListLoader:
         if self.filters.concentration_filter:
             query = query.filter(Spell.has_concentration.ilike('%' + self.filters.concentration_filter + '%'))
 
+        if self.filters.source_filter:
+            query = query.filter(Spell.source.ilike('%' + self.filters.source_filter + '%'))
+
         return query
 
     def reduce_casting_time(self):

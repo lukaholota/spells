@@ -8,3 +8,4 @@ class SpellsFilters:
         self.casting_time_filter = form.get('casting_time', '')
         self.ritual_filter = form.get('ritual', '')
         self.concentration_filter = form.get('concentration', '')
+        self.source_filter = form.get('source', '')

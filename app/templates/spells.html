@@ -72,6 +72,16 @@
                     {% endif %}
                 {% endfor %}
             </select>
+            <select name="source">
+                <option value="">Джерело</option>
+                {% for source in form.sources %}
+                    {% if source == filters.source_filter %}
+                        <option selected value="{{source}}">{{source}}</option>
+                    {% else %}
+                        <option value="{{source}}">{{source}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
             <input type="submit" value="Застосувати фільтри">
             <button> <a href="/spells">Скинути фільтри</a> </button>
         </form>
@@ -85,6 +95,7 @@
             <th>Час використання</th>
             <th>Ритуал</th>
             <th>Концентрація</th>
+            <th>Джерело</th>
         </tr>
         {% for spell in spells %}
             <tr>
@@ -94,6 +105,7 @@
                 <td>{{spell.casting_time}}</td>
                 <td>{{spell.has_ritual}}</td>
                 <td>{{spell.has_concentration}}</td>
+                <td>{{spell.source}}</td>
             </tr>
         {% endfor %}
     </table>
