@@ -1,10 +1,16 @@
-from app.app import app
+from app.app import app, auth
 from flask import render_template, request, redirect
 from app.logic.SpellLoader import SpellLoader
 from app.logic.SpellsListLoader import SpellsListLoader
 from app.logic.SpellsFilters import SpellsFilters
 from app.logic.SpellsForm import SpellsForm
 from app.logic.SpellDataSaver import SpellDataSaver
+
+
+@auth.verify_password
+def verify_password(username, password):
+    if username == 'admin' and password == 'ASMDAMD!*(#@EH!HJBf':
+        return username
 
 
 @app.route('/')
@@ -43,6 +49,7 @@ def load_spells_list():
 
 
 @app.route('/add-spell',  methods=['GET', 'POST'])
+@auth.login_required
 def add_spell():
     results = request.form
     results.selected_classes = results.getlist('classes')
@@ -59,6 +66,7 @@ def add_spell():
 
 
 @app.route('/edit-spell/<spell_id>',  methods=['GET', 'POST'])
+@auth.login_required
 def edit_spell(spell_id):
     results = request.form
     results.selected_classes = results.getlist('classes')
