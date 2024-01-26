@@ -31,7 +31,8 @@ def load_spell(spell_id):
                            duration=spell_loader.duration,
                            spell_description=spell_loader.description,
                            spell_classes=spell_loader.classes,
-                           source=spell_loader.source
+                           source=spell_loader.source,
+                           spell_races=spell_loader.races
                            )
 
 
@@ -53,6 +54,7 @@ def load_spells_list():
 def add_spell():
     results = request.form
     results.selected_classes = results.getlist('classes')
+    results.selected_races = results.getlist('races')
     form = SpellsForm()
     if request.method == 'POST':
         spell_data_saver = SpellDataSaver(results)
@@ -70,6 +72,7 @@ def add_spell():
 def edit_spell(spell_id):
     results = request.form
     results.selected_classes = results.getlist('classes')
+    results.selected_races = results.getlist('races')
     spell_data_saver = SpellDataSaver(results)
     spell = spell_data_saver.get_spell(spell_id)
     if request.method == 'POST':
@@ -77,7 +80,9 @@ def edit_spell(spell_id):
 
     form = SpellsForm()
     classes_list = [spell_class.class_name for spell_class in spell.classes]
+    races_list = [spell_race.race_name for spell_race in spell.races]
     spell.classes_list = classes_list
+    spell.races_list = races_list
 
     return render_template('edit-spell.html',
                            spell=spell,

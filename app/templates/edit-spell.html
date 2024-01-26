@@ -90,6 +90,19 @@
                     {% endfor %}
             </select>
         </div>
+        <div class="spell-races">
+            <label for="races">Раси.(кілька варіантів доступні)</label>
+            <br>
+            <select multiple name="races" id="races" size="9">
+                    {% for race_name in form.races %}
+                        {% if race_name in spell.races_list %}
+                            <option selected value="{{race_name}}">{{race_name}}</option>
+                        {% else %}
+                            <option value="{{race_name}}">{{race_name}}</option>
+                        {% endif %}
+                    {% endfor %}
+            </select>
+        </div>
             <button type="submit" value="Зберегти">Зберегти</button>
     </form>
 

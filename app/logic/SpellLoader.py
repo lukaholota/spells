@@ -18,6 +18,7 @@ class SpellLoader:
         self.description = spell.description
         self.classes = self.get_classes_names(spell)
         self.source = spell.source
+        self.races = self.get_races_names(spell)
 
     def get_classes_names(self, spell):
         classes = spell.classes
@@ -30,3 +31,15 @@ class SpellLoader:
                 classes_names += ', '
 
         return classes_names
+
+    def get_races_names(self, spell):
+        races = spell.races
+        races_names = ''
+
+        for i in range(len(races)):
+            race_name = races[i]
+            races_names += race_name.race_name
+            if i != len(races) - 1:
+                races_names += ', '
+
+        return races_names

@@ -1,4 +1,4 @@
-from app.models import Spell, SpellClasses, db
+from app.models import Spell, SpellClasses, SpellRaces, db
 
 
 class SpellDataSaver:
@@ -11,6 +11,7 @@ class SpellDataSaver:
         self.duration: str = data.get('duration', '')
         self.components: str = data.get('components', '')
         self.classes: str = data.selected_classes
+        self.races: str = data.selected_races
         self.description: str = data.get('spell_description', '')
         self.has_ritual: str = data.get('has_ritual', '')
         self.has_concentration = 'ні'
@@ -37,6 +38,9 @@ class SpellDataSaver:
         for selected_class in self.classes:
             spell_class = SpellClasses(spell_id=spell.spell_id, class_name=selected_class)
             db.session.add(spell_class)
+        for selected_race in self.races:
+            spell_race = SpellRaces(spell_id=spell.spell_id, race_name=selected_race)
+            db.session.add(spell_race)
         db.session.commit()
 
         self.spell_id = spell.spell_id
@@ -64,6 +68,13 @@ class SpellDataSaver:
         for selected_class in self.classes:
             spell_class = SpellClasses(spell_id=self.spell.spell_id, class_name=selected_class)
             db.session.add(spell_class)
+
+        for spell_race in self.spell.races:
+            SpellRaces.query.filter_by(race_id=spell_race.race_id).delete()
+
+        for selected_race in self.races:
+            spell_race = SpellRaces(spell_id=self.spell.spell_id, race_name=selected_race)
+            db.session.add(spell_race)
 
         db.session.commit()
 
