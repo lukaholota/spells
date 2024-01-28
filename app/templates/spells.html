@@ -5,6 +5,8 @@
     <title>Заклинання</title>
 </head>
 <body>
+    {% extends "topnav.html" %}
+    {% block body %}
     <div class="filters">
         <form action="spells" method="POST">
             <label for="name">Назва заклинання:</label>
@@ -86,9 +88,12 @@
             <button> <a href="/spells">Скинути фільтри</a> </button>
         </form>
     </div>
+    <form name="select-spells" action="add-to-spellbook" method="POST" onsubmit="return add_to_spellbook(this)">
+        <button type="submit" id="submit-spells" name="submit-spells">Додати обрані заклинання у власну Книгу Чарів</button>
     <table class="spells-table" border="1 px">
         <caption>Заклинання</caption>
         <tr>
+            <th></th>
             <th>Назва</th>
             <th>Рівень</th>
             <th>Школа</th>
@@ -99,6 +104,7 @@
         </tr>
         {% for spell in spells %}
             <tr>
+                <td><input type="checkbox" name="selected_spells" value="{{spell.spell_id}}"></td>
                 <td> <a href="/spell/{{spell.spell_id}}">{{spell.name}}</a> </td>
                 <td>{{spell.level}}</td>
                 <td>{{spell.school}}</td>
@@ -109,5 +115,8 @@
             </tr>
         {% endfor %}
     </table>
+    </form>
 </body>
+<script src="{{ url_for('static', filename='add-to-spellbook.js') }}"></script>
+{% endblock %}
 </html>

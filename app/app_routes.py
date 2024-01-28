@@ -1,10 +1,13 @@
 from app.app import app, auth
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, flash, abort
+from flask_login import logout_user, login_required, current_user
 from app.logic.SpellLoader import SpellLoader
 from app.logic.SpellsListLoader import SpellsListLoader
 from app.logic.SpellsFilters import SpellsFilters
 from app.logic.SpellsForm import SpellsForm
 from app.logic.SpellDataSaver import SpellDataSaver
+from app.logic.Authenticator import Authenticator
+from app.logic.SpellbookSaver import SpellbookSaver
 
 
 @auth.verify_password
@@ -45,7 +48,8 @@ def load_spells_list():
     return render_template('spells.html',
                            spells=spells_list_loader.spells,
                            form=spells_form,
-                           filters=spells_filters
+                           filters=spells_filters,
+                           current_user=current_user
                            )
 
 
@@ -88,3 +92,61 @@ def edit_spell(spell_id):
                            spell=spell,
                            form=form
                            )
+
+
+@app.route('/sign-up')
+def sign_up():
+    return render_template('sign-up.html')
+
+
+@app.route('/sign-up', methods=['POST'])
+def sign_up_post():
+    data = request.form
+    authenticator = Authenticator(data)
+    if authenticator.check_if_exists():
+        flash('Логін уже зайнято')
+        return redirect('/sign-up')
+
+    authenticator.add_new_user()
+
+    return redirect('/spells')
+
+
+@app.route('/sign-in')
+def sign_in():
+    return render_template('sign-in.html')
+
+
+@app.route('/sign-in', methods=['POST'])
+def sign_in_post():
+    data = request.form
+    authenticator = Authenticator(data)
+    if authenticator.sign_in():
+        return redirect('/spells')
+
+    flash('Перевірте дані та спробуйте ще раз')
+    return redirect('sign-in')
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect('/spells')
+
+
+@app.route('/profile')
+@login_required
+def profile():
+    return 'у розробці'
+
+
+@app.route('/add-to-spellbook', methods=['POST'])
+def add_to_spellbook():
+    if current_user.is_authenticated == False:
+        abort(403)
+    spells = request.form
+    spellbook_saver = SpellbookSaver(spells, current_user)
+    spellbook_saver.add_spells_to_spellbook()
+
+
