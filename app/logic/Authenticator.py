@@ -23,7 +23,7 @@ class Authenticator:
 
         login_user(new_user, remember=self.remember_me)
 
-    def sign_in(self):
+    def log_in(self):
         user = User.query.filter_by(login=self.login).first()
 
         if user and check_password_hash(user.password, self.password):

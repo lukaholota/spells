@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Книга чарів</title>
+</head>
+<body>
+<h1>Книга чарів</h1>
+  {% for spell in spells %}
+    <a href="/spell/{{spell.spell_id}}">{{spell.name}}</a>
+    <br>
+  {% endfor %}
+    {% if spells|length == 0 %}
+        <span>Поки порожньо, але ви завжди можете записати сюди свої улюблені заклинання зі <a href="/spells">сторінки заклинань</a></span>
+    {% endif %}
+</body>
+</html>

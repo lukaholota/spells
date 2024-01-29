@@ -26,18 +26,18 @@
 <main>
     {% block topnav %}
       <nav class="topnav">
-        <a href="/spells">Заклинання</a>
+        <a id="spells" href="/spells">Заклинання</a>
           {% if not current_user.is_authenticated  %}
-            <a href="/sign-up">Реєстрація</a>
+            <a id="sign-up" href="/sign-up">Реєстрація</a>
           {% endif %}
           {% if not current_user.is_authenticated  %}
-            <a href="/sign-in">Вхід</a>
+            <a id="log-in" href="/log-in">Вхід</a>
           {% endif %}
           {% if current_user.is_authenticated %}
-            <a href="/profile">Профіль</a>
+            <a id="spellbook" href="/spellbook">Книга чарів</a>
           {% endif %}
           {% if current_user.is_authenticated %}
-            <a href="/logout">Вийти</a>
+            <a id="logout" href="/logout">Вийти</a>
           {% endif %}
       </nav>
     <hr>

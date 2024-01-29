@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <title>Заклинання</title>
 </head>
+<style type="text/css">
+    div#registration-block {
+        display:none
+    }
+    span#message {
+        display:none
+    }
+</style>
 <body>
     {% extends "topnav.html" %}
     {% block body %}
@@ -88,8 +96,34 @@
             <button> <a href="/spells">Скинути фільтри</a> </button>
         </form>
     </div>
-    <form name="select-spells" action="add-to-spellbook" method="POST" onsubmit="return add_to_spellbook(this)">
-        <button type="submit" id="submit-spells" name="submit-spells">Додати обрані заклинання у власну Книгу Чарів</button>
+    <form name="select-spells" action="add-to-spellbook" id="select-spells" method="POST" onsubmit="return add_to_spellbook(this)"></form>
+        <input type="submit" id="submit-spells" name="submit-spells" form="select-spells" value="Додати обрані заклинання у власну Книгу Чарів">
+
+    <div id="registration-block">
+        <br>
+        <label for="hybrid-registration-form">Уведіть дані свого акаунта або увійдіть, використавши дійсні</label>
+        <form action="hybrid-registration" id="hybrid-registration-form" name="hybrid-registration-form" method="POST" onsubmit="return send_hybrid_registration(this)">
+            <div>
+                <div>
+                    <input type="text" name="login" placeholder="Логін" autofocus="">
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                    <input type="password" name="password" placeholder="Пароль">
+                </div>
+            </div>
+            <div>
+                <label class="checkbox">
+                    <input type="checkbox" name="remember_me">
+                    Запам'ятати мене
+                </label>
+            </div>
+            <input type="submit" form="hybrid-registration-form" value="Увійти\Зареєструватися">
+        </form>
+    </div>
+    <span id="message"></span>
     <table class="spells-table" border="1 px">
         <caption>Заклинання</caption>
         <tr>
@@ -104,7 +138,7 @@
         </tr>
         {% for spell in spells %}
             <tr>
-                <td><input type="checkbox" name="selected_spells" value="{{spell.spell_id}}"></td>
+                <td><input type="checkbox" name="selected_spells" value="{{spell.spell_id}}" form="select-spells"></td>
                 <td> <a href="/spell/{{spell.spell_id}}">{{spell.name}}</a> </td>
                 <td>{{spell.level}}</td>
                 <td>{{spell.school}}</td>
@@ -115,7 +149,6 @@
             </tr>
         {% endfor %}
     </table>
-    </form>
 </body>
 <script src="{{ url_for('static', filename='add-to-spellbook.js') }}"></script>
 {% endblock %}

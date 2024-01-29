@@ -1,6 +1,6 @@
 from app.app import app, auth
 from flask import render_template, request, redirect, flash, abort
-from flask_login import logout_user, login_required, current_user
+from flask_login import logout_user, login_required, current_user, login_user
 from app.logic.SpellLoader import SpellLoader
 from app.logic.SpellsListLoader import SpellsListLoader
 from app.logic.SpellsFilters import SpellsFilters
@@ -8,6 +8,7 @@ from app.logic.SpellsForm import SpellsForm
 from app.logic.SpellDataSaver import SpellDataSaver
 from app.logic.Authenticator import Authenticator
 from app.logic.SpellbookSaver import SpellbookSaver
+from app.logic.SpellbookLoader import SpellbookLoader
 
 
 @auth.verify_password
@@ -112,20 +113,20 @@ def sign_up_post():
     return redirect('/spells')
 
 
-@app.route('/sign-in')
-def sign_in():
-    return render_template('sign-in.html')
+@app.route('/log-in')
+def log_in():
+    return render_template('log-in.html')
 
 
 @app.route('/sign-in', methods=['POST'])
-def sign_in_post():
+def log_in_post():
     data = request.form
     authenticator = Authenticator(data)
-    if authenticator.sign_in():
+    if authenticator.log_in():
         return redirect('/spells')
 
     flash('Перевірте дані та спробуйте ще раз')
-    return redirect('sign-in')
+    return redirect('log-in')
 
 
 @app.route('/logout')
@@ -135,18 +136,36 @@ def logout():
     return redirect('/spells')
 
 
-@app.route('/profile')
+@app.route('/spellbook')
 @login_required
-def profile():
-    return 'у розробці'
+def spellbook():
+    spellbook_loader = SpellbookLoader(current_user)
+    spells = spellbook_loader.load()
+
+    return render_template('spellbook.html', spells=spells)
 
 
 @app.route('/add-to-spellbook', methods=['POST'])
 def add_to_spellbook():
     if current_user.is_authenticated == False:
         abort(403)
-    spells = request.form
+    spells = request.form.getlist('selected_spells')
     spellbook_saver = SpellbookSaver(spells, current_user)
     spellbook_saver.add_spells_to_spellbook()
 
+    return ''
 
+
+@app.route('/hybrid-registration', methods=['POST'])
+def hybrid_registration():
+    authenticator = Authenticator(request.form)
+
+    if authenticator.check_if_exists():
+        if authenticator.log_in():
+            return {'result': True, 'message': 'Ви успішно ввійшли'}
+        else:
+            return {'result': False, 'message': 'Дані введено невірно'}
+
+    else:
+        authenticator.add_new_user()
+        return {'result': True, 'message': 'Нового користувача успішно додано'}

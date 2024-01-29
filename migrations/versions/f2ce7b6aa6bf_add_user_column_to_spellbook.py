@@ -18,7 +18,9 @@ depends_on = None
 
 def upgrade():
     op.add_column('spellbook', sa.Column('user_id', sa.Integer, sa.ForeignKey('user.user_id')))
+    op.create_foreign_key('fk_user_id', 'spellbook', 'user', ['user_id'], ['user_id'])
 
 
 def downgrade():
+    op.drop_constraint('fk_user_id', 'spellbook')
     op.drop_column('spellbook', 'user_id')
