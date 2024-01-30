@@ -3,10 +3,9 @@ from flask_httpauth import HTTPBasicAuth
 from flask_login import LoginManager
 from app.db import db
 from flask_migrate import Migrate
-from os import urandom
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = urandom(24)
+app.config['SECRET_KEY'] = '4553e48237424dbacddc1a566fabd22380cf12bc9377126742e5cb853f9c8961'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:dnddlaukraincow@31.131.17.213:5454/postgres'
 
 auth = HTTPBasicAuth()
