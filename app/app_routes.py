@@ -1,6 +1,6 @@
 from app.app import app, auth
 from flask import render_template, request, redirect, flash, abort
-from flask_login import logout_user, login_required, current_user, login_user
+from flask_login import logout_user, login_required, current_user
 from app.logic.SpellLoader import SpellLoader
 from app.logic.SpellsListLoader import SpellsListLoader
 from app.logic.SpellsFilters import SpellsFilters
@@ -10,6 +10,11 @@ from app.logic.Authenticator import Authenticator
 from app.logic.SpellbookSaver import SpellbookSaver
 from app.logic.SpellbookLoader import SpellbookLoader
 from app.logic.SpellbookSpellDeleter import SpellbookSpellDeleter
+from app.logic.CharacterCreator import CharacterCreator
+from app.logic.CharacterSpellsSaver import CharacterSpellsSaver
+from app.logic.CharacterDeleter import CharacterDeleter
+from app.logic.CharacterSpellsLoader import CharacterSpellsLoader
+from app.logic.CharacterSpellDeleter import CharacterSpellDeleter
 
 
 @auth.verify_password
@@ -142,7 +147,8 @@ def spellbook():
     spellbook_loader = SpellbookLoader(current_user)
     spells = spellbook_loader.load()
 
-    return render_template('spellbook.html', spells=spells)
+    character_list = current_user.characters
+    return render_template('spellbook.html', spells=spells, character_list=character_list)
 
 
 @app.route('/add-to-spellbook', methods=['POST'])
@@ -175,7 +181,87 @@ def hybrid_registration():
 @login_required
 def delete_spellbook_spell():
     spell_id = request.form.get('spell_id', '')
-    spellbook_spell_deleter = SpellbookSpellDeleter(spell_id, current_user)
+    spellbook_spell_deleter = SpellbookSpellDeleter(spell_id)
     spellbook_spell_deleter.delete()
 
     return redirect('/spellbook')
+
+
+@app.route('/create-character/<source>')
+@login_required
+def create_character(source):
+    return render_template('create-character.html', source=source)
+
+
+@app.route('/create-character', methods=['POST'])
+@login_required
+def create_character_post():
+    data = request.form
+    character_creator = CharacterCreator(data, current_user)
+    if not character_creator.create():
+        flash(character_creator.message)
+        return redirect(f'create-character/{data.get("source", "characters")}')
+    return redirect(f'/{data.get("source", "characters")}')
+
+
+@app.route('/add-spells-to-character', methods=['POST'])
+@login_required
+def add_spells_to_character():
+    character_spells_saver = CharacterSpellsSaver(request.form, current_user)
+    if character_spells_saver.save():
+        character_spells_saver.make_spellbook_empty()
+        flash('Прив\'язано! ')
+    else:
+        flash('Щось пішло шкереберть')
+    return render_template('spellbook.html', character_id=character_spells_saver.character.character_id)
+
+
+@app.route('/profile')
+@login_required
+def profile():
+    return render_template('profile.html')
+
+
+@app.route('/characters')
+@login_required
+def characters():
+    character_list = current_user.characters
+    return render_template('characters.html', character_list=character_list)
+
+
+@app.route('/delete-character', methods=['POST'])
+@login_required
+def delete_character():
+    character_id = request.form.get('character_id', '')
+    character_deleter = CharacterDeleter(character_id)
+    character_deleter.delete()
+
+    return redirect('/characters')
+
+
+@app.route('/characters/<character_id>')
+@login_required
+def character(character_id):
+    if not int(character_id) in [character.character_id for character in current_user.characters]:
+        abort(403)
+    character_spells_loader = CharacterSpellsLoader(character_id)
+    spells = character_spells_loader.load()
+
+    return render_template(
+        'character.html',
+        spells=spells,
+        character_name=character_spells_loader.character.name,
+        character_id=character_spells_loader.character.character_id
+    )
+
+
+@app.route('/delete-character-spell', methods=['POST'])
+@login_required
+def delete_character_spell():
+    data = request.form
+    spell_id = data.get('spell_id', '')
+    character_spell_deleter = CharacterSpellDeleter(spell_id)
+    character_spell_deleter.delete()
+
+    return redirect(f'/characters/{data.get("source")}')
+

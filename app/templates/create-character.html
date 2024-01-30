@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Створити персонажа</title>
+</head>
+<body>
+{% extends "topnav.html" %}
+{% block body %}
+    <h1>Створити персонажа</h1>
+    <form name="create-character" id="create-character" action="/create-character" method="POST">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div>
+                    {{ messages[0] }}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <label for="name">Назвіть свого персонажа:</label>
+        <input type="text" id="name" name="name">
+        <input type="hidden" name="source" value="{{source}}">
+        <button>Додати</button>
+    </form>
+{% endblock %}
+</body>
+</html>

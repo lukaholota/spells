@@ -37,6 +37,7 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(100))
     login = db.Column(db.String(1000))
     spellbook = db.relationship('Spellbook', backref='user', uselist=False)
+    characters = db.relationship('Character', backref='user')
 
     def get_id(self):
         return self.user_id
@@ -54,3 +55,18 @@ class SpellbookSpells(db.Model):
     spell_id = db.Column(db.Integer, db.ForeignKey('spell.spell_id'))
     spellbook_id = db.Column(db.Integer, db.ForeignKey('spellbook.spellbook_id'))
     spell = db.relationship('Spell', uselist=False)
+
+
+class Character(db.Model):
+    character_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
+    spells = db.relationship('CharacterSpells', backref='character')
+
+
+class CharacterSpells(db.Model):
+    character_spell_id = db.Column(db.Integer, primary_key=True)
+    spell_id = db.Column(db.Integer, db.ForeignKey('spell.spell_id'))
+    character_id = db.Column(db.Integer, db.ForeignKey('character.character_id'))
+    spell = db.relationship('Spell', uselist=False)
+

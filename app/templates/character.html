@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{character_name}}</title>
+</head>
+<body>
+{% extends "topnav.html" %}
+    {% block body %}
+<h1>{{character_name}}</h1>
+{% if spells|length != 0 %}
+  <form name="delete-character-spell" id="delete-character-spell" action="/delete-character-spell" method="POST">
+    <table class="spells-table" border="1 px">
+      <caption>Заклинання персонажа</caption>
+      <tr>
+          <th>Назва</th>
+          <th>Рівень</th>
+          <th>Школа</th>
+          <th>Час використання</th>
+          <th>Ритуал</th>
+          <th>Концентрація</th>
+          <th>Джерело</th>
+          <th></th>
+      </tr>
+      {% for spell in spells %}
+          <tr>
+              <td> <a href="/spell/{{spell.spell_id}}">{{spell.name}}</a> </td>
+              <td>{{spell.level}}</td>
+              <td>{{spell.school}}</td>
+              <td>{{spell.casting_time}}</td>
+              <td>{{spell.has_ritual}}</td>
+              <td>{{spell.has_concentration}}</td>
+              <td>{{spell.source}}</td>
+              <td><button type="submit" name="spell_id" value="{{spell.spell_id}}">Видалити</button></td>
+          </tr>
+      {% endfor %}
+  </table>
+      <input type="hidden" name="source" value="{{character_id}}">
+</form>
+% else %
+  <p>Поки порожньо. Додайте заклинання в <a href="/spellbook">Книгу Чарів</a> зі сторінки <a href="/spells">заклинань</a>!, </p>
+{% endif %}
+{% endblock %}
+</body>
+</html>

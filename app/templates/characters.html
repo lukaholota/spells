@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Персонажі</title>
+</head>
+<body>
+{% extends "topnav.html" %}
+    {% block body %}
+<h1>Персонажі</h1>
+  <form name="delete-character" id="delete-character" action="delete-character" method="POST">
+    <table border="1 px">
+      <tr>
+      <th>Ім'я</th>
+      <th></th>
+      </tr>
+  {% for character in character_list %}
+    <tr>
+      <td><a href="/characters/{{character.character_id}}">{{character.name}}</a></td>
+      <td><button type="submit" name="character_id" value="{{character.character_id}}">Видалити</button></td>
+    </tr>
+  {% endfor %}
+</table>
+</form>
+
+<br>
+<a href="/create-character/characters">Створити нового?</a>
+{% endblock %}
+</body>
+</html>

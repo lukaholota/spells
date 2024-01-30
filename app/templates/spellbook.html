@@ -18,15 +18,51 @@
   {% for spell in spells %}
     <tr>
       <td><a href="/spell/{{spell.spell_id}}">{{spell.name}}</a></td>
-      <input type="hidden" name="spell_id" value="{{spell.spell_id}}">
-      <td><button type="submit">Видалити</button></td>
+      <td><button type="submit" name="spell_id" value="{{spell.spell_id}}">Видалити</button></td>
     </tr>
   {% endfor %}
 </table>
 </form>
-{% endif %}
-    {% if spells|length == 0 %}
+<hr>
+<div id="add-to-character-block">
+  <h2>Прив'язати всі заклинання з книги до персонажа</h2>
+  {% if character_list|length != 0 %}
+    <form name="add-spells-to-character" action="add-spells-to-character" method="POST">
+      <select name="character_id" id="character" size="5">
+        {% for character in character_list %}
+          <option value="{{character.character_id}}">{{character.name}}</option>
+        {% endfor %}
+      </select>
+      <br>
+      <button>Прив'язати</button>
+    </form>
+    <br>
+    <a href="/create-character/spellbook">Створити нового?</a>
+
+  {% else %}
+    <p>Персонажів поки нема. <a href="/create-character">Створити нового</a></p>
+  {% endif %}
+  {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div>
+                    {{ messages[0] }} 
+                </div>
+            {% endif %}
+        {% endwith %}
+</div>
+  
+
+    {% else %}
         <span>Поки порожньо, але ви завжди можете записати сюди свої улюблені заклинання зі <a href="/spells">сторінки заклинань</a></span>
+        <br>
+        <hr>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div>
+                    {{ messages[0] }} <a href="/characters/{{character_id}}">Переглянути заклинання свого персонажа</a>
+                </div>
+            {% endif %}
+        {% endwith %}
     {% endif %}
 {% endblock %}
 </body>
