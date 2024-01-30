@@ -4,7 +4,7 @@ from app.models import Spellbook, SpellbookSpells, User, db
 class SpellbookSaver:
     def __init__(self, spell_ids, user):
         self.spell_ids = spell_ids
-        self.user = User.query.get(user.user_id)
+        self.user = user
         self.spellbook = self.get_user_spellbook()
 
     def get_user_spellbook(self):

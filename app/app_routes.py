@@ -9,6 +9,7 @@ from app.logic.SpellDataSaver import SpellDataSaver
 from app.logic.Authenticator import Authenticator
 from app.logic.SpellbookSaver import SpellbookSaver
 from app.logic.SpellbookLoader import SpellbookLoader
+from app.logic.SpellbookSpellDeleter import SpellbookSpellDeleter
 
 
 @auth.verify_password
@@ -50,7 +51,6 @@ def load_spells_list():
                            spells=spells_list_loader.spells,
                            form=spells_form,
                            filters=spells_filters,
-                           current_user=current_user
                            )
 
 
@@ -169,3 +169,13 @@ def hybrid_registration():
     else:
         authenticator.add_new_user()
         return {'result': True, 'message': 'Нового користувача успішно додано'}
+
+
+@app.route('/delete-spellbook-spell', methods=['POST'])
+@login_required
+def delete_spellbook_spell():
+    spell_id = request.form.get('spell_id', '')
+    spellbook_spell_deleter = SpellbookSpellDeleter(spell_id, current_user)
+    spellbook_spell_deleter.delete()
+
+    return redirect('/spellbook')

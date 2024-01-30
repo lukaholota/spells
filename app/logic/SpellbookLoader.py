@@ -1,9 +1,9 @@
-from app.models import User, Spell, Spellbook, db
+from app.models import Spellbook, db
 
 
 class SpellbookLoader:
     def __init__(self, user):
-        self.user = User.query.get(user.user_id)
+        self.user = user
         spellbook = self.get_user_spellbook()
         spellbook_spells = spellbook.spells
         self.spells = [spellbook_spell.spell for spellbook_spell in spellbook_spells]
