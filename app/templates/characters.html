@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Персонажі</title>
+    {% extends "topnav.html" %}
 </head>
 <body>
-{% extends "topnav.html" %}
     {% block body %}
 <h1>Персонажі</h1>
 {% if character_list|length != 0 %}

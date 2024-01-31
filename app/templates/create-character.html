@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Створити персонажа</title>
+    {% extends "topnav.html" %}
 </head>
 <body>
-{% extends "topnav.html" %}
 {% block body %}
     <h1>Створити персонажа</h1>
     <form name="create-character" id="create-character" action="/create-character" method="POST">

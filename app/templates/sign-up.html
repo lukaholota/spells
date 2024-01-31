@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    {% extends "topnav.html" %}
 </head>
-{% extends "topnav.html" %}
 {% block body %}
 <body>
   {% with messages = get_flashed_messages() %}

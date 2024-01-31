@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>{{character_name}}</title>
+    {% extends "topnav.html" %}
 </head>
 <body>
-{% extends "topnav.html" %}
     {% block body %}
 <h1>{{character_name}}</h1>
 <a href="/characters">Повернутися до своїх персонажів:</a>

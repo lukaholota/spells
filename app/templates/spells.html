@@ -2,19 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        div#registration-block {
+            display:none
+        }
+        span#message {
+            display:none
+        }
+    </style>
     <title>Заклинання</title>
-</head>
-<style type="text/css">
-    div#registration-block {
-        display:none
-    }
-    span#message {
-        display:none
-    }
-</style>
-<body>
+    <meta name="description" content="Заклинання ДнД українською. Знаходьте, фільтруйте, додавайте в книгу чарів, прив'язуйте до персонажів і багато іншого!">
     {% extends "topnav.html" %}
+</head>
+<body>
+    
     {% block body %}
     <div class="filters">
         <form action="spells" method="POST">

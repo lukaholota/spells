@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Книга чарів</title>
+    {% extends "topnav.html" %}
 </head>
 <body>
-{% extends "topnav.html" %}
     {% block body %}
 <h1>Книга чарів</h1>
 {% if spells|length != 0 %}
