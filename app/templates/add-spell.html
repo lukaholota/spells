@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Додати заклинання</title>
-    {% extends "topnav.html" %}
 </head>
 <script src="https://cdn.jsdelivr.net/npm/medium-editor@5.23.3/dist/js/medium-editor.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/medium-editor@5.23.3/dist/css/medium-editor.min.css" rel="stylesheet">
-    {% block body %}
+{% extends "topnav.html" %}
+{% block body %}
 <body>
         <form name="add-spell" id="add-spell" method="POST" onsubmit="return submitForm()">
 
