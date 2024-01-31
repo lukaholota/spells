@@ -9,6 +9,7 @@ function add_to_spellbook(form) {
                 var message = document.getElementById('message');
                 message.style.display = 'block';
                 message.innerHTML = 'Додано! <a href="/spellbook">Переглянути книгу</a>'
+                uncheckSelectedRows()
             }
         }
 
@@ -36,7 +37,6 @@ function send_hybrid_registration(form) {
                 setTimeout(function(){
                     message.style.display = 'none'
                 }, 5000)
-                uncheckSelectedRows()
             }
         } 
     xhr.send(new FormData(form));
