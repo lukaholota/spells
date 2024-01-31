@@ -1,5 +1,5 @@
 from app.app import app, auth
-from flask import render_template, request, redirect, flash, abort
+from flask import render_template, request, redirect, flash, abort, send_file
 from flask_login import logout_user, login_required, current_user
 from app.logic.SpellLoader import SpellLoader
 from app.logic.SpellsListLoader import SpellsListLoader
@@ -265,3 +265,7 @@ def delete_character_spell():
 
     return redirect(f'/characters/{data.get("source")}')
 
+
+@app.route('/sitemap.xml')
+def sitemap():
+    return send_file('sitemap.xml')
