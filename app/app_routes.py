@@ -210,7 +210,7 @@ def add_spells_to_character():
     character_spells_saver = CharacterSpellsSaver(request.form, current_user)
     if character_spells_saver.save():
         character_spells_saver.make_spellbook_empty()
-        flash('Прив\'язано! ')
+        return redirect(f'/characters/{character_spells_saver.character.character_id}')
     else:
         flash('Щось пішло шкереберть')
     return render_template('spellbook.html', character_id=character_spells_saver.character.character_id)

@@ -12,12 +12,24 @@
   <form name="delete-spell" id="delete-spell" action="delete-spellbook-spell" method="POST">
     <table border="1 px">
       <tr>
-      <th>Назва</th>
-      <th></th>
+        <th>Назва</th>
+        <th>Рівень</th>
+        <th>Школа</th>
+        <th>Час використання</th>
+        <th>Ритуал</th>
+        <th>Концентрація</th>
+        <th>Джерело</th>
+        <th></th>
       </tr>
   {% for spell in spells %}
     <tr>
       <td><a href="/spell/{{spell.spell_id}}">{{spell.name}}</a></td>
+      <td>{{spell.level}}</td>
+      <td>{{spell.school}}</td>
+      <td>{{spell.casting_time}}</td>
+      <td>{{spell.has_ritual}}</td>
+      <td>{{spell.has_concentration}}</td>
+      <td>{{spell.source}}</td>
       <td><button type="submit" name="spell_id" value="{{spell.spell_id}}">Видалити</button></td>
     </tr>
   {% endfor %}

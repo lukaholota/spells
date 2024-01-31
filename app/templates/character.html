@@ -8,6 +8,7 @@
 {% extends "topnav.html" %}
     {% block body %}
 <h1>{{character_name}}</h1>
+<a href="/characters">Повернутися до своїх персонажів:</a>
 {% if spells|length != 0 %}
   <form name="delete-character-spell" id="delete-character-spell" action="/delete-character-spell" method="POST">
     <table class="spells-table" border="1 px">

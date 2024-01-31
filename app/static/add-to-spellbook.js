@@ -36,8 +36,17 @@ function send_hybrid_registration(form) {
                 setTimeout(function(){
                     message.style.display = 'none'
                 }, 5000)
+                uncheckSelectedRows()
             }
         } 
     xhr.send(new FormData(form));
     return false;
+}
+
+function uncheckSelectedRows() {
+    var checkboxes = document.querySelectorAll('#spells-table .spells-to-add');
+    
+    checkboxes.forEach(function(checkbox) {
+        checkbox.checked = false;
+    })
 }

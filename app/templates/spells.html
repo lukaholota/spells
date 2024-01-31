@@ -124,7 +124,7 @@
         </form>
     </div>
     <span id="message"></span>
-    <table class="spells-table" border="1 px">
+    <table class="spells-table" id="spells-table" border="1 px">
         <caption>Заклинання</caption>
         <tr>
             <th></th>
@@ -138,7 +138,7 @@
         </tr>
         {% for spell in spells %}
             <tr>
-                <td><input type="checkbox" name="selected_spells" value="{{spell.spell_id}}" form="select-spells"></td>
+                <td><input type="checkbox" class="spells-to-add" name="selected_spells" value="{{spell.spell_id}}" form="select-spells"></td>
                 <td> <a href="/spell/{{spell.spell_id}}">{{spell.name}}</a> </td>
                 <td>{{spell.level}}</td>
                 <td>{{spell.school}}</td>
