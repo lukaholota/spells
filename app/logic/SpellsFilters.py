@@ -9,3 +9,6 @@ class SpellsFilters:
         self.ritual_filter = form.get('ritual', '')
         self.concentration_filter = form.get('concentration', '')
         self.sources_filter = form.getlist('sources')
+
+        for level in self.levels_filter:
+            self.levels_filter.append(level + ' ' + '(ритуал)')
