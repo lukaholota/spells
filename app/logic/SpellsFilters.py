@@ -10,5 +10,5 @@ class SpellsFilters:
         self.concentration_filter = form.get('concentration', '')
         self.sources_filter = form.getlist('sources')
 
-        for level in self.levels_filter:
-            self.levels_filter.append(level + ' ' + '(ритуал)')
+        for i in range(len(self.levels_filter)):
+            self.levels_filter.append(self.levels_filter[i] + ' ' + '(ритуал)')
