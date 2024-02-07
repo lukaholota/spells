@@ -31,7 +31,7 @@
   /* Reset table width to allow children to control it */
   width: auto;
   /* Add overflow to allow horizontal scrolling if needed */
-  overflow-x: auto;
+  overflow-x: scroll;
 }
 
 .spells-table th,
