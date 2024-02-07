@@ -2,190 +2,178 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <style>
-        div#registration-block {
-            display:none
-        }
-        span#message {
-            display:none
-        }
-        .container {
-            display: flex;
-            flex-direction: row;
-            align-items: flex-start;
-        }
-
-        .select-group {
-            text-align: center;
-        }
-    </style>
     <title>Заклинання</title>
     <meta name="description" content="Заклинання ДнД українською. Знаходьте, фільтруйте, додавайте в книгу чарів, прив'язуйте до персонажів і багато іншого!">
     {% extends "topnav.html" %}
+    {% block css %} 
+    <link href="{{ url_for('static', filename='css/spells.css') }}" rel="stylesheet">
+    {% endblock %}
 </head>
 <body>
-    
     {% block body %}
-    <div class="filters">
-        <form action="spells" method="POST">
-            <label for="name">Назва заклинання:</label>
+    <div class="container">
+        <div class="filters">
+            <form action="spells" method="POST">
+                <div class="search" id="search">
+                    <label for="name">Назва заклинання:</label>
+                    <br>
+                    <input type="text" name="name" id="name" value="{{filters.name_filter}}" placeholder="{{filters.name_filter}}">
+                </div>
+                <div class="selects">
+                    <div class="select-group">
+                        <label for="classes">Класи</label><br>
+                        <select name="classes" id="classes" class="multiple-select" multiple size="10">
+                            {% for class in form.classes %}
+                                {% if class in filters.classes_filter %}
+                                    <option selected value="{{class}}">{{class}}</option>
+                                {% else %}
+                                    <option value="{{class}}">{{class}}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="select-group">
+                        <label for="levels">Рівні</label><br>
+                        <select name="levels" id="levels" class="multiple-select" multiple size="10">
+                            {% for level in form.levels %}
+                                {% if level in filters.levels_filter %}
+                                    <option selected value="{{level}}">{{level}}</option>
+                                {% else %}
+                                    <option value="{{level}}">{{level}}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="select-group">
+                        <br>
+                        <select name="school">
+                            <option value="">Школа магії</option>
+                            {% for school in form.schools %}
+                                {% if school == filters.school_filter %}
+                                    <option selected value="{{school}}">{{school}}</option>
+                                {% else %}
+                                    <option value="{{school}}">{{school}}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="select-group">
+                        <br>
+                        <select name="casting_time">
+                            <option value="">Час використання</option>
+                            {% for casting_time in form.casting_times %}
+                                {% if casting_time == filters.casting_time_filter %}
+                                    <option selected value="{{casting_time}}">{{casting_time}}</option>
+                                {% else %}
+                                    <option value="{{casting_time}}">{{casting_time}}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="select-group">
+                        <br>
+                        <select name="ritual">
+                            <option value="">Ритуал</option>
+                            {% for ritual in form.rituals %}
+                                {% if ritual == filters.ritual_filter %}
+                                    <option selected value="{{ritual}}">{{ritual}}</option>
+                                {% else %}
+                                    <option value="{{ritual}}">{{ritual}}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="select-group">
+                        <br>
+                        <select name="concentration">
+                            <option value="">Концентрація</option>
+                            {% for concentration in form.concentrations %}
+                                {% if concentration == filters.concentration_filter %}
+                                    <option selected value="{{concentration}}">{{concentration}}</option>
+                                {% else %}
+                                    <option value="{{concentration}}">{{concentration}}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="select-group">
+                        <label for="sources">Джерела</label><br>
+                        <select name="sources" id="sources" class="multiple-select" multiple>
+                            {% for source in form.sources %}
+                                {% if source in filters.sources_filter %}
+                                    <option selected value="{{source}}">{{source}}</option>
+                                {% else %}
+                                    <option value="{{source}}">{{source}}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="select-group">
+                        <input class="btn get-me-lower" type="submit" value="Застосувати фільтри">
+                    </div>             
+                    </form>
+                    <form action="/spells">
+                    <div class="select-group">
+                        <input class="btn get-me-lower" type="submit" value="Скинути фільтри">
+                    </div>
+                    </form>
+                </div>
+        </div>
+        <div class="spellbook">
+            <form name="select-spells" action="add-to-spellbook" id="select-spells" method="POST" onsubmit="return add_to_spellbook(this)"></form>
+            <input class="btn" type="submit" id="submit-spells" name="submit-spells" form="select-spells" value="Додати обрані заклинання у власну Книгу Чарів">
+        </div>
+        <div id="registration-block">
             <br>
-            <input type="text" name="name" id="name" value="{{filters.name_filter}}" placeholder="{{filters.name_filter}}">
-            <br>
-            <br>
-            <div class="container">
-                <div class="select-group">
-                    <label for="classes">Класи</label><br>
-                    <select name="classes" id="classes" class="multiple-select" multiple size="10">
-                        {% for class in form.classes %}
-                            {% if class in filters.classes_filter %}
-                                <option selected value="{{class}}">{{class}}</option>
-                            {% else %}
-                                <option value="{{class}}">{{class}}</option>
-                            {% endif %}
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="select-group">
-                    <label for="levels">Рівні</label><br>
-                    <select name="levels" id="levels" class="multiple-select" multiple size="10">
-                        {% for level in form.levels %}
-                            {% if level in filters.levels_filter %}
-                                <option selected value="{{level}}">{{level}}</option>
-                            {% else %}
-                                <option value="{{level}}">{{level}}</option>
-                            {% endif %}
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="select-group">
-                    <br>
-                    <select name="school">
-                        <option value="">Школа магії</option>
-                        {% for school in form.schools %}
-                            {% if school == filters.school_filter %}
-                                <option selected value="{{school}}">{{school}}</option>
-                            {% else %}
-                                <option value="{{school}}">{{school}}</option>
-                            {% endif %}
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="select-group">
-                    <br>
-                    <select name="casting_time">
-                        <option value="">Час використання</option>
-                        {% for casting_time in form.casting_times %}
-                            {% if casting_time == filters.casting_time_filter %}
-                                <option selected value="{{casting_time}}">{{casting_time}}</option>
-                            {% else %}
-                                <option value="{{casting_time}}">{{casting_time}}</option>
-                            {% endif %}
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="select-group">
-                    <br>
-                    <select name="ritual">
-                        <option value="">Ритуал</option>
-                        {% for ritual in form.rituals %}
-                            {% if ritual == filters.ritual_filter %}
-                                <option selected value="{{ritual}}">{{ritual}}</option>
-                            {% else %}
-                                <option value="{{ritual}}">{{ritual}}</option>
-                            {% endif %}
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="select-group">
-                    <br>
-                    <select name="concentration">
-                        <option value="">Концентрація</option>
-                        {% for concentration in form.concentrations %}
-                            {% if concentration == filters.concentration_filter %}
-                                <option selected value="{{concentration}}">{{concentration}}</option>
-                            {% else %}
-                                <option value="{{concentration}}">{{concentration}}</option>
-                            {% endif %}
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="select-group">
-                    <label for="sources">Джерела</label><br>
-                    <select name="sources" id="sources" class="multiple-select" multiple>
-                        {% for source in form.sources %}
-                            {% if source in filters.sources_filter %}
-                                <option selected value="{{source}}">{{source}}</option>
-                            {% else %}
-                                <option value="{{source}}">{{source}}</option>
-                            {% endif %}
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="select-group">
-                    <br>
-                    <input type="submit" value="Застосувати фільтри">
-                </div>
-                <div class="select-group">
-                    <br>
-                    <button> <a href="/spells">Скинути фільтри</a> </button>
-                </div>
-                </form>
-            </div>
-    </div>
-    <form name="select-spells" action="add-to-spellbook" id="select-spells" method="POST" onsubmit="return add_to_spellbook(this)"></form>
-        <input type="submit" id="submit-spells" name="submit-spells" form="select-spells" value="Додати обрані заклинання у власну Книгу Чарів">
-
-    <div id="registration-block">
-        <br>
-        <label for="hybrid-registration-form">Уведіть дані для свого нового акаунта або увійдіть, використавши дійсні</label>
-        <form action="hybrid-registration" id="hybrid-registration-form" name="hybrid-registration-form" method="POST" onsubmit="return send_hybrid_registration(this)">
-            <div>
+            <label for="hybrid-registration-form">Уведіть дані для свого нового акаунта або увійдіть, використавши дійсні</label>
+            <form action="hybrid-registration" id="hybrid-registration-form" name="hybrid-registration-form" method="POST" onsubmit="return send_hybrid_registration(this)">
                 <div>
-                    <input type="text" name="login" placeholder="Логін" autofocus="">
+                    <div>
+                        <input type="text" name="login" placeholder="Логін" autofocus="">
+                    </div>
                 </div>
-            </div>
 
-            <div class="field">
-                <div class="control">
-                    <input type="password" name="password" placeholder="Пароль">
+                <div class="field">
+                    <div class="control">
+                        <input type="password" name="password" placeholder="Пароль">
+                    </div>
                 </div>
-            </div>
-            <div>
-                <label class="checkbox">
-                    <input type="checkbox" name="remember_me">
-                    Запам'ятати мене
-                </label>
-            </div>
-            <input type="submit" form="hybrid-registration-form" value="Увійти\Зареєструватися">
-        </form>
-    </div>
-    <span id="message"></span>
-    <table class="spells-table" id="spells-table" border="1 px">
-        <caption>Заклинання</caption>
-        <tr>
-            <th></th>
-            <th>Назва</th>
-            <th>Рівень</th>
-            <th>Школа</th>
-            <th>Час використання</th>
-            <th>Ритуал</th>
-            <th>Концентрація</th>
-            <th>Джерело</th>
-        </tr>
-        {% for spell in spells %}
+                <div>
+                    <label class="checkbox">
+                        <input type="checkbox" name="remember_me">
+                        Запам'ятати мене
+                    </label>
+                </div>
+                <input class="btn" type="submit" form="hybrid-registration-form" value="Увійти\Зареєструватися">
+            </form>
+        </div>
+        <span id="message"></span>
+        <table class="spells-table" id="spells-table" border="1 px">
+            <caption>Заклинання</caption>
             <tr>
-                <td><input type="checkbox" class="spells-to-add" name="selected_spells" value="{{spell.spell_id}}" form="select-spells"></td>
-                <td> <a href="/spell/{{spell.spell_id}}">{{spell.name}}</a> </td>
-                <td>{{spell.level}}</td>
-                <td>{{spell.school}}</td>
-                <td>{{spell.casting_time}}</td>
-                <td>{{spell.has_ritual}}</td>
-                <td>{{spell.has_concentration}}</td>
-                <td>{{spell.source}}</td>
+                <th></th>
+                <th>Назва</th>
+                <th>Рівень</th>
+                <th>Школа</th>
+                <th>Час використання</th>
+                <th>Ритуал</th>
+                <th>Концентрація</th>
+                <th>Джерело</th>
             </tr>
-        {% endfor %}
-    </table>
+            {% for spell in spells %}
+                <tr>
+                    <td><input type="checkbox" class="spells-to-add" name="selected_spells" value="{{spell.spell_id}}" form="select-spells"></td>
+                    <td> <a href="/spell/{{spell.spell_id}}">{{spell.name}}</a> </td>
+                    <td>{{spell.level}}</td>
+                    <td>{{spell.school}}</td>
+                    <td>{{spell.casting_time}}</td>
+                    <td>{{spell.has_ritual}}</td>
+                    <td>{{spell.has_concentration}}</td>
+                    <td>{{spell.source}}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 </body>
 <script src="{{ url_for('static', filename='add-to-spellbook.js') }}"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

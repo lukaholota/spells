@@ -1,0 +1,80 @@
+#topnav {
+  overflow: hidden;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#topnav a {
+  color: #000000;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+#topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.container {
+  width: 75%;
+  margin: 0 auto;
+  border: 1px solid rgb(186, 186, 186);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.spells-table {
+  /* Reset table width to allow children to control it */
+  width: auto;
+  /* Add overflow to allow horizontal scrolling if needed */
+  overflow-x: auto;
+}
+
+.spells-table th,
+.spells-table td {
+  padding: 8px;
+  border: 1px solid #000;
+}
+
+.spells-table th:first-child,
+.spells-table td:first-child {
+  /* Ensure the first column (checkboxes) remains narrow */
+  width: 1%;
+  white-space: nowrap; /* Prevent wrapping */
+}
+
+.btn {
+  height: 50px;
+}
+
+th, td, a, label, input, button, option, select, p, strong, span, a[href], div {
+  font-size: 15px;
+  font-family: sans-serif;
+}
+
+h1, h2 {
+  font-family: sans-serif;
+}
+
+.return {
+  margin: 20px 0px;
+}
+
+.underlined {
+  border-bottom: 1px solid rgb(186, 186, 186);
+  padding-bottom: 5px;
+}
+
+a:link, a:visited {
+  color: rgb(121, 47, 206);
+}
+
+a:link {
+  text-decoration: none;
+}

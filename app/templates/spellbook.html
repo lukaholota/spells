@@ -4,78 +4,83 @@
     <meta charset="UTF-8">
     <title>Книга чарів</title>
     {% extends "topnav.html" %}
+    {% block css %}
+     <link href="{{ url_for('static', filename='css/spellbook.css') }}" rel="stylesheet">
+    {% endblock %}
 </head>
 <body>
     {% block body %}
-<h1>Книга чарів</h1>
-{% if spells|length != 0 %}
-  <form name="delete-spell" id="delete-spell" action="delete-spellbook-spell" method="POST">
-    <table border="1 px">
-      <tr>
-        <th>Назва</th>
-        <th>Рівень</th>
-        <th>Школа</th>
-        <th>Час використання</th>
-        <th>Ритуал</th>
-        <th>Концентрація</th>
-        <th>Джерело</th>
-        <th></th>
-      </tr>
-  {% for spell in spells %}
-    <tr>
-      <td><a href="/spell/{{spell.spell_id}}">{{spell.name}}</a></td>
-      <td>{{spell.level}}</td>
-      <td>{{spell.school}}</td>
-      <td>{{spell.casting_time}}</td>
-      <td>{{spell.has_ritual}}</td>
-      <td>{{spell.has_concentration}}</td>
-      <td>{{spell.source}}</td>
-      <td><button type="submit" name="spell_id" value="{{spell.spell_id}}">Видалити</button></td>
-    </tr>
-  {% endfor %}
-</table>
-</form>
-<hr>
-<div id="add-to-character-block">
-  <h2>Прив'язати всі заклинання з книги до персонажа</h2>
-  {% if character_list|length != 0 %}
-    <form name="add-spells-to-character" action="add-spells-to-character" method="POST">
-      <select name="character_id" id="character" size="5">
-        {% for character in character_list %}
-          <option value="{{character.character_id}}">{{character.name}}</option>
-        {% endfor %}
-      </select>
-      <br>
-      <button>Прив'язати</button>
+  <div class="container">  
+    <h1>Книга чарів</h1>
+    {% if spells|length != 0 %}
+      <form name="delete-spell" id="delete-spell" action="delete-spellbook-spell" method="POST">
+        <table class="spells-table">
+          <tr>
+            <th>Назва</th>
+            <th>Рівень</th>
+            <th>Школа</th>
+            <th>Час використання</th>
+            <th>Ритуал</th>
+            <th>Концентрація</th>
+            <th>Джерело</th>
+            <th></th>
+          </tr>
+      {% for spell in spells %}
+        <tr>
+          <td><a href="/spell/{{spell.spell_id}}">{{spell.name}}</a></td>
+          <td>{{spell.level}}</td>
+          <td>{{spell.school}}</td>
+          <td>{{spell.casting_time}}</td>
+          <td>{{spell.has_ritual}}</td>
+          <td>{{spell.has_concentration}}</td>
+          <td>{{spell.source}}</td>
+          <td><button type="submit" name="spell_id" value="{{spell.spell_id}}">Видалити</button></td>
+        </tr>
+      {% endfor %}
+    </table>
     </form>
-    <br>
-    <a href="/create-character/spellbook">Створити нового?</a>
-
-  {% else %}
-    <p>Персонажів поки нема. <a href="/create-character/spellbook">Створити нового</a></p>
-  {% endif %}
-  {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <div>
-                    {{ messages[0] }} 
-                </div>
-            {% endif %}
-        {% endwith %}
-</div>
-  
-
-    {% else %}
-        <span>Поки порожньо, але ви завжди можете записати сюди свої улюблені заклинання зі <a href="/spells">сторінки заклинань</a></span>
+    <hr>
+    <div id="add-to-character-block">
+      <h2>Прив'язати всі заклинання з книги до персонажа</h2>
+      {% if character_list|length != 0 %}
+        <form name="add-spells-to-character" action="add-spells-to-character" method="POST">
+          <select name="character_id" id="character" size="5">
+            {% for character in character_list %}
+              <option value="{{character.character_id}}">{{character.name}}</option>
+            {% endfor %}
+          </select>
+          <br>
+          <button class="btn" style="margin-top: 10px;">Прив'язати</button>
+        </form>
         <br>
-        <hr>
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <div>
-                    {{ messages[0] }} <a href="/characters/{{character_id}}">Переглянути заклинання свого персонажа</a>
-                </div>
-            {% endif %}
-        {% endwith %}
-    {% endif %}
-{% endblock %}
+        <a href="/create-character/spellbook">Створити нового?</a>
+
+      {% else %}
+        <p>Персонажів поки нема. <a href="/create-character/spellbook">Створити нового</a></p>
+      {% endif %}
+      {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div>
+                        {{ messages[0] }} 
+                    </div>
+                {% endif %}
+            {% endwith %}
+    </div>
+      
+
+        {% else %}
+            <span>Поки порожньо, але ви завжди можете записати сюди свої улюблені заклинання зі <a href="/spells">сторінки заклинань</a></span>
+            <br>
+            <hr>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div>
+                        {{ messages[0] }} <a href="/characters/{{character_id}}">Переглянути заклинання свого персонажа</a>
+                    </div>
+                {% endif %}
+            {% endwith %}
+        {% endif %}
+    {% endblock %}
+  </div>
 </body>
 </html>

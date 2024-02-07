@@ -1,0 +1,46 @@
+div#registration-block {
+    display:none
+}
+
+span#message {
+    display:none
+}
+
+.select-group, .search {
+    text-align: center;
+    display: inline-block;
+}
+
+.search {
+    display: block;
+    margin: 5px;
+}
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: start;
+    justify-content: center;
+  }
+
+.filters {
+    width: 100%;
+  }
+  
+.get-me-lower {
+    position: relative;
+    top: 2.3em;
+}
+
+.selects {
+    display: flex;
+    align-items: baseline;
+}
+
+.spellbook {
+    margin-top: 10px;
+}
+
+.container {
+    align-items: normal;
+}

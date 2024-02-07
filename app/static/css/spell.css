@@ -1,0 +1,7 @@
+p, strong, div, a[href] {
+    font-size: 22px;
+}
+
+.spell-name h2 {
+    display: inline;
+}

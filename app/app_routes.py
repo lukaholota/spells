@@ -269,3 +269,8 @@ def delete_character_spell():
 @app.route('/sitemap.xml')
 def sitemap():
     return send_file('sitemap.xml')
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_file('static/images/favicon.ico')

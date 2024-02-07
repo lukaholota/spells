@@ -1,0 +1,13 @@
+.container {
+    align-items: center;
+}
+
+td, th {
+    font-size: 22px;
+    padding: 8px;
+    border: 1px solid #000;
+}
+
+a:link {
+    font-size: 22px;
+}

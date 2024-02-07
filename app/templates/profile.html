@@ -4,13 +4,18 @@
     <meta charset="UTF-8">
     <title>Профіль</title>
     {% extends "topnav.html" %}
+    {% block css %}
+     <link href="{{ url_for('static', filename='css/profile.css') }}" rel="stylesheet">
+    {% endblock %}
 </head>
 <body>
 {% block body %}
+<div class="container">
     <h1>Профіль</h1>
     <a href="spellbook">Книга Чарів</a>
     <br>
     <a href="characters">Персонажі</a>
-{% endblock %}
+</div>
+    {% endblock %}
 </body>
 </html>
