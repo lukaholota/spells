@@ -20,9 +20,7 @@
 }
 
 .container {
-  width: 75%;
   margin: 0 auto;
-  border: 1px solid rgb(186, 186, 186);
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -77,4 +75,28 @@ a:link, a:visited {
 
 a:link {
   text-decoration: none;
+}
+
+@media only screen and (min-width: 768px) {
+  .container {
+      width: 750px;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .container {
+      width: 970px;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .container {
+      width: 1170px;
+  }
+}
+
+@media only screen and (min-width: 1800px) {
+  .container {
+      width: 1400px;
+  }
 }
