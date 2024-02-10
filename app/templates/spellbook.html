@@ -13,6 +13,7 @@
   <div class="container">  
     <h1>Книга чарів</h1>
     {% if spells|length != 0 %}
+    <div class="table">
       <form name="delete-spell" id="delete-spell" action="delete-spellbook-spell" method="POST">
         <table class="spells-table">
           <tr>
@@ -37,8 +38,9 @@
           <td><button type="submit" name="spell_id" value="{{spell.spell_id}}">Видалити</button></td>
         </tr>
       {% endfor %}
-    </table>
-    </form>
+      </table>
+      </form>
+    </div>
     <hr>
     <div id="add-to-character-block">
       <h2>Прив'язати всі заклинання з книги до персонажа</h2>

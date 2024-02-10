@@ -45,9 +45,9 @@
                         </select>
                     </div>
                     <div class="select-group">
-                        <br>
+                        <label for="school">Школи</label><br>
                         <select name="school">
-                            <option value="">Школа магії</option>
+                            <option value=""></option>
                             {% for school in form.schools %}
                                 {% if school == filters.school_filter %}
                                     <option selected value="{{school}}">{{school}}</option>
@@ -58,9 +58,9 @@
                         </select>
                     </div>
                     <div class="select-group">
-                        <br>
+                        <label for="casting_time">Час використання</label><br>
                         <select name="casting_time">
-                            <option value="">Час використання</option>
+                            <option value=""></option>
                             {% for casting_time in form.casting_times %}
                                 {% if casting_time == filters.casting_time_filter %}
                                     <option selected value="{{casting_time}}">{{casting_time}}</option>
@@ -70,10 +70,10 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="select-group">
-                        <br>
+                    <div class="select-group" style="padding: 0 5px;">
+                        <label for="ritual">Ритуал</label><br>
                         <select name="ritual">
-                            <option value="">Ритуал</option>
+                            <option value=""></option>
                             {% for ritual in form.rituals %}
                                 {% if ritual == filters.ritual_filter %}
                                     <option selected value="{{ritual}}">{{ritual}}</option>
@@ -84,9 +84,9 @@
                         </select>
                     </div>
                     <div class="select-group">
-                        <br>
+                        <label for="concentration">Концентрація</label><br>
                         <select name="concentration">
-                            <option value="">Концентрація</option>
+                            <option value=""></option>
                             {% for concentration in form.concentrations %}
                                 {% if concentration == filters.concentration_filter %}
                                     <option selected value="{{concentration}}">{{concentration}}</option>
@@ -112,11 +112,11 @@
                         <input class="btn get-me-lower" type="submit" value="Застосувати фільтри">
                     </div>             
                     </form>
-                    <form action="/spells">
                     <div class="select-group">
-                        <input class="btn get-me-lower" type="submit" value="Скинути фільтри">
+                        <form action="/spells">
+                            <input class="btn get-me-lower" type="submit" value="Скинути фільтри">
+                        </form>
                     </div>
-                    </form>
                 </div>
         </div>
         <div class="spellbook">
@@ -148,31 +148,33 @@
             </form>
         </div>
         <span id="message"></span>
-        <table class="spells-table" id="spells-table" border="1 px">
-            <caption>Заклинання</caption>
-            <tr>
-                <th></th>
-                <th>Назва</th>
-                <th>Рівень</th>
-                <th>Школа</th>
-                <th>Час використання</th>
-                <th>Ритуал</th>
-                <th>Концентрація</th>
-                <th>Джерело</th>
-            </tr>
-            {% for spell in spells %}
+        <div class="table">
+            <table class="spells-table" id="spells-table" border="1 px">
+                <caption>Заклинання</caption>
                 <tr>
-                    <td><input type="checkbox" class="spells-to-add" name="selected_spells" value="{{spell.spell_id}}" form="select-spells"></td>
-                    <td> <a href="/spell/{{spell.spell_id}}">{{spell.name}}</a> </td>
-                    <td>{{spell.level}}</td>
-                    <td>{{spell.school}}</td>
-                    <td>{{spell.casting_time}}</td>
-                    <td>{{spell.has_ritual}}</td>
-                    <td>{{spell.has_concentration}}</td>
-                    <td>{{spell.source}}</td>
+                    <th></th>
+                    <th>Назва</th>
+                    <th>Рівень</th>
+                    <th>Школа</th>
+                    <th>Час використання</th>
+                    <th>Ритуал</th>
+                    <th>Концентрація</th>
+                    <th>Джерело</th>
                 </tr>
-            {% endfor %}
-        </table>
+                {% for spell in spells %}
+                    <tr>
+                        <td><input type="checkbox" class="spells-to-add" name="selected_spells" value="{{spell.spell_id}}" form="select-spells"></td>
+                        <td> <a href="/spell/{{spell.spell_id}}">{{spell.name}}</a> </td>
+                        <td>{{spell.level}}</td>
+                        <td>{{spell.school}}</td>
+                        <td>{{spell.casting_time}}</td>
+                        <td>{{spell.has_ritual}}</td>
+                        <td>{{spell.has_concentration}}</td>
+                        <td>{{spell.source}}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
 </body>
 <script src="{{ url_for('static', filename='add-to-spellbook.js') }}"></script>

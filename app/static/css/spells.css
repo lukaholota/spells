@@ -39,8 +39,32 @@ span#message {
 
 .spellbook {
     margin-top: 10px;
+    overflow: hidden;
 }
 
 .container {
     align-items: normal;
+}
+
+@media only screen and (max-width: 425px) {
+    .spellbook input {
+        font-size: 12px;
+      }
+  }
+
+@media only screen and (max-width: 1200px) {
+    .spellbook {
+        margin-top: 20px;
+    }
+    .select-group {
+        width: 100%;
+        margin-top: 5px;
+    }
+    select, input, button {
+        width: 100%;
+    }
+  }
+
+select {
+    width: 100%;
 }

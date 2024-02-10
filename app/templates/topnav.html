@@ -13,7 +13,7 @@
 </head>
 <main>
     {% block topnav %}
-      <nav id="topnav">
+      <nav id="topnav" class="underlined">
         <a id="spells" href="/spells">Заклинання</a>
           {% if not current_user.is_authenticated  %}
             <a id="sign-up" href="/sign-up">Реєстрація</a>
@@ -31,7 +31,6 @@
             <a id="logout" href="/logout">Вийти</a>
           {% endif %}
       </nav>
-    <hr>
 </main>
     {% endblock %}
     {% block body %}{% endblock %}
