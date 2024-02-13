@@ -55,7 +55,6 @@ pypdf==4.0.1
 pypng==0.20220715.0
 python-bidi==0.4.2
 python-dateutil==2.8.2
-pywin32==306
 PyYAML==6.0.1
 pyzmq==25.1.2
 qrcode==7.4.2
