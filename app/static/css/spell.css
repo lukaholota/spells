@@ -5,3 +5,9 @@ p, strong, div, a[href] {
 .spell-name h2 {
     display: inline;
 }
+
+@media only screen and (max-width: 425px) {
+    p, strong, div, a[href] {
+        font-size: 14px;
+    }
+  }
