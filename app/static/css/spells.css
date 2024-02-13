@@ -37,8 +37,8 @@ span#message {
     flex-wrap: wrap;
 }
 
-.spellbook {
-    margin-top: 10px;
+.spellbook input, .spellbook button{
+    margin: 10px 0px;
     overflow: hidden;
 }
 
@@ -67,4 +67,9 @@ span#message {
 
 select {
     width: 100%;
+}
+
+.create-spelllist {
+    margin-top: 10px;
+    display: flex;
 }

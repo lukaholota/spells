@@ -16,10 +16,12 @@
     </div>
     {% if spells|length != 0 %}
     <div class="table">
+        <form name="select-spells" action="/create-spelllist-by-ids" id="select-spells" method="POST" onsubmit="return anyChecked();"></form>
         <form name="delete-character-spell" id="delete-character-spell" action="/delete-character-spell" method="POST">
             <table class="spells-table">
             <caption>Заклинання персонажа</caption>
             <tr>
+                <th></th>
                 <th>Назва</th>
                 <th>Рівень</th>
                 <th>Школа</th>
@@ -31,6 +33,7 @@
             </tr>
             {% for spell in spells %}
                 <tr>
+                    <td><input type="checkbox" class="spells-to-add" name="selected_spells" value="{{spell.spell_id}}" form="select-spells"></td>
                     <td> <a href="/spell/{{spell.spell_id}}">{{spell.name}}</a> </td>
                     <td>{{spell.level}}</td>
                     <td>{{spell.school}}</td>
@@ -45,11 +48,32 @@
             <input type="hidden" name="source" value="{{character_id}}">
         </form>
     </div>
+
+    <div class="create-spelllist">
+        <form name="create-spelllist" action="/create-spelllist-from-character" method="POST">
+            <input type="hidden" class="btn" value="{{character_id}}" name="character_id">
+            <input type="submit" class="btn" value="Роздрукувати всі заклинання персонажа">
+        </form>
+        <button type="submit" class="btn" form="select-spells">Роздрукувати обрані заклинання</button>
+    </div>
+
     {% else %}
     <p>Поки порожньо. Додайте заклинання в <a href="/spellbook">Книгу Чарів</a> зі сторінки <a href="/spells">заклинань</a></p>
     {% endif %}
     <a href="/characters" style="padding-top: 10px;">Повернутися до своїх персонажів</a>
-    {% endblock %}
 </div>
+
+<script>
+    function anyChecked() {
+        let checkboxes = document.querySelectorAll('.spells-table .spells-to-add');
+        
+        let result = false;
+        checkboxes.forEach(function(checkbox) {
+            if (checkbox.checked == true) result = true;  
+        });
+        return result;
+    }
+</script>
+{% endblock %}
 </body>
 </html>

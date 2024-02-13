@@ -1,6 +1,17 @@
-function add_to_spellbook(form) {
+function add_to_spellbook() {
+    var checkedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+
+    if (checkedCheckboxes.length === 0) {
+        return false; 
+    }
+
+    var formData = new FormData(); 
+    checkedCheckboxes.forEach(function(checkbox) {
+        formData.append(checkbox.name, checkbox.value);
+    });
+
     var xhr = new XMLHttpRequest();
-    xhr.open(form.method, form.getAttribute("action"))
+    xhr.open('POST', "/add-to-spellbook")
 
     xhr.onload=function(){
             if (this.status == 403) {
@@ -13,7 +24,7 @@ function add_to_spellbook(form) {
             }
         }
 
-    xhr.send(new FormData(form));
+    xhr.send(formData);
     return false;
 }
 
@@ -49,4 +60,14 @@ function uncheckSelectedRows() {
     checkboxes.forEach(function(checkbox) {
         checkbox.checked = false;
     })
+}
+
+function CreateSpelllist() {
+    let checkboxes = document.querySelectorAll('.spells-table .spells-to-add');
+    
+    let result = false;
+    checkboxes.forEach(function(checkbox) {
+        if (checkbox.checked == true) result = true;  
+    });
+    return result;
 }

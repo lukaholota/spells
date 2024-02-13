@@ -15,6 +15,7 @@ from app.logic.CharacterSpellsSaver import CharacterSpellsSaver
 from app.logic.CharacterDeleter import CharacterDeleter
 from app.logic.CharacterSpellsLoader import CharacterSpellsLoader
 from app.logic.CharacterSpellDeleter import CharacterSpellDeleter
+from app.logic.SpelllistCreator import SpelllistCreator
 
 
 @auth.verify_password
@@ -274,3 +275,36 @@ def sitemap():
 @app.route('/favicon.ico')
 def favicon():
     return send_file('static/images/favicon.ico')
+
+
+@app.route('/create-spelllist-from-character', methods=['POST'])
+@login_required
+def create_spelllist_from_character():
+    spelllist_creator = SpelllistCreator()
+
+    spelllist_creator.get_spells_from_character(request.form.get('character_id', ''))
+    buffer = spelllist_creator.create_spelllist()
+    buffer.seek(0)
+
+    return send_file(buffer, mimetype='application/pdf')
+
+
+@app.route('/create-spelllist-from-spellbook', methods=['POST'])
+@login_required
+def create_spelllist_from_spellbook():
+    spelllist_creator = SpelllistCreator()
+    spelllist_creator.get_spells_from_spellbook(current_user.spellbook.spellbook_id)
+    buffer = spelllist_creator.create_spelllist()
+    buffer.seek(0)
+
+    return send_file(buffer, mimetype='application/pdf')
+
+
+@app.route('/create-spelllist-by-ids', methods=['POST'])
+def create_spelllist_by_ids():
+    spelllist_creator = SpelllistCreator()
+    spelllist_creator.get_spells_by_ids(request.form.getlist('selected_spells'))
+    buffer = spelllist_creator.create_spelllist()
+    buffer.seek(0)
+
+    return send_file(buffer, mimetype='application/pdf')

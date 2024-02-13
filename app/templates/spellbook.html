@@ -14,9 +14,11 @@
     <h1>Книга чарів</h1>
     {% if spells|length != 0 %}
     <div class="table">
+      <form name="select-spells" action="/create-spelllist-by-ids" id="select-spells" method="POST" onsubmit="return anyChecked();"></form>
       <form name="delete-spell" id="delete-spell" action="delete-spellbook-spell" method="POST">
         <table class="spells-table">
           <tr>
+            <th></th>
             <th>Назва</th>
             <th>Рівень</th>
             <th>Школа</th>
@@ -28,6 +30,7 @@
           </tr>
       {% for spell in spells %}
         <tr>
+          <td><input type="checkbox" class="spells-to-add" name="selected_spells" value="{{spell.spell_id}}" form="select-spells"></td>
           <td><a href="/spell/{{spell.spell_id}}">{{spell.name}}</a></td>
           <td>{{spell.level}}</td>
           <td>{{spell.school}}</td>
@@ -40,6 +43,12 @@
       {% endfor %}
       </table>
       </form>
+      <div class="create-spelllist">
+        <form name="create-spelllist" action="/create-spelllist-from-spellbook" method="POST">
+            <input type="submit" class="btn" value="Роздрукувати всі заклинання з книги">
+        </form>
+        <button type="submit" class="btn" form="select-spells">Роздрукувати обрані заклинання</button>
+    </div>
     </div>
     <hr>
     <div id="add-to-character-block">
@@ -82,6 +91,17 @@
                 {% endif %}
             {% endwith %}
         {% endif %}
+      <script>
+          function anyChecked() {
+              let checkboxes = document.querySelectorAll('.spells-table .spells-to-add');
+              
+              let result = false;
+              checkboxes.forEach(function(checkbox) {
+                  if (checkbox.checked == true) result = true;  
+              });
+              return result;
+          }
+      </script>
     {% endblock %}
   </div>
 </body>

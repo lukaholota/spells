@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Spells List</title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <style type="text/css">
+      .spell {
+        width: 50%;
+      }
+
+      * {
+        -pdf-keep-with-next: true;
+      }
+
+      * {
+        margin: 1px;
+      }
+
+      p.separator { 
+        -pdf-keep-with-next: false; font-size: 1pt; 
+      }
+
+      .spell-name {
+        font-weight: bold;
+      }
+
+      @font-face {
+        font-family: ClearSans;
+        src: 
+          url('ClearSans-Regular.ttf');
+      } 
+      @font-face {
+        font-family: ClearSans-bold;
+        src: 
+          url('ClearSans-Bold.ttf');
+      } 
+
+      * {
+        font-family: ClearSans;
+        font-size: 11px;
+      }
+
+      strong, h2 {
+        font-family: ClearSans-bold;
+      }
+
+      @page { 
+        size: letter portrait;
+        @frame col1_frame {             /* Content frame 1 */
+            left: 44pt; width: 245pt; top: 30pt; height: 692pt;
+        }
+        @frame col2_frame {             /* Content frame 2 */
+            left: 323pt; width: 245pt; top: 30pt; height: 692pt;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="spell-container">
+      {% for spell in spells %}
+        <div class="spell">
+          <h2 class="spell-name">{{ spell.name }}</h2>
+          <p class="spell-details">
+            <strong>{{ spell.school }};</strong> <strong>{{ spell.level }}</strong><br>
+            Час використання: <strong>{{ spell.casting_time }}</strong><br>
+            Тривалість: <strong>{{ spell.duration }}</strong><br>
+            Дальність: <strong>{{ spell.range }}</strong><br>
+            Компоненти: <strong>{{ spell.components }}</strong><br>
+            {{ spell.description |safe }}
+          </p>
+        </div>
+        <p class="separator">&nbsp;<p></p>
+      {% endfor %}
+    </div>
+    Сформовано на spells.holota.family
+  </body>
+</html>

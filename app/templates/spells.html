@@ -120,8 +120,9 @@
                 </div>
         </div>
         <div class="spellbook">
-            <form name="select-spells" action="add-to-spellbook" id="select-spells" method="POST" onsubmit="return add_to_spellbook(this)"></form>
-            <input class="btn" type="submit" id="submit-spells" name="submit-spells" form="select-spells" value="Додати обрані заклинання у власну Книгу Чарів">
+            <form name="select-spells-for-spelllist" id="select-spells-for-spelllist" action="/create-spelllist-by-ids"  method="POST" onsubmit="return CreateSpelllist();"></form>
+            <button class="btn" id="submit-spells" onclick="add_to_spellbook()">Додати обрані заклинання у власну Книгу Чарів</button>
+            <input type="submit" class="btn" form="select-spells-for-spelllist" value="Роздрукувати обрані заклинання">
         </div>
         <div id="registration-block">
             <br>
@@ -163,7 +164,9 @@
                 </tr>
                 {% for spell in spells %}
                     <tr>
-                        <td><input type="checkbox" class="spells-to-add" name="selected_spells" value="{{spell.spell_id}}" form="select-spells"></td>
+                        <td>
+                            <input type="checkbox" class="spells-to-add" name="selected_spells" value="{{spell.spell_id}}" form="select-spells-for-spelllist">
+                        </td>
                         <td> <a href="/spell/{{spell.spell_id}}">{{spell.name}}</a> </td>
                         <td>{{spell.level}}</td>
                         <td>{{spell.school}}</td>

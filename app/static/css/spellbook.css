@@ -1,3 +1,8 @@
 option {
     font-size: 20px;
 }
+
+.create-spelllist {
+    margin-top: 10px;
+    display: flex;
+}

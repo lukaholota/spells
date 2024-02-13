@@ -2,3 +2,8 @@
     display: flex;
     justify-content: center;
 }
+
+.create-spelllist {
+    margin-top: 10px;
+    display: flex;
+}
