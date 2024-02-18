@@ -109,7 +109,7 @@
 
     <script>
         var editor = new MediumEditor('.editable');
-        document.getElementById('description-text').innerHTML = "{{ spell.description| safe }}";
+        document.getElementById('description-text').innerHTML = '{{ spell.description| safe }}';
         function submitForm() {
           document.getElementById('description').value = editor.getContent();
           if (document.getElementById('description-text').innerHTML == '') {return false;}

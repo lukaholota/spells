@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Змінити істоту</title>
+    <script src="https://cdn.jsdelivr.net/npm/medium-editor@5.23.3/dist/js/medium-editor.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/medium-editor@5.23.3/dist/css/medium-editor.min.css" rel="stylesheet">
+    {% extends "topnav.html" %}
+    {% block css %}
+    <style> 
+    .box {
+        margin: 20px 0;
+    }
+    input[type=text] {
+        width: 600px;
+    }
+    </style>
+    {% endblock %}
+</head>
+<body>
+{% block body %}
+    <h1>Змінити істоту</h1>
+    
+    <form action="/edit-creature/{{creature.creature_id}}" method="POST" onsubmit="return submitForm()">
+        Ім'я: <input type="text" name="name" value="{{creature.name}}" required><br>
+        Англійське ім'я: <input type="text" name="name_eng" value="{{creature.name_eng}}" required><br>
+        <strong>Розмір:</strong>
+        <select name="size" required>
+            <option value="">Розмір</option>
+                {% for size in form.sizes %}
+                    {% if size == creature.size %}
+                        <option selected value="{{size}}">{{size}}</option>
+                    {% else %}
+                        <option value="{{size}}">{{size}}</option>
+                    {% endif %}
+                {% endfor %}
+        </select>
+        <strong>Тип:</strong>
+        <select name="type" required>
+            <option value="">Тип</option>
+                {% for type in form.types %}
+                    {% if type == creature.type %}
+                        <option selected value="{{type}}">{{type}}</option>
+                    {% else %}
+                        <option value="{{type}}">{{type}}</option>
+                    {% endif %}
+                {% endfor %}
+        </select>
+        <strong>Світогляд:</strong>
+        <select name="alignment" required>
+            <option value="">Світогляд</option>
+                {% for alignment in form.alignments %}
+                    {% if alignment == creature.alignment %}
+                        <option selected value="{{alignment}}">{{alignment}}</option>
+                    {% else %}
+                        <option value="{{alignment}}">{{alignment}}</option>
+                    {% endif %}
+                {% endfor %}
+        </select>
+        
+        <hr>
+
+        Клас обладунку: <input type="text" name="ac" value="{{creature.ac}}" required><br>
+        Хп: <input type="text" name="hp" value="{{creature.hp}}" required><br>
+        Переміщення: приклад - (30 футів; 30 футів повзання; 60 футів польоту; 30 футів плавання;) <input type="text" name="speed" value="{{creature.speed}}" required><br>
+
+        <input type="hidden" name="source" value="{{creature.source}}">
+
+        <hr>
+
+        Сила: <input type="text" name="strength" value="{{creature.strength}}" required><br>
+        Спритність: <input type="text" name="dexterity" value="{{creature.dexterity}}" required><br>
+        Статура: <input type="text" name="constitution" value="{{creature.constitution}}" required><br>
+        Інтелект: <input type="text" name="intelligence" value="{{creature.intelligence}}" required><br>
+        Мудрість: <input type="text" name="wisdom" value="{{creature.wisdom}}" required><br>
+        Харизма: <input type="text" name="charisma" value="{{creature.charisma}}" required><br>
+
+        <hr>
+
+        Кидки рятунку: <input type="text" name="saving_throws" value="{{creature.saving_throws}}"><br>
+        Навички: <input type="text" name="skills" value="{{creature.skills}}"><br>
+        Опір до шкоди: <input type="text" name="damage_resistance" value="{{creature.damage_resistance}}"><br>
+        Імунітет до шкоди: <input type="text" name="damage_immunity" value="{{creature.damage_immunity}}"><br>
+        Імунітет до станів:<input type="text" name="condition_immunity" value="{{creature.condition_immunity}}"><br>
+        Чуття: <input type="text" name="senses" required value="{{creature.senses}}"><br>
+        Мови: <input type="text" name="languages" required value="{{creature.languages}}"><br>
+        Небезпечність:
+        <select name="challenge" required>
+            <option value="">Небезпечність</option>
+                {% for challenge in form.challenge_ratings %}
+                    {% if challenge == creature.challenge %}
+                        <option selected value="{{challenge}}">{{challenge}}</option>
+                    {% else %}
+                        <option value="{{challenge}}">{{challenge}}</option>
+                    {% endif %}
+                {% endfor %}
+        </select>
+        Бонус майстерності (можна залишити порожнім, якщо нічого особливого):
+        <select name="proficiency_bonus" required>
+            <option value="">Бонус майстерності</option>
+                {% for proficiency_bonus in form.proficiency_bonuses %}
+                    {% if proficiency_bonus == creature.proficiency_bonus %}
+                        <option selected value="{{proficiency_bonus}}">{{proficiency_bonus}}</option>
+                    {% else %}
+                        <option value="{{proficiency_bonus}}">{{proficiency_bonus}}</option>
+                    {% endif %}
+                {% endfor %}
+        </select>
+        
+        <hr>
+
+        <div class="special_abilities box">
+            <label>Особливі вміння</label>
+            <input class="for-form" type="hidden" id="special-abilities" name="special_abilities" value="">
+            <div class="editable" id="special-abilities-text"></div>
+        </div>
+
+        <hr>
+
+        <div class="actions box">
+            <label>Основні дії</label>
+            <input class="for-form" type="hidden" id="actions" name="actions" value="">
+            <div class="editable" id="actions-text"></div>
+        </div>
+
+        <hr>
+
+        <div class="reactions box">
+            <label>Реакції</label>
+            <input class="for-form" type="hidden" id="reactions" name="reactions" value="">
+            <div class="editable" id="reactions-text"></div>
+        </div>
+        
+        <hr>
+
+        <div class="legendary-actions box">
+            <label>Легендарні дії</label>
+            <input class="for-form" type="hidden" id="legendary-actions" name="legendary_actions" value="">
+            <div class="editable" id="legendary-actions-text"></div>
+        </div>
+
+        <hr>
+
+        <div class="lair-actions box">
+            <label>Дії лігва</label>
+            <input class="for-form" type="hidden" id="lair-actions" name="lair_actions" value="">
+            <div class="editable" id="lair-actions-text"></div>
+        </div>
+
+        <hr>
+
+        <div class="lair-info box">
+            <label>Лігво</label>
+            <input class="for-form" type="hidden" id="lair-info" name="lair_info" value="">
+            <div class="editable" id="lair-info-text"></div>
+        </div>
+
+        <hr>
+
+        <div class="region-effects box">
+            <label>Місцеві ефекти</label>
+            <input class="for-form" type="hidden" id="region-effects" name="region_effects" value="">
+            <div class="editable" id="region-effects-text"></div>
+        </div>
+
+        <hr>
+
+        <div class="description box">
+            <label>Опис істоти</label>
+            <input class="for-form" type="hidden" id="description" name="description" value="">
+            <div class="editable" id="description-text"></div>
+        </div>
+        <button type="submit" value="Зберегти">Зберегти</button>
+    </form> 
+
+    <script>
+        let hiddenInputList = document.querySelectorAll('.for-form') 
+        var editor = new MediumEditor('.editable');
+        document.getElementById('description-text').innerHTML = '{{ creature.description| safe }}';
+        document.getElementById('region-effects-text').innerHTML = '{{ creature.region_effects| safe }}';
+        document.getElementById('lair-info-text').innerHTML = '{{ creature.lair_info| safe }}';
+        document.getElementById('lair-actions-text').innerHTML = '{{ creature.lair_actions| safe }}';
+        document.getElementById('legendary-actions-text').innerHTML = '{{ creature.legendary_actions| safe }}';
+        document.getElementById('reactions-text').innerHTML = '{{ creature.reactions| safe }}';
+        document.getElementById('actions-text').innerHTML = '{{ creature.actions| safe }}';
+        document.getElementById('special-abilities-text').innerHTML = '{{ creature.special_abilities| safe }}';
+        function submitForm() {
+            for (let i = 0; i < editor.elements.length; i++) {
+                hiddenInputList[i].value = editor.getContent(i);
+            }
+            return validateForm()
+        }
+        function validateForm() {
+            var requiredFields = document.querySelectorAll('[required]');
+            var isValid = true;
+
+            requiredFields.forEach(function (field) {
+                if (field.value.trim() === '') {
+                    isValid = false;
+                }
+            });
+
+            return isValid
+        }
+    </script>
+{% endblock %}
+</body>
+</html>

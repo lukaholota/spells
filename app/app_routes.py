@@ -16,6 +16,8 @@ from app.logic.CharacterDeleter import CharacterDeleter
 from app.logic.CharacterSpellsLoader import CharacterSpellsLoader
 from app.logic.CharacterSpellDeleter import CharacterSpellDeleter
 from app.logic.SpelllistCreator import SpelllistCreator
+from app.logic.CreaturesForm import CreaturesForm
+from app.logic.CreatureDataSaver import CreatureDataSaver
 
 
 @auth.verify_password
@@ -308,3 +310,38 @@ def create_spelllist_by_ids():
     buffer.seek(0)
 
     return send_file(buffer, mimetype='application/pdf')
+
+
+@app.route('/add-creature',  methods=['GET', 'POST'])
+@auth.login_required
+def add_creature():
+    results = request.form
+    form = CreaturesForm()
+    if request.method == 'POST':
+        creature_data_saver = CreatureDataSaver()
+        creature_data_saver.custom_init(results, form)
+        creature_data_saver.add_new_creature()
+        return redirect(f'/edit-creature/{creature_data_saver.creature_id}')
+
+    return render_template('add-creature.html',
+                           results=results,
+                           form=form
+                           )
+
+
+@app.route('/edit-creature/<id>',  methods=['GET', 'POST'])
+@auth.login_required
+def edit_creature(id):
+    results = request.form
+    form = CreaturesForm()
+    creature_data_saver = CreatureDataSaver()
+    creature = creature_data_saver.get_creature(id)
+    if request.method == 'POST':
+        creature_data_saver.custom_init(results, form)
+        creature_data_saver.edit_creature()
+
+    return render_template(
+        'edit-creature.html',
+        creature=creature,
+        form=form
+        )
