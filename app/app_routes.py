@@ -1,4 +1,5 @@
 from app.app import app, auth
+from app.logic.CreatureLoader import CreatureLoader
 from flask import render_template, request, redirect, flash, abort, send_file
 from flask_login import logout_user, login_required, current_user
 from app.logic.SpellLoader import SpellLoader
@@ -345,3 +346,13 @@ def edit_creature(id):
         creature=creature,
         form=form
         )
+
+
+@app.route('/creature/<id>')
+def creature(id):
+    creature_loader = CreatureLoader(id)
+
+    return render_template(
+        'creature.html',
+        creature=creature_loader.creature
+    )

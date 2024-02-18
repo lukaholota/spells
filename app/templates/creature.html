@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="{{creature.name}}">
+    <meta name="description" content="{{creature.name}}, {{creature.description}}">
+    <title>{{creature.name}}</title>
+    {% extends "topnav.html" %}
+    {% block css %}
+     <link href="{{ url_for('static', filename='css/creature.css') }}" rel="stylesheet">
+    {% endblock %}
+</head>
+    {% block body %}
+<body>
+    <div class="container">
+        <div class="creature-header underlined">
+            <div class="name">
+                <h2>{{creature.name}}</h2>
+            </div>
+            <div class="general-info">
+                <p>{{creature.size}}, {{creature.type}}, {{creature.alignment}}</p>
+            </div>
+        </div>
+        <div class="properties underlined">
+            <p>
+                <strong>Клас обладунку:</strong>
+                {{creature.ac}}
+                <br>
+                <strong>Здоров'я:</strong>
+                {{creature.hp}}
+                <br>
+                <strong>Переміщення:</strong>
+                {{creature.speed}}
+            </p>
+        </div>
+        <div class="stat-block underlined">
+            <div class="stats">
+                <div class="stat-name">
+                    СИЛ
+                </div>
+                <div class="stat">
+                    {{creature.strength}}
+                </div>
+            </div>
+            <div class="stats">
+                <div class="stat-name">
+                    СПР
+                </div>
+                <div class="stat">
+                    {{creature.dexterity}}
+                </div>
+            </div>
+            <div class="stats">
+                <div class="stat-name">
+                    СТА
+                </div>
+                <div class="stat">
+                    {{creature.constitution}}
+                </div>
+            </div>
+            <div class="stats">
+                <div class="stat-name">
+                    ІНТ     
+                </div>
+                <div class="stat">
+                    {{creature.intelligence}}
+                </div>
+            </div>
+            <div class="stats">
+                <div class="stat-name">
+                    МУД
+                </div>
+                <div class="stat">
+                    {{creature.wisdom}}
+                </div>
+            </div>
+            <div class="stats">
+                <div class="stat-name">
+                    ХАР
+                </div>
+                <div class="stat">
+                    {{creature.charisma}}
+                </div>
+            </div>
+        </div>
+        
+        <div class="different-skills underlined">
+            <p>
+                {% if creature.damage_resistance|length != 0 %}
+                <strong>Опір до шкоди:</strong>
+                {{creature.damage_resistance}}
+                <br>
+                {% endif %}
+                {% if creature.damage_immunity|length != 0 %}
+                <strong>Імунітет до шкоди:</strong>
+                {{creature.damage_immunity}}
+                <br>
+                {% endif %}
+                {% if creature.condition_immunity|length != 0 %}
+                <strong>Імунітет до станів:</strong>
+                {{creature.condition_immunity}}
+                <br>
+                {% endif %}
+                {% if creature.saving_throws|length != 0 %}
+                <strong>Кидки рятунку:</strong>
+                {{creature.saving_throws}}
+                <br>
+                {% endif %}
+                <strong>Чуття:</strong>
+                {{creature.senses}}
+                <br>
+                <strong>Мови:</strong>
+                {{creature.languages}}
+                <br>
+                <strong>Небезпечність:</strong>
+                {{creature.challenge}} {% if creature.xp != '-' %}({{creature.xp}}  досвіду){% endif %}<br>
+                <strong>Бонус майстерності:</strong>
+                {{creature.proficiency_bonus}}
+            </p>
+        </div>
+        {% if creature.special_abilities |length != 0 %}
+        <div class="special-abilities underlined">
+            {{creature.special_abilities | safe}}
+        </div>
+        {% endif %}
+        
+        <div class="all-the-actions">
+            {% if creature.actions |length != 0 %}
+            <div class="actions underlined">
+                <h2>Дії</h2>
+                {{creature.actions | safe}}
+            </div>
+            {% endif %}
+
+            {% if creature.reactions |length != 0 %}
+            <div class="reactions underlined">
+                <h2>Реакції</h2>
+                {{creature.reactions | safe}}
+            </div>
+            {% endif %}
+
+            {% if creature.legendary_actions |length != 0 %}
+            <div class="legendary-actions underlined">
+                <h2>Легендарні дії</h2>
+                {{creature.legendary_actions | safe}}
+            </div>
+            {% endif %}
+
+            {% if creature.lair_actions |length != 0 %}
+            <div class="lair-actions underlined">
+                <h2>Дії лігва</h2>
+                {{creature.lair_actions | safe}}
+            </div>
+            {% endif %}
+        </div>
+        <div class="descriptions">
+            {% if creature.lair |length != 0 %}
+            <div class="lair underlined">
+                <h2>Лігво</h2>
+                {{creature.lair | safe}}
+            </div>
+            {% endif %}
+
+            {% if creature.description |length != 0 %}
+            <div class="description underlined">
+                <h2>Опис</h2>
+                {{creature.description | safe}}
+            </div>
+            {% endif %}
+        </div>
+        <div class="source">
+            Джерело: <strong>{{creature.source}}</strong>
+        </div>
+    </div>
+</body>
+{% endblock %}
+</html>
