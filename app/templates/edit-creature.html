@@ -176,14 +176,14 @@
     <script>
         let hiddenInputList = document.querySelectorAll('.for-form') 
         var editor = new MediumEditor('.editable');
-        document.getElementById('description-text').innerHTML = '{{ creature.description| safe }}';
-        document.getElementById('region-effects-text').innerHTML = '{{ creature.region_effects| safe }}';
-        document.getElementById('lair-info-text').innerHTML = '{{ creature.lair_info| safe }}';
-        document.getElementById('lair-actions-text').innerHTML = '{{ creature.lair_actions| safe }}';
-        document.getElementById('legendary-actions-text').innerHTML = '{{ creature.legendary_actions| safe }}';
-        document.getElementById('reactions-text').innerHTML = '{{ creature.reactions| safe }}';
-        document.getElementById('actions-text').innerHTML = '{{ creature.actions| safe }}';
-        document.getElementById('special-abilities-text').innerHTML = '{{ creature.special_abilities| safe }}';
+        document.getElementById('description-text').innerHTML = `{{ creature.description| safe }}`;
+        document.getElementById('region-effects-text').innerHTML = `{{ creature.region_effects| safe }}`;
+        document.getElementById('lair-info-text').innerHTML = `{{ creature.lair_info| safe }}`;
+        document.getElementById('lair-actions-text').innerHTML = `{{ creature.lair_actions| safe }}`;
+        document.getElementById('legendary-actions-text').innerHTML = `{{ creature.legendary_actions| safe }}`;
+        document.getElementById('reactions-text').innerHTML = `{{ creature.reactions| safe }}`;
+        document.getElementById('actions-text').innerHTML = `{{ creature.actions| safe }}`;
+        document.getElementById('special-abilities-text').innerHTML = `{{ creature.special_abilities| safe }}`;
         function submitForm() {
             for (let i = 0; i < editor.elements.length; i++) {
                 hiddenInputList[i].value = editor.getContent(i);
