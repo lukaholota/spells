@@ -13,7 +13,7 @@
     {% block body %}
     <div class="container">
         <div class="filters">
-            <form action="spells" method="POST">
+            <form action="spells" method="POST" id="filter">
                 <div class="search" id="search">
                     <label for="name">Назва заклинання:</label>
                     <br>
@@ -200,6 +200,12 @@
             });
         });
     });
+        var age = document.getElementById('name');
+        age.addEventListener('keypress', function(event) {
+            if (event.keyCode == 13) {
+                document.forms['filter'].submit()
+            }
+        });
 </script>
 {% endblock %}
 </html>
