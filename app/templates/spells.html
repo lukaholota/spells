@@ -200,10 +200,10 @@
             });
         });
     });
-        var age = document.getElementById('name');
-        age.addEventListener('keypress', function(event) {
-            if (event.keyCode == 13) {
-                document.forms['filter'].submit()
+        var name = document.getElementById('name');
+        name.addEventListener('keypress', function(event) {
+            if (event.keyCode == 13 || e.which == 10) {
+                document.forms['filter'].submit();
             }
         });
 </script>
