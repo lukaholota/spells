@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <title>Заклинання</title>
     <meta name="description" content="Заклинання ДнД українською. Знаходьте, фільтруйте, додавайте в книгу чарів, прив'язуйте до персонажів і багато іншого!">
+    
     {% extends "topnav.html" %}
     {% block css %} 
     <link href="{{ url_for('static', filename='css/spells.css') }}" rel="stylesheet">
+    <link href="//cdn.datatables.net/2.0.0/css/dataTables.dataTables.min.css" rel="stylesheet">
     {% endblock %}
 </head>
 <body>
@@ -17,7 +19,7 @@
                 <div class="search" id="search">
                     <label for="name">Назва заклинання:</label>
                     <br>
-                    <input type="text" name="name" id="name" value="{{filters.name_filter}}" placeholder="{{filters.name_filter}}">
+                    <input type="text" name="name" id="name" value="{{filters.name_filter}}">
                 </div>
                 <div class="selects">
                     <div class="select-group">
@@ -183,31 +185,7 @@
 </body>
 <script src="{{ url_for('static', filename='add-to-spellbook.js') }}"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function(){
-        $('.multiple-select').each(function() {
-            $('option').mousedown(function(e) {
-                e.preventDefault();
-                var originalScrollTop = $(this).parent().scrollTop();
-                $(this).prop('selected', $(this).prop('selected') ? false : true);
-                var self = this;
-                $(this).parent().focus();
-                setTimeout(function() {
-                    $(self).parent().scrollTop(originalScrollTop);
-                }, 0);
-
-                return false;
-            });
-        });
-    });
-    $( '#name' ).on('keypress', (function( event ) { 
-  
-    if (event.which === 13 || event.which === 10) { 
-        event.preventDefault();
-        $( '#filter' ).submit(); 
-        console.log('form submitted'); 
-  }
-})) 
-</script>
+<script src="{{ url_for('static', filename='multiple_selects.js') }}"></script>
+<script src="{{ url_for('static', filename='dynamic-search.js') }}"></script>
 {% endblock %}
 </html>

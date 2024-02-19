@@ -19,9 +19,6 @@ class SpellsListLoader:
         self.reduce_casting_time()
 
     def add_filters(self, query):
-        if self.filters.name_filter:
-            query = query.filter(Spell.name.ilike('%' + self.filters.name_filter + '%'))
-
         if self.filters.classes_filter:
             query = query.filter(Spell.classes.any(SpellClasses.class_name.in_(self.filters.classes_filter)))
 
