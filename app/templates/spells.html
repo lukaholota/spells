@@ -200,12 +200,14 @@
             });
         });
     });
-        var name = document.getElementById('name');
-        name.addEventListener('keypress', function(event) {
-            if (event.keyCode == 13 || e.which == 10) {
-                document.forms['filter'].submit();
-            }
-        });
+    $( '#filter' ).on('keypress', (function( event ) { 
+  
+    if (event.which === 13 || event.which === 10) { 
+        event.preventDefault();
+        $( '#filter' ).submit(); 
+        console.log('form submitted'); 
+  }
+})) 
 </script>
 {% endblock %}
 </html>
