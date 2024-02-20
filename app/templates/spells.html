@@ -14,106 +14,104 @@
 <body>
     {% block body %}
     <div class="container">
-        <div class="filters">
-            <form action="spells" method="POST" id="filter">
-                <div class="search" id="search">
-                    <label for="name">Назва заклинання:</label>
-                    <br>
-                    <input type="text" name="name" id="name" value="{{filters.name_filter}}">
-                </div>
-                <div class="selects">
-                    <div class="select-group">
-                        <label for="classes">Класи</label><br>
-                        <select name="classes" id="classes" class="multiple-select" multiple size="10">
-                            {% for class in form.classes %}
-                                {% if class in filters.classes_filter %}
-                                    <option selected value="{{class}}">{{class}}</option>
-                                {% else %}
-                                    <option value="{{class}}">{{class}}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="select-group">
-                        <label for="levels">Рівні</label><br>
-                        <select name="levels" id="levels" class="multiple-select" multiple size="10">
-                            {% for level in form.levels %}
-                                {% if level in filters.levels_filter %}
-                                    <option selected value="{{level}}">{{level}}</option>
-                                {% else %}
-                                    <option value="{{level}}">{{level}}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="select-group">
-                        <label for="school">Школи</label><br>
-                        <select name="school">
-                            <option value=""></option>
-                            {% for school in form.schools %}
-                                {% if school == filters.school_filter %}
-                                    <option selected value="{{school}}">{{school}}</option>
-                                {% else %}
-                                    <option value="{{school}}">{{school}}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="select-group">
-                        <label for="casting_time">Час використання</label><br>
-                        <select name="casting_time">
-                            <option value=""></option>
-                            {% for casting_time in form.casting_times %}
-                                {% if casting_time == filters.casting_time_filter %}
-                                    <option selected value="{{casting_time}}">{{casting_time}}</option>
-                                {% else %}
-                                    <option value="{{casting_time}}">{{casting_time}}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="select-group" style="padding: 0 5px;">
-                        <label for="ritual">Ритуал</label><br>
-                        <select name="ritual">
-                            <option value=""></option>
-                            {% for ritual in form.rituals %}
-                                {% if ritual == filters.ritual_filter %}
-                                    <option selected value="{{ritual}}">{{ritual}}</option>
-                                {% else %}
-                                    <option value="{{ritual}}">{{ritual}}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="select-group">
-                        <label for="concentration">Концентрація</label><br>
-                        <select name="concentration">
-                            <option value=""></option>
-                            {% for concentration in form.concentrations %}
-                                {% if concentration == filters.concentration_filter %}
-                                    <option selected value="{{concentration}}">{{concentration}}</option>
-                                {% else %}
-                                    <option value="{{concentration}}">{{concentration}}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="select-group">
-                        <label for="sources">Джерела</label><br>
-                        <select name="sources" id="sources" class="multiple-select" multiple>
-                            {% for source in form.sources %}
-                                {% if source in filters.sources_filter %}
-                                    <option selected value="{{source}}">{{source}}</option>
-                                {% else %}
-                                    <option value="{{source}}">{{source}}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="select-group">
-                        <input class="btn get-me-lower" type="submit" value="Застосувати фільтри">
-                    </div>             
-                    <button type="submit" hidden>зберегти</button>
+        <div class="search" id="search">
+            <label for="name">Назва заклинання:</label>
+            <br>
+            <input type="text" name="name" id="name" value="{{filters.name_filter}}">
+        </div>
+        <button type="button" class="collapsible">Фільтри</button>
+        <div class="content">
+            <div class="filters">
+                <form action="spells" method="POST" id="filter">
+                    <div class="selects">
+                        <div class="select-group">
+                            <label for="classes">Класи</label><br>
+                            <select name="classes" id="classes" class="multiple-select" multiple size="10">
+                                {% for class in form.classes %}
+                                    {% if class in filters.classes_filter %}
+                                        <option selected value="{{class}}">{{class}}</option>
+                                    {% else %}
+                                        <option value="{{class}}">{{class}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="select-group">
+                            <label for="levels">Рівні</label><br>
+                            <select name="levels" id="levels" class="multiple-select" multiple size="10">
+                                {% for level in form.levels %}
+                                    {% if level in filters.levels_filter %}
+                                        <option selected value="{{level}}">{{level}}</option>
+                                    {% else %}
+                                        <option value="{{level}}">{{level}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="select-group">
+                            <label for="school">Школи</label><br>
+                            <select name="school">
+                                <option value=""></option>
+                                {% for school in form.schools %}
+                                    {% if school == filters.school_filter %}
+                                        <option selected value="{{school}}">{{school}}</option>
+                                    {% else %}
+                                        <option value="{{school}}">{{school}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="select-group">
+                            <label for="casting_time">Час використання</label><br>
+                            <select name="casting_time">
+                                <option value=""></option>
+                                {% for casting_time in form.casting_times %}
+                                    {% if casting_time == filters.casting_time_filter %}
+                                        <option selected value="{{casting_time}}">{{casting_time}}</option>
+                                    {% else %}
+                                        <option value="{{casting_time}}">{{casting_time}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="select-group" style="padding: 0 5px;">
+                            <label for="ritual">Ритуал</label><br>
+                            <select name="ritual">
+                                <option value=""></option>
+                                {% for ritual in form.rituals %}
+                                    {% if ritual == filters.ritual_filter %}
+                                        <option selected value="{{ritual}}">{{ritual}}</option>
+                                    {% else %}
+                                        <option value="{{ritual}}">{{ritual}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="select-group">
+                            <label for="concentration">Концентрація</label><br>
+                            <select name="concentration">
+                                <option value=""></option>
+                                {% for concentration in form.concentrations %}
+                                    {% if concentration == filters.concentration_filter %}
+                                        <option selected value="{{concentration}}">{{concentration}}</option>
+                                    {% else %}
+                                        <option value="{{concentration}}">{{concentration}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="select-group">
+                            <label for="sources">Джерела</label><br>
+                            <select name="sources" id="sources" class="multiple-select" multiple>
+                                {% for source in form.sources %}
+                                    {% if source in filters.sources_filter %}
+                                        <option selected value="{{source}}">{{source}}</option>
+                                    {% else %}
+                                        <option value="{{source}}">{{source}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
                     </form>
                     <div class="select-group">
                         <form action="/spells">
@@ -121,6 +119,7 @@
                         </form>
                     </div>
                 </div>
+            </div>
         </div>
         <div class="spellbook">
             <form name="select-spells-for-spelllist" id="select-spells-for-spelllist" action="/create-spelllist-by-ids"  method="POST" onsubmit="return CreateSpelllist();"></form>
@@ -183,9 +182,11 @@
         </div>
     </div>
 </body>
-<script src="{{ url_for('static', filename='add-to-spellbook.js') }}"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="{{ url_for('static', filename='multiple_selects.js') }}"></script>
-<script src="{{ url_for('static', filename='dynamic-search.js') }}"></script>
+<script src="{{ url_for('static', filename='js/add-to-spellbook.js') }}"></script>
+<script src="{{ url_for('static', filename='js/multiple-selects.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dynamic-search.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dynamic-filters.js') }}"></script>
+<script src="{{ url_for('static', filename='js/collapsible-filters.js') }}"></script>
 {% endblock %}
 </html>

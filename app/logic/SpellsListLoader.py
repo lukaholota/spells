@@ -46,3 +46,14 @@ class SpellsListLoader:
         for spell in self.spells:
             if len(spell.casting_time) > 20:
                 spell.casting_time = '1 реакція'
+
+    def make_list_of_dicts(self):
+        return [{
+            'name': spell.name,
+            'level': spell.level,
+            'school': spell.school,
+            'casting_time': spell.casting_time,
+            'has_ritual': spell.has_ritual,
+            'has_concentration': spell.has_concentration,
+            'source': spell.source,
+        } for spell in self.spells]

@@ -1,6 +1,6 @@
 from app.app import app, auth
 from app.logic.CreatureLoader import CreatureLoader
-from flask import render_template, request, redirect, flash, abort, send_file
+from flask import render_template, request, redirect, flash, abort, send_file, jsonify
 from flask_login import logout_user, login_required, current_user
 from app.logic.SpellLoader import SpellLoader
 from app.logic.SpellsListLoader import SpellsListLoader
@@ -50,7 +50,7 @@ def load_spell(spell_id):
                            )
 
 
-@app.route('/spells', methods=['GET', 'POST'])
+@app.route('/spells', methods=['GET'])
 def load_spells_list():
     spells_filters = SpellsFilters(request.form)
     spells_list_loader = SpellsListLoader(spells_filters)
@@ -61,6 +61,14 @@ def load_spells_list():
                            form=spells_form,
                            filters=spells_filters,
                            )
+
+
+@app.route('/spells', methods=['POST'])
+def apply_filters_to_spelllist():
+    spells_filters = SpellsFilters(request.form)
+    spells_list_loader = SpellsListLoader(spells_filters)
+
+    return jsonify(spells_list_loader.make_list_of_dicts())
 
 
 @app.route('/add-spell',  methods=['GET', 'POST'])
