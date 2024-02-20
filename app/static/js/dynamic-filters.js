@@ -28,5 +28,14 @@ $(document).ready(function(){
                 }
             }
         })
-    })
+    });
+
+    form.onreset = event => {
+        let spells = document.querySelectorAll('tr')
+        for (let i=1; i < spells.length; i++) {
+            let spell = spells[i]
+            spell.style.display = 'table-row';
+        }
+        return true;
+    };
 });
