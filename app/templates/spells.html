@@ -8,21 +8,20 @@
     {% extends "topnav.html" %}
     {% block css %} 
     <link href="{{ url_for('static', filename='css/spells.css') }}" rel="stylesheet">
-    <link href="//cdn.datatables.net/2.0.0/css/dataTables.dataTables.min.css" rel="stylesheet">
     {% endblock %}
 </head>
 <body>
     {% block body %}
     <div class="container">
-        <div class="search" id="search">
-            <label for="name">Назва заклинання:</label>
-            <br>
-            <input type="text" name="name" id="name" value="{{filters.name_filter}}">
-        </div>
+        <form action="spells" method="POST" id="filter">
+            <div class="search" id="search">
+                <label for="name">Назва заклинання:</label>
+                <br>
+                <input type="text" name="name" id="name" value="{{filters.name_filter}}">
+            </div>
         <button type="button" class="collapsible">Фільтри</button>
         <div class="content">
             <div class="filters">
-                <form action="spells" method="POST" id="filter">
                     <div class="selects">
                         <div class="select-group">
                             <label for="classes">Класи</label><br>
@@ -183,7 +182,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{{ url_for('static', filename='js/add-to-spellbook.js') }}"></script>
 <script src="{{ url_for('static', filename='js/multiple-selects.js') }}"></script>
-<script src="{{ url_for('static', filename='js/dynamic-search.js') }}"></script>
 <script src="{{ url_for('static', filename='js/dynamic-filters.js') }}"></script>
 <script src="{{ url_for('static', filename='js/collapsible-filters.js') }}"></script>
 {% endblock %}

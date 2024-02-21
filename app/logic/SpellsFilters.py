@@ -1,7 +1,7 @@
 class SpellsFilters:
     def __init__(self, form):
         self.form = form
-        self.name_filter = form.get('name', '')
+        self.name_filter = form.get('name', '').strip()
         self.classes_filter = form.getlist('classes')
         self.levels_filter = form.getlist('levels')
         self.school_filter = form.get('school', '')

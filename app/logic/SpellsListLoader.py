@@ -19,6 +19,9 @@ class SpellsListLoader:
         self.reduce_casting_time()
 
     def add_filters(self, query):
+        if self.filters.name_filter:
+            query = query.filter(Spell.name.ilike('%' + self.filters.name_filter + '%'))
+
         if self.filters.classes_filter:
             query = query.filter(Spell.classes.any(SpellClasses.class_name.in_(self.filters.classes_filter)))
 
@@ -26,16 +29,16 @@ class SpellsListLoader:
             query = query.filter(Spell.level.in_(self.filters.levels_filter))
 
         if self.filters.school_filter:
-            query = query.filter(Spell.school.ilike('%' + self.filters.school_filter + '%'))
+            query = query.filter(Spell.school == self.filters.school_filter)
 
         if self.filters.casting_time_filter:
             query = query.filter(Spell.casting_time.ilike('%' + self.filters.casting_time_filter + '%'))
 
         if self.filters.ritual_filter:
-            query = query.filter(Spell.has_ritual.ilike('%' + self.filters.ritual_filter + '%'))
+            query = query.filter(Spell.has_ritual == self.filters.ritual_filter)
 
         if self.filters.concentration_filter:
-            query = query.filter(Spell.has_concentration.ilike('%' + self.filters.concentration_filter + '%'))
+            query = query.filter(Spell.has_concentration == self.filters.concentration_filter)
 
         if self.filters.sources_filter:
             query = query.filter(Spell.source.in_(self.filters.sources_filter))
