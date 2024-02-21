@@ -7,16 +7,22 @@
 }
 
 #topnav a {
-  color: #000000;
   text-align: center;
-  padding: 14px 16px;
+  padding: 0px 16px;
   text-decoration: none;
   font-size: 17px;
+  color: #e2e2e2;
 }
 
 #topnav a:hover {
   background-color: #ddd;
   color: black;
+}
+
+.logo {
+  width: 125px;
+  height: 50px;
+  object-fit: contain;
 }
 
 .container {
@@ -37,7 +43,7 @@
 .spells-table th,
 .spells-table td {
   padding: 8px;
-  border: 1px solid #000;
+  border: 1px solid rgb(240, 238, 238)fff;
 }
 
 .spells-table th:first-child,
@@ -51,10 +57,12 @@
   height: 50px;
 }
 
-th, td, a, label, input, button, option, select, p, strong, span, a[href], div {
+* {
   font-size: 15px;
   font-family: sans-serif;
+  color: #f9f9f9;
 }
+
 
 h1, h2 {
   font-family: sans-serif;
@@ -70,7 +78,7 @@ h1, h2 {
 }
 
 a:link, a:visited {
-  color: rgb(121, 47, 206);
+  color: rgb(210, 187, 237);
 }
 
 a:link {
@@ -113,4 +121,28 @@ a:link {
   .container {
       width: 1500px;
   }
+}
+
+body, select {
+  background-color: #393240;
+}
+
+.container {
+  background-color: #352f3a;
+}
+
+button, input {
+  background-color: #574c62;
+}
+
+button {
+  border: 1px solid rgb(240, 238, 238)fff;
+}
+
+h2 {
+  font-size: 30px;
+}
+
+b {
+  font-size: 20px;
 }

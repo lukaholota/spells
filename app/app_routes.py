@@ -283,11 +283,6 @@ def sitemap():
     return send_file('sitemap.xml')
 
 
-@app.route('/favicon.ico')
-def favicon():
-    return send_file('static/images/favicon.ico')
-
-
 @app.route('/create-spelllist-from-character', methods=['POST'])
 @login_required
 def create_spelllist_from_character():
