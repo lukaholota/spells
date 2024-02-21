@@ -14,10 +14,9 @@
 <main>
     {% block topnav %}
       <nav id="topnav" class="underlined">
-        <a href="/spells" id="logo">
+        <a href="/spells" id="logo" style="padding: 0px 5px;">
           <img src="{{ url_for('static', filename='images/logo.png') }}" alt="logo" class="logo" />
         </a>
-        <a id="spells" href="/spells">Заклинання</a>
           {% if not current_user.is_authenticated  %}
             <a id="sign-up" href="/sign-up">Реєстрація</a>
           {% endif %}

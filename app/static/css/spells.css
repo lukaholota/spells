@@ -13,7 +13,7 @@ span#message {
 
 .search {
     display: block;
-    margin: 5px;
+    margin: 5px 0px;
 }
 
 .filters {
@@ -48,8 +48,12 @@ span#message {
 
 @media only screen and (max-width: 425px) {
     .spellbook input {
-        font-size: 12px;
+        font-size: 14px;
       }
+    #name {
+        margin-bottom: 10px;
+        width: 90%;
+    }
   }
 
 @media only screen and (max-width: 1200px) {
@@ -62,6 +66,9 @@ span#message {
     }
     select, input, button {
         width: 100%;
+    }
+    #name {
+        width: 90%;
     }
   }
 

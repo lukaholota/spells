@@ -8,19 +8,19 @@
 
 #topnav a {
   text-align: center;
-  padding: 0px 16px;
+  padding: 14px 16px;
   text-decoration: none;
   font-size: 17px;
   color: #e2e2e2;
 }
 
 #topnav a:hover {
-  background-color: #ddd;
+  background-color: #574c62;
   color: black;
 }
 
 .logo {
-  width: 125px;
+  width: 90px;
   height: 50px;
   object-fit: contain;
 }
@@ -94,8 +94,8 @@ a:link {
     overflow-x: scroll;
   }
   #topnav a {
-    padding: 8px 10px;
-    font-size: 15px;
+    padding: 8px 3px;
+    font-size: 14px;
   }
 }
 
