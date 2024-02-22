@@ -143,7 +143,7 @@ def log_in_post():
         return redirect('/spells')
 
     flash('Перевірте дані та спробуйте ще раз')
-    return redirect('log-in')
+    return redirect('/log-in')
 
 
 @app.route('/logout')
