@@ -2,10 +2,11 @@
     align-items: center;
 }
 
-td, th {
+td, th, table {
     font-size: 22px;
     padding: 8px;
-    border: 1px solid #000;
+    border: 1px solid #e2e2e2;
+    border-collapse: collapse;
 }
 
 a:link {

@@ -7,7 +7,7 @@ class Authenticator:
     def __init__(self, data):
         self.login = data.get('login', '')
         self.password = data.get('password', '')
-        self.remember_me = True if data.get('remember_me', '') else False
+        self.remember_me = True
 
     def check_if_exists(self):
         user = User.query.filter_by(login=self.login).first()

@@ -43,7 +43,6 @@
 .spells-table th,
 .spells-table td {
   padding: 8px;
-  border: 1px solid rgb(240, 238, 238)fff;
 }
 
 .spells-table th:first-child,

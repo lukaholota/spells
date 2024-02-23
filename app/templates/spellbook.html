@@ -11,12 +11,12 @@
 <body>
     {% block body %}
   <div class="container">  
-    <h1>Книга чарів</h1>
+    <h2>Книга чарів</h2>
     {% if spells|length != 0 %}
     <div class="table">
       <form name="select-spells" action="/create-spelllist-by-ids" id="select-spells" method="POST" onsubmit="return anyChecked();"></form>
       <form name="delete-spell" id="delete-spell" action="delete-spellbook-spell" method="POST">
-        <table class="spells-table">
+        <table class="spells-table" border="1px">
           <tr>
             <th></th>
             <th>Назва</th>
@@ -52,7 +52,7 @@
     </div>
     <hr>
     <div id="add-to-character-block">
-      <h2>Прив'язати всі заклинання з книги до персонажа</h2>
+      <h1>Прив'язати всі заклинання з книги до персонажа</h1>
       {% if character_list|length != 0 %}
         <form name="add-spells-to-character" action="add-spells-to-character" method="POST">
           <select name="character_id" id="character" size="5">
@@ -82,7 +82,6 @@
         {% else %}
             <span>Поки порожньо, але ви завжди можете записати сюди свої улюблені заклинання зі <a href="/spells">сторінки заклинань</a></span>
             <br>
-            <hr>
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
                     <div>
