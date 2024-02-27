@@ -19,6 +19,7 @@ from app.logic.CharacterSpellDeleter import CharacterSpellDeleter
 from app.logic.SpelllistCreator import SpelllistCreator
 from app.logic.CreaturesForm import CreaturesForm
 from app.logic.CreatureDataSaver import CreatureDataSaver
+from app.logic.EmptyUserHandler import EmptyUserHandler
 
 
 @auth.verify_password
@@ -52,6 +53,10 @@ def load_spell(spell_id):
 
 @app.route('/spells', methods=['GET'])
 def load_spells_list():
+    empty_user_handler = EmptyUserHandler(current_user)
+    if empty_user_handler.check_if_empty():
+        return empty_user_handler.handle_empty()
+
     spells_filters = SpellsFilters(request.form)
     spells_list_loader = SpellsListLoader(spells_filters)
     spells_form = SpellsForm()
@@ -121,6 +126,9 @@ def sign_up():
 def sign_up_post():
     data = request.form
     authenticator = Authenticator(data)
+    if not authenticator.validate():
+        flash('Логін не може бути порожнім')
+        return redirect('/sign-up')
     if authenticator.check_if_exists():
         flash('Логін уже зайнято')
         return redirect('/sign-up')
@@ -135,7 +143,7 @@ def log_in():
     return render_template('log-in.html')
 
 
-@app.route('/sign-in', methods=['POST'])
+@app.route('/log-in', methods=['POST'])
 def log_in_post():
     data = request.form
     authenticator = Authenticator(data)
@@ -153,6 +161,30 @@ def logout():
     return redirect('/spells')
 
 
+@app.route('/sorry-registration')
+def sorry_registration():
+    return render_template('sorry-registration.html')
+
+
+@app.route('/sorry-registration', methods=['POST'])
+def sorry_registration_post():
+    data = request.form
+    authenticator = Authenticator(data)
+    if not authenticator.validate():
+        flash('Логін не може бути порожнім')
+        return redirect('/sorry-registration')
+    if authenticator.check_if_exists():
+        flash('Логін уже зайнято')
+        return redirect('/sorry-registration')
+
+    new_user = authenticator.add_new_user()
+
+    empty_user_handler = EmptyUserHandler(new_user)
+    empty_user_handler.transfer_data()
+
+    return redirect('/spells')
+
+
 @app.route('/spellbook')
 @login_required
 def spellbook():
@@ -167,9 +199,9 @@ def spellbook():
 def add_to_spellbook():
     if current_user.is_authenticated == False:
         abort(403)
-    spells = request.form.getlist('selected_spells')
-    spellbook_saver = SpellbookSaver(spells, current_user)
-    spellbook_saver.add_spells_to_spellbook()
+    spell_id = request.get_json()['id']
+    spellbook_saver = SpellbookSaver(current_user)
+    spellbook_saver.add_spell_to_spellbook(spell_id)
 
     return ''
 
@@ -177,6 +209,9 @@ def add_to_spellbook():
 @app.route('/hybrid-registration', methods=['POST'])
 def hybrid_registration():
     authenticator = Authenticator(request.form)
+
+    if not authenticator.validate():
+        return {'result': False, 'message': 'Логін не може бути порожнім'}
 
     if authenticator.check_if_exists():
         if authenticator.log_in():
@@ -359,3 +394,17 @@ def creature(id):
         'creature.html',
         creature=creature_loader.creature
     )
+
+
+@app.route('/get-spellbook-spells')
+def get_spellbook_spells():
+    spellbook_spells = []
+    if current_user.is_authenticated:
+        spellbook_spells = [spell.spell_id for spell in current_user.spellbook.spells]
+
+    return jsonify(spellbook_spells)
+
+
+@app.route('/get-user-info')
+def get_user_info():
+    return jsonify({'is_authenticated': current_user.is_authenticated})

@@ -86,7 +86,6 @@ select {
     padding: 18px;
     width: 100%;
     text-align: center;
-    outline: none;
     font-size: 15px;
   }
 
@@ -111,3 +110,74 @@ select {
 
 .active, .collapsible:hover {
   }
+
+.book {
+    height: 29px;
+    width: 29px;
+    object-fit: cover;
+}
+
+.book:hover {
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+}
+
+.book-box {
+    height: 30px;
+    width: 30px;
+}
+
+#registration-modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 15%;
+  }
+
+.modal-box {
+    background-color: #393240;
+    margin: 5px auto; /* 15% from the top and centered */
+    border: 1px solid #888;
+    width: 30%; 
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+.modal-content input {
+    width: 100%;
+    padding: 8px 0;
+    margin: 10px 0;
+    display: inline-block;
+    box-sizing: border-box;
+}
+
+.modal-content {
+  width: 80%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  padding: 5px;
+}
+
+.close {
+    /* Position it in the top right corner outside of the modal */
+    position: relative;
+    right: 25px;
+    top: 0;
+    color: #e2e2e2;
+    font-size: 35px;
+    font-weight: bold;
+  }
+

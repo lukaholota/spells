@@ -1,33 +1,3 @@
-function add_to_spellbook() {
-    var checkedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-
-    if (checkedCheckboxes.length === 0) {
-        return false; 
-    }
-
-    var formData = new FormData(); 
-    checkedCheckboxes.forEach(function(checkbox) {
-        formData.append(checkbox.name, checkbox.value);
-    });
-
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', "/add-to-spellbook")
-
-    xhr.onload=function(){
-            if (this.status == 403) {
-            document.getElementById('registration-block').style.display = 'block';
-            } else {
-                var message = document.getElementById('message');
-                message.style.display = 'block';
-                message.innerHTML = 'Додано! <a href="/spellbook">Переглянути книгу</a>'
-                uncheckSelectedRows()
-            }
-        }
-
-    xhr.send(formData);
-    return false;
-}
-
 function send_hybrid_registration(form) {
     var xhr = new XMLHttpRequest();
     xhr.open(form.method, form.getAttribute("action"))
@@ -37,13 +7,15 @@ function send_hybrid_registration(form) {
         message.style.display = 'block';
         message.innerText = jsonData.message
         if (jsonData.result == true) {
-                document.getElementById('registration-block').style.display = 'none'                
+                document.getElementById('registration-modal').style.display = 'none'                
 
-                document.getElementById('sign-up').href = '/spellbook'
-                document.getElementById('sign-up').innerText = 'Книга чарів'
+                document.getElementById('sign-up').style.display = 'none'
+                document.getElementById('log-in').style.display = 'none'
 
-                document.getElementById('log-in').href = '/logout'
-                document.getElementById('log-in').innerText = 'Вийти'
+                document.getElementById('spellbook').style.display = 'block'
+                document.getElementById('profile').style.display = 'block'
+                document.getElementById('logout').style.display = 'block'
+
 
                 setTimeout(function(){
                     message.style.display = 'none'

@@ -17,9 +17,9 @@
             <div class="search" id="search">
                 <label for="name">Назва заклинання:</label>
                 <br>
-                <input type="text" name="name" id="name" value="{{filters.name_filter}}">
+                <input type="text" name="name" id="name" value="{{filters.name_filter}}" autofocus class="input">
             </div>
-        <button type="button" class="collapsible">Фільтри</button>
+        <button type="button" class="collapsible btn">Фільтри</button>
         <div class="content">
             <div class="filters">
                     <div class="selects">
@@ -120,28 +120,22 @@
         </div>
         <div class="spellbook">
             <form name="select-spells-for-spelllist" id="select-spells-for-spelllist" action="/create-spelllist-by-ids"  method="POST" onsubmit="return CreateSpelllist();"></form>
-            <button class="btn" id="submit-spells" onclick="add_to_spellbook()">Додати обрані заклинання у власну Книгу Чарів</button>
             <input type="submit" class="btn" form="select-spells-for-spelllist" value="Роздрукувати обрані заклинання">
         </div>
-        <div id="registration-block">
-            <br>
-            <label for="hybrid-registration-form">Уведіть дані для свого нового акаунта або увійдіть, використавши дійсні</label>
-            <form action="hybrid-registration" id="hybrid-registration-form" name="hybrid-registration-form" method="POST" onsubmit="return send_hybrid_registration(this)">
-                <div>
-                    <div>
-                        <input type="text" name="login" placeholder="Логін" autofocus="">
-                    </div>
-                </div>
+        <div id="registration-modal">
+            <div class="modal-box">
+                <div class="modal-content">
+                    <label for="hybrid-registration-form">Уведіть дані для свого нового акаунта або увійдіть, використавши дійсні</label>
+                    <form action="hybrid-registration" id="hybrid-registration-form" name="hybrid-registration-form" method="POST" onsubmit="return send_hybrid_registration(this)">
 
-                <div class="field">
-                    <div class="control">
-                        <input type="password" name="password" placeholder="Пароль">
-                    </div>
+                        <input type="text" name="login" placeholder="Логін" autofocus class="input">
+                        <input type="text" name="password" placeholder="Пароль" class="input">
+                        <input class="btn input" type="submit" form="hybrid-registration-form" value="Увійти\Зареєструватися">
+                    </form>
+                    <span id="message"></span>
                 </div>
-                <input class="btn" type="submit" form="hybrid-registration-form" value="Увійти\Зареєструватися">
-            </form>
+            </div>
         </div>
-        <span id="message"></span>
         <div class="table">
             <table class="spells-table" id="spells-table" border="1px">
                 <caption>Заклинання</caption>
@@ -154,11 +148,15 @@
                     <th>Ритуал</th>
                     <th>Концентрація</th>
                     <th>Джерело</th>
+                    <th></th>
                 </tr>
                 {% for spell in spells %}
                     <tr>
                         <td>
-                            <input type="checkbox" class="spells-to-add" name="selected_spells" value="{{spell.spell_id}}" form="select-spells-for-spelllist">
+                            <div class="book-box">
+                                <img src="{{ url_for('static', filename='images/book-inactive.png') }}" 
+                                class="book" onclick="manageBook(this)" title="Додати у власну Книгу Чарів"/>
+                            </div>
                         </td>
                         <td> <a href="/spell/{{spell.spell_id}}">{{spell.name}}</a> </td>
                         <td>{{spell.level}}</td>
@@ -167,6 +165,9 @@
                         <td>{{spell.has_ritual}}</td>
                         <td>{{spell.has_concentration}}</td>
                         <td>{{spell.source}}</td>
+                        <td>
+                            <input type="checkbox" class="spells-to-add" name="selected_spells" value="{{spell.spell_id}}" form="select-spells-for-spelllist">
+                        </td>
                     </tr>
                 {% endfor %}
             </table>
@@ -178,5 +179,6 @@
 <script src="{{ url_for('static', filename='js/multiple-selects.js') }}"></script>
 <script src="{{ url_for('static', filename='js/dynamic-filters.js') }}"></script>
 <script src="{{ url_for('static', filename='js/collapsible-filters.js') }}"></script>
+<script src="{{ url_for('static', filename='js/manage-book.js') }}"></script>
 {% endblock %}
 </html>

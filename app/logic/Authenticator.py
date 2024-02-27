@@ -5,9 +5,12 @@ from flask_login import login_user
 
 class Authenticator:
     def __init__(self, data):
-        self.login = data.get('login', '')
+        self.login = data.get('login')
         self.password = data.get('password', '')
         self.remember_me = True
+
+    def validate(self):
+        return self.login
 
     def check_if_exists(self):
         user = User.query.filter_by(login=self.login).first()
@@ -22,6 +25,8 @@ class Authenticator:
         db.session.refresh(new_user)
 
         login_user(new_user, remember=self.remember_me)
+
+        return new_user
 
     def log_in(self):
         user = User.query.filter_by(login=self.login).first()
