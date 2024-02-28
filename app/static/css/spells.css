@@ -192,7 +192,7 @@ select {
       width: 90%;
     }
     #registration-modal {
-      padding-top: 40%;
+      padding-top: 60%;
     }
   }
 
@@ -201,7 +201,7 @@ select {
     width: 50%;
   }
   #registration-modal {
-    padding-top: 25%;
+    padding-top: 40%;
   }
 }
 
