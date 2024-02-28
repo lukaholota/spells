@@ -105,6 +105,9 @@ a:link {
     padding: 8px 3px;
     font-size: 14px;
   }
+    select, input, button {
+      width: 100%;
+  }
 }
 
 @media only screen and (min-width: 768px) {

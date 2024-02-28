@@ -43,14 +43,15 @@
       {% endfor %}
       </table>
       </form>
+    </div>
       <div class="create-spelllist">
         <form name="create-spelllist" action="/create-spelllist-from-spellbook" method="POST">
             <input type="submit" class="btn" value="Роздрукувати всі заклинання з книги">
         </form>
         <button type="submit" class="btn" form="select-spells">Роздрукувати обрані заклинання</button>
-    </div>
-    </div>
-    <hr>
+      </div>
+    
+    <br>
     <div id="add-to-character-block">
       <h2>Прив'язати всі заклинання з книги до персонажа</h2>
       {% if character_list|length != 0 %}
