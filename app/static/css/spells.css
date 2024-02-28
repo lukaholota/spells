@@ -144,31 +144,22 @@ select {
 
 .modal-box {
     background-color: #393240;
-    margin: 5px auto; /* 15% from the top and centered */
+    margin: 0 auto 0 auto; /* 15% from the top and centered */
     border: 1px solid #888;
     width: 30%; 
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
   }
 
-.modal-content input {
+  .modal-box input {
     width: 100%;
-    padding: 8px 0;
-    margin: 10px 0;
+    padding: 10px 10px;
+    margin: 7px 0px;
     display: inline-block;
     box-sizing: border-box;
 }
 
-.modal-content {
-  width: 80%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
+.box {
+  padding: 30px;
   text-align: center;
-  padding: 5px;
 }
 
 .close {
@@ -181,3 +172,44 @@ select {
     font-weight: bold;
   }
 
+  .animate {
+    -webkit-animation: animatezoom 0.6s;
+    animation: animatezoom 0.6s
+  }
+  
+  @-webkit-keyframes animatezoom {
+    from {-webkit-transform: scale(0)} 
+    to {-webkit-transform: scale(1)}
+  }
+    
+  @keyframes animatezoom {
+    from {transform: scale(0)} 
+    to {transform: scale(1)}
+  }
+
+@media only screen and (min-width: 200px) {
+    .modal-box {
+      width: 90%;
+    }
+    #registration-modal {
+      padding-top: 40%;
+    }
+  }
+
+@media only screen and (min-width: 760px) {
+  .modal-box {
+    width: 50%;
+  }
+  #registration-modal {
+    padding-top: 25%;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .modal-box {
+    width: 30%;
+  }
+  #registration-modal {
+    padding-top: 15%;
+  }
+}
