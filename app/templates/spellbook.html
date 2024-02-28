@@ -11,7 +11,7 @@
 <body>
     {% block body %}
   <div class="container">  
-    <h2>Книга чарів</h2>
+    <h2 style="text-align: center;">Книга чарів</h2>
     {% if spells|length != 0 %}
     <div class="table">
       <form name="select-spells" action="/create-spelllist-by-ids" id="select-spells" method="POST" onsubmit="return anyChecked();"></form>
@@ -52,7 +52,7 @@
     </div>
     <hr>
     <div id="add-to-character-block">
-      <h1>Прив'язати всі заклинання з книги до персонажа</h1>
+      <h2>Прив'язати всі заклинання з книги до персонажа</h2>
       {% if character_list|length != 0 %}
         <form name="add-spells-to-character" action="add-spells-to-character" method="POST">
           <select name="character_id" id="character" size="5">

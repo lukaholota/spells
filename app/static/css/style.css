@@ -1,4 +1,8 @@
 #topnav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: #393240;
   overflow: hidden;
   margin: 0 auto;
   display: flex;
@@ -12,11 +16,11 @@
   text-decoration: none;
   font-size: 17px;
   color: #e2e2e2;
+  height: 100%;
 }
 
 #topnav a:hover {
   background-color: #574c62;
-  color: black;
 }
 
 .logo {
@@ -26,7 +30,7 @@
 }
 
 .container {
-  margin: 0 auto;
+  margin: 70px auto;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -140,11 +144,11 @@ button, input {
 }
 
 h2 {
-  font-size: 30px;
+  font-size: 20px;
 }
 
-b {
-  font-size: 20px;
+h1 {
+  font-size: 25px;
 }
 
 .input, .btn {
