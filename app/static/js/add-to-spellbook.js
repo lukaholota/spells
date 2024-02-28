@@ -17,8 +17,8 @@ function send_hybrid_registration(form) {
                 document.getElementById('logout').style.display = 'block'
 
                 let flash = document.getElementById('flash-success')
-                flash.style.display = 'block'
                 flash.firstElementChild.innerHTML = 'Успіх! Тепер можна додавати заклинання в Книгу Чарів'
+                flash.style.display = 'block'
 
                 setTimeout(() => {
                     flash.style.display = 'none';
