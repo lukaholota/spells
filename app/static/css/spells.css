@@ -213,3 +213,25 @@ select {
     padding-top: 15%;
   }
 }
+
+.flash {
+  display: none;
+  position: fixed;
+  right: 0;
+  top: 0;
+  animation: fly-off 4s;
+}
+
+.message {
+  padding: 20px;
+  text-align: center;
+  background-color: #6426a2;
+  border: 1px solid #888
+}
+
+@keyframes fly-off {
+  0% {right: -50%;}
+  12.5%{right: 0;}
+  87.5%{right: 0;}
+  100%{right: -50%;}
+}

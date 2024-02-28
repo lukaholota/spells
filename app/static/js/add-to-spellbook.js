@@ -16,10 +16,13 @@ function send_hybrid_registration(form) {
                 document.getElementById('profile').style.display = 'block'
                 document.getElementById('logout').style.display = 'block'
 
+                let flash = document.getElementById('flash-success')
+                flash.style.display = 'block'
+                flash.firstElementChild.innerHTML = 'Успіх! Тепер можна додавати заклинання в Книгу Чарів'
 
-                setTimeout(function(){
-                    message.style.display = 'none'
-                }, 5000)
+                setTimeout(() => {
+                    flash.style.display = 'none';
+                }, 4000)
             }
         } 
     xhr.send(new FormData(form));
