@@ -15,7 +15,7 @@
     <div class="container">
         <div class="creature-header underlined">
             <div class="name">
-                <h2>{{creature.name}}</h2>
+                <h2>{{creature.name}} [{{creature.name_eng}}]</h2>
             </div>
             <div class="general-info">
                 <p>{{creature.size}}, {{creature.type}}, {{creature.alignment}}</p>
@@ -137,28 +137,28 @@
         <div class="all-the-actions">
             {% if creature.actions |length != 0 %}
             <div class="actions underlined">
-                <h2>Дії</h2>
+                <h2>ДІЇ</h2>
                 {{creature.actions | safe}}
             </div>
             {% endif %}
 
             {% if creature.reactions |length != 0 %}
             <div class="reactions underlined">
-                <h2>Реакції</h2>
+                <h2>РЕАКЦІЇ</h2>
                 {{creature.reactions | safe}}
             </div>
             {% endif %}
 
             {% if creature.legendary_actions |length != 0 %}
             <div class="legendary-actions underlined">
-                <h2>Легендарні дії</h2>
+                <h2>ЛЕГЕНДАРНІ ДІЇ</h2>
                 {{creature.legendary_actions | safe}}
             </div>
             {% endif %}
 
             {% if creature.lair_actions |length != 0 %}
             <div class="lair-actions underlined">
-                <h2>Дії лігва</h2>
+                <h2>ДІЇ ЛІГВА</h2>
                 {{creature.lair_actions | safe}}
             </div>
             {% endif %}
@@ -166,14 +166,14 @@
         <div class="descriptions">
             {% if creature.lair |length != 0 %}
             <div class="lair underlined">
-                <h2>Лігво</h2>
+                <h2>ЛІГВО</h2>
                 {{creature.lair | safe}}
             </div>
             {% endif %}
 
             {% if creature.description |length != 0 %}
             <div class="description underlined">
-                <h2>Опис</h2>
+                <h2>ОПИС</h2>
                 {{creature.description | safe}}
             </div>
             {% endif %}
