@@ -6,12 +6,6 @@ p, strong, div, a[href], b {
     display: inline;
 }
 
-@media only screen and (max-width: 425px) {
-    p, strong, div, a[href], b {
-        font-size: 14px;
-    }
-}
-
 .stat-block {
     display: flex;
     flex-flow: row;
@@ -47,4 +41,17 @@ p, strong, div, a[href], b {
 
 .source {
     margin-top: 15px;
+}
+
+.skill {
+    margin: 9px 0;
+}
+
+@media only screen and (max-width: 425px) {
+    p, strong, div, a[href], b {
+        font-size: 14px;
+    }
+    .skill {
+        margin: 6px 0;
+    }
 }

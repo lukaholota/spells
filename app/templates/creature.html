@@ -22,16 +22,18 @@
             </div>
         </div>
         <div class="properties underlined">
-            <p>
+            <div class="skill">
                 <strong>Клас обладунку:</strong>
                 {{creature.ac}}
-                <br>
+            </div>
+            <div class="skill">
                 <strong>Здоров'я:</strong>
                 {{creature.hp}}
-                <br>
+            </div>
+            <div class="skill">
                 <strong>Переміщення:</strong>
                 {{creature.speed}}
-            </p>
+            </div>
         </div>
         <div class="stat-block underlined">
             <div class="stats">
@@ -85,38 +87,46 @@
         </div>
         
         <div class="different-skills underlined">
-            <p>
-                {% if creature.damage_resistance|length != 0 %}
+            {% if creature.damage_resistance|length != 0 %}
+            <div class="skill">
                 <strong>Опір до шкоди:</strong>
                 {{creature.damage_resistance}}
-                <br>
-                {% endif %}
-                {% if creature.damage_immunity|length != 0 %}
+            </div>
+            {% endif %}
+            {% if creature.damage_immunity|length != 0 %}
+            <div class="skill">
                 <strong>Імунітет до шкоди:</strong>
                 {{creature.damage_immunity}}
-                <br>
-                {% endif %}
-                {% if creature.condition_immunity|length != 0 %}
+            </div>
+            {% endif %}
+            {% if creature.condition_immunity|length != 0 %}
+            <div class="skill">
                 <strong>Імунітет до станів:</strong>
                 {{creature.condition_immunity}}
-                <br>
-                {% endif %}
-                {% if creature.saving_throws|length != 0 %}
+            </div>
+            {% endif %}
+            {% if creature.saving_throws|length != 0 %}
+            <div class="skill">
                 <strong>Кидки рятунку:</strong>
                 {{creature.saving_throws}}
-                <br>
-                {% endif %}
+            </div>
+            {% endif %}
+            <div class="skill">
                 <strong>Чуття:</strong>
                 {{creature.senses}}
-                <br>
+            </div>
+            <div class="skill">
                 <strong>Мови:</strong>
                 {{creature.languages}}
-                <br>
-                <strong>Небезпечність:</strong>
-                {{creature.challenge}} {% if creature.xp != '-' %}({{creature.xp}}  досвіду){% endif %}<br>
+            </div>
+            <div class="skill">
+            <strong>Небезпечність:</strong>
+                {{creature.challenge}} {% if creature.xp != '-' %}({{creature.xp}}  досвіду){% endif %}
+            </div>
+            <div class="skill">
                 <strong>Бонус майстерності:</strong>
                 {{creature.proficiency_bonus}}
-            </p>
+            </div>
         </div>
         {% if creature.special_abilities |length != 0 %}
         <div class="special-abilities underlined">
