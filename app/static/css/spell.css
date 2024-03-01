@@ -1,4 +1,4 @@
-p, strong, div, a[href], b, i {
+p, strong, div, a[href], b, i, li {
     font-size: 22px;
 }
 
@@ -7,7 +7,7 @@ p, strong, div, a[href], b, i {
 }
 
 @media only screen and (max-width: 425px) {
-    p, strong, div, a[href], b, i {
+    p, strong, div, a[href], b, i, li {
         font-size: 14px;
     }
   }
