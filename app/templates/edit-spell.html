@@ -9,6 +9,7 @@
 {% extends "topnav.html" %}
 {% block body %}
 <body>
+    <div class="container">
         <form name="edit-spell" id="edit-spell" method="POST" onsubmit="return submitForm()">
 
         <div class="spell-name">
@@ -106,7 +107,7 @@
         </div>
             <button type="submit" value="Зберегти">Зберегти</button>
     </form>
-
+</div>
     <script>
         var editor = new MediumEditor('.editable');
         document.getElementById('description-text').innerHTML = `{{ spell.description| safe }}`;

@@ -9,6 +9,7 @@
 {% extends "topnav.html" %}
 {% block body %}
 <body>
+    <div class="container">
         <form name="add-spell" id="add-spell" method="POST" onsubmit="return submitForm()">
 
         <div class="spell-name">
@@ -106,6 +107,7 @@
         </div>
             <button type="submit" value="Зберегти">Зберегти</button>
     </form>
+    </div>
 
     <script>
         var editor = new MediumEditor('.editable');
