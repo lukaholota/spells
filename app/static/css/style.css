@@ -1,5 +1,6 @@
 #topnav {
   position: fixed;
+  z-index: 2;
   top: 0;
   width: 100%;
   background-color: #393240;
