@@ -17,14 +17,21 @@
         <a href="/spells" id="logo" style="padding: 0px 5px; padding-top: 5px">
           <img src="{{ url_for('static', filename='images/logo.png') }}" alt="logo" class="logo" />
         </a>
-        <a class="hidden" id="sign-up" href="/sign-up">Реєстрація</a>
-        <a class="hidden" id="log-in" href="/log-in">Вхід</a>
+        <a class="hidden" id="authorization" onclick="document.getElementById('registration-modal').style.display='block'">Авторизація</a>
         <a class="hidden" id="spellbook" href="/spellbook">Книга чарів</a>
         <a class="hidden" id="profile" href="/profile">Профіль</a>
         <a class="hidden" id="logout" href="/logout">Вийти</a>
       </nav>
 </main>
-<script src="{{ url_for('static', filename='js/build-topnav.js') }}"></script>
+  <script>
+  if ({{ current_user.is_authenticated|tojson }} == true) {
+      document.getElementById('spellbook').style.display = 'block'
+      document.getElementById('profile').style.display = 'block'
+      document.getElementById('logout').style.display = 'block'
+  } else {
+      document.getElementById('authorization').style.display = 'block'
+  }
+</script>
     {% endblock %}
     {% block body %}{% endblock %}
 </html>

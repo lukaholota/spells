@@ -3,10 +3,13 @@ from flask_httpauth import HTTPBasicAuth
 from flask_login import LoginManager
 from app.db import db
 from flask_migrate import Migrate
+from flask_caching import Cache
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '4553e48237424dbacddc1a566fabd22380cf12bc9377126742e5cb853f9c8961'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:dnddlaukraincow@31.131.17.213:5454/postgres'
+app.config['CACHE_TYPE'] = 'simple'
 
 auth = HTTPBasicAuth()
 login_manager = LoginManager()
@@ -16,6 +19,7 @@ login_manager.init_app(app)
 db.init_app(app)
 migrate = Migrate(app, db)
 
+cache = Cache(app)
 
 from app.models import User
 @login_manager.user_loader

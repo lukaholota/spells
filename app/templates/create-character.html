@@ -4,29 +4,34 @@
     <meta charset="UTF-8">
     <title>Створити персонажа</title>
     {% extends "topnav.html" %}
+    {% block css %}
+     <link href="{{ url_for('static', filename='css/create-character.css') }}" rel="stylesheet">
+    {% endblock %}
 </head>
 <body>
 {% block body %}
 <div class="container">
     <h1>Створити персонажа</h1>
-    <form name="create-character" id="create-character" action="/create-character" method="POST">
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <div>
-                    {{ messages[0] }}
-                </div>
-            {% endif %}
-        {% endwith %}
+    <div>
+        <form name="create-character" id="create-character" action="/create-character" method="POST">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div>
+                        {{ messages[0] }}
+                    </div>
+                {% endif %}
+            {% endwith %}
 
-        <label for="name">Назвіть свого персонажа:</label>
-        <input type="text" id="name" name="name" style="
-        display: inline-block;
-        box-sizing: border-box; 
-        margin: 10px 0;; 
-        padding: 10px" >
-        <input type="hidden" name="source" value="{{source}}">
-        <button style="padding: 5px;">Створити</button>
-    </form>
+            <label for="name">Назвіть свого персонажа:</label><br>
+            <input type="text" id="name" name="name" class="input" placeholder="Ім'я" style="
+            display: inline-block;
+            box-sizing: border-box; 
+            margin: 10px 0;; 
+            padding: 10px" ><br>
+            <input type="hidden" name="source" value="{{source}}">
+            <button style="padding: 7px; width: 100%" class="btn">Створити</button>
+        </form>
+    </div>
 </div>
 {% endblock %}
 </body>

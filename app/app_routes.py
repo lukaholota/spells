@@ -1,4 +1,4 @@
-from app.app import app, auth
+from app.app import app, auth, cache
 from app.logic.CreatureLoader import CreatureLoader
 from flask import render_template, request, redirect, flash, abort, send_file, jsonify
 from flask_login import logout_user, login_required, current_user
@@ -19,7 +19,6 @@ from app.logic.CharacterSpellDeleter import CharacterSpellDeleter
 from app.logic.SpelllistCreator import SpelllistCreator
 from app.logic.CreaturesForm import CreaturesForm
 from app.logic.CreatureDataSaver import CreatureDataSaver
-from app.logic.EmptyUserHandler import EmptyUserHandler
 
 
 @auth.verify_password
@@ -53,16 +52,15 @@ def load_spell(spell_id):
 
 @app.route('/spells', methods=['GET'])
 def load_spells_list():
-    empty_user_handler = EmptyUserHandler(current_user)
-    if empty_user_handler.check_if_empty():
-        return empty_user_handler.handle_empty()
-
     spells_filters = SpellsFilters(request.form)
-    spells_list_loader = SpellsListLoader(spells_filters)
     spells_form = SpellsForm()
-
+    spells = cache.get('spells')
+    if spells is None:
+        spells_list_loader = SpellsListLoader(spells_filters)
+        spells = spells_list_loader.spells
+        cache.set('spells', spells, timeout=86400)
     return render_template('spells.html',
-                           spells=spells_list_loader.spells,
+                           spells=spells,
                            form=spells_form,
                            filters=spells_filters,
                            )
@@ -117,71 +115,10 @@ def edit_spell(spell_id):
                            )
 
 
-@app.route('/sign-up')
-def sign_up():
-    return render_template('sign-up.html')
-
-
-@app.route('/sign-up', methods=['POST'])
-def sign_up_post():
-    data = request.form
-    authenticator = Authenticator(data)
-    if not authenticator.validate():
-        flash('Логін не може бути порожнім')
-        return redirect('/sign-up')
-    if authenticator.check_if_exists():
-        flash('Логін уже зайнято')
-        return redirect('/sign-up')
-
-    authenticator.add_new_user()
-
-    return redirect('/spells')
-
-
-@app.route('/log-in')
-def log_in():
-    return render_template('log-in.html')
-
-
-@app.route('/log-in', methods=['POST'])
-def log_in_post():
-    data = request.form
-    authenticator = Authenticator(data)
-    if authenticator.log_in():
-        return redirect('/spells')
-
-    flash('Перевірте дані та спробуйте ще раз')
-    return redirect('/log-in')
-
-
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
-    return redirect('/spells')
-
-
-@app.route('/sorry-registration')
-def sorry_registration():
-    return render_template('sorry-registration.html')
-
-
-@app.route('/sorry-registration', methods=['POST'])
-def sorry_registration_post():
-    data = request.form
-    authenticator = Authenticator(data)
-    if not authenticator.validate():
-        flash('Логін не може бути порожнім')
-        return redirect('/sorry-registration')
-    if authenticator.check_if_exists():
-        flash('Логін уже зайнято')
-        return redirect('/sorry-registration')
-
-    new_user = authenticator.add_new_user()
-
-    empty_user_handler = EmptyUserHandler(new_user)
-    empty_user_handler.transfer_data()
-
     return redirect('/spells')
 
 
@@ -403,8 +340,3 @@ def get_spellbook_spells():
         spellbook_spells = [spell.spell_id for spell in current_user.spellbook.spells]
 
     return jsonify(spellbook_spells)
-
-
-@app.route('/get-user-info')
-def get_user_info():
-    return jsonify({'is_authenticated': current_user.is_authenticated})
