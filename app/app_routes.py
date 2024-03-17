@@ -252,7 +252,7 @@ def delete_character_spell():
 
 @app.route('/sitemap.xml')
 def sitemap():
-    return send_file('sitemap_v2.xml')
+    return send_file('sitemap_v3.xml')
 
 
 @app.route('/create-spelllist-from-character', methods=['POST'])
