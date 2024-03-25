@@ -223,6 +223,7 @@ select {
   overflow: hidden;
   width:320px;
   height: 93px;
+  z-index: 2;
 }
 
 .message {

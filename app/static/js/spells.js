@@ -109,7 +109,7 @@ function send_hybrid_registration(form) {
 
                 setTimeout(() => {
                     flash.style.display = 'none';
-                }, 4000)
+                }, 3950)
             }
         } 
     xhr.send(new FormData(form));
