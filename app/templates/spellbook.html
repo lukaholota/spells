@@ -56,7 +56,7 @@
       <h2>Прив'язати всі заклинання з книги до персонажа</h2>
       {% if character_list|length != 0 %}
         <form name="add-spells-to-character" action="add-spells-to-character" method="POST">
-          <select name="character_id" id="character" size="5">
+          <select name="character_id" id="character" size="5" required>
             {% for character in character_list %}
               <option value="{{character.character_id}}">{{character.name}}</option>
             {% endfor %}
