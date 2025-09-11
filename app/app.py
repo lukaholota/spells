@@ -5,10 +5,11 @@ from app.db import db
 from flask_migrate import Migrate
 from flask_caching import Cache
 
+from app.settings import settings
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '4553e48237424dbacddc1a566fabd22380cf12bc9377126742e5cb853f9c8961'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:dnddlaukraincow@31.131.17.213:5454/postgres'
+app.config['SECRET_KEY'] = settings.SECRET_KEY
+app.config['SQLALCHEMY_DATABASE_URI'] = settings.DB_URL
 app.config['CACHE_TYPE'] = 'simple'
 
 auth = HTTPBasicAuth()
