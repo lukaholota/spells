@@ -13,15 +13,15 @@
 <body>
     {% block body %}
     <div class="container">
-        <form action="spells" method="POST" id="filter">
+        <form action="filtered-spells" method="GET" id="filter">
             <div class="search" id="search">
                 <label for="name">Назва заклинання:</label>
                 <br>
                 <input type="text" name="name" id="name" value="{{filters.name_filter}}" autofocus class="input">
             </div>
-        <button type="button" class="collapsible btn">Фільтри</button>
-        <div class="content">
-            <div class="filters">
+            <button type="button" class="collapsible btn">Фільтри</button>
+            <div class="content">
+                <div class="filters">
                     <div class="selects">
                         <div class="select-group">
                             <label for="classes">Класи</label><br>
@@ -114,13 +114,16 @@
                         <div class="select-group">
                             <input class="btn get-me-lower" type="reset" value="Скинути фільтри">
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
+
         <div class="spellbook">
-            <form name="select-spells-for-spelllist" id="select-spells-for-spelllist" action="/create-spelllist-by-ids"  method="POST" onsubmit="return CreateSpelllist();"></form>
-            <input type="submit" class="btn" form="select-spells-for-spelllist" value="Роздрукувати обрані заклинання">
+            <form name="select-spells-for-spelllist" id="select-spells-for-spelllist" action="/create-spelllist-by-ids"  method="POST" onsubmit="return CreateSpelllist();">
+                <input type="submit" class="btn" value="Роздрукувати обрані заклинання">
+                <!-- Checkboxes are rendered in the spells table using 'form' attribute -->
+            </form>
         </div>
         <div id="registration-modal">
             <form class="modal-box animate" action="hybrid-registration" id="hybrid-registration-form" name="hybrid-registration-form" method="POST" onsubmit="return send_hybrid_registration(this)">
@@ -128,10 +131,10 @@
                     <label for="hybrid-registration-form">Уведіть дані для свого нового акаунта або увійдіть, використавши дійсні</label>
                     <input type="text" name="login" placeholder="Логін" autofocus class="input">
                     <input type="text" name="password" placeholder="Пароль" class="input">
-                    <input class="btn input" type="submit" form="hybrid-registration-form" value="Увійти\Зареєструватися">
+                    <input class="btn input" type="submit" value="Увійти\Зареєструватися">
                 </div>
-                </form>
-                <span id="message"></span>
+            </form>
+            <span id="message"></span>
         </div>
         <div id="flash-success" class="flash">
             <p class="message">
@@ -156,7 +159,7 @@
                     <tr>
                         <td>
                             <div class="book-box">
-                                <img src="{{ url_for('static', filename='images/book-inactive.png') }}" 
+                                <img src="{{ url_for('static', filename='images/book-inactive.png') }}"
                                 class="book" onclick="manageBook(this)" title="Додати у власну Книгу Чарів"/>
                             </div>
                         </td>
@@ -176,6 +179,9 @@
         </div>
     </div>
 </body>
+<script>
+    window.filteredSpells = {{ filtered_spells|tojson }};
+</script>
 <script src="{{ url_for('static', filename='js/spells.js') }}"></script>
 {% endblock %}
 </html>

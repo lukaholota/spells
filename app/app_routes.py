@@ -1,3 +1,5 @@
+from werkzeug.datastructures.structures import MultiDict
+
 from app.app import app, auth, cache
 from app.logic.CreatureLoader import CreatureLoader
 from flask import render_template, request, redirect, flash, abort, send_file, jsonify
@@ -52,23 +54,33 @@ def load_spell(spell_id):
 
 @app.route('/spells', methods=['GET'])
 def load_spells_list():
-    spells_filters = SpellsFilters(request.form)
+    spells_filters = SpellsFilters(request.args)
     spells_form = SpellsForm()
     spells = cache.get('spells')
-    if spells is None:
-        spells_list_loader = SpellsListLoader(spells_filters)
+    filtered_spells = []
+    if not spells:
+        spells_list_loader = SpellsListLoader(SpellsFilters(MultiDict()))
         spells = spells_list_loader.spells
         cache.set('spells', spells, timeout=86400)
+    if request.args:
+        spells_list_loader = SpellsListLoader(spells_filters)
+        filtered_spells = spells_list_loader.spells
     return render_template('spells.html',
                            spells=spells,
                            form=spells_form,
                            filters=spells_filters,
-                           )
+                           filtered_spells=
+                           [
+                                {'name': spell.name}
+                               for spell in filtered_spells
+                           ]
+    )
 
 
-@app.route('/spells', methods=['POST'])
+
+@app.route('/filtered-spells', methods=['GET'])
 def apply_filters_to_spelllist():
-    spells_filters = SpellsFilters(request.form)
+    spells_filters = SpellsFilters(request.args)
     spells_list_loader = SpellsListLoader(spells_filters)
 
     return jsonify(spells_list_loader.make_list_of_dicts())

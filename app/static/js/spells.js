@@ -13,35 +13,17 @@ coll[0].addEventListener("click", function() {
 
 // Contents of dynamic-filters.js
 document.addEventListener('DOMContentLoaded', function() {
-    var form = document.getElementById('filter');
+    pageLoadFilter()
 
-    form.addEventListener('input', function(event) {
-        var form = new FormData(document.getElementById('filter'));
+    const form = document.getElementById('filter');
 
-        fetch('/spells', {
-            'method': 'POST',
-            'body': form
-        })
-        .then(response => {
-            return response.json()
-        })
-        .then(spells => {
-            var spellNames = [];
-            spells.forEach(spell => {
-                spellNames.push(spell.name.toLowerCase())
-            })
+    form.addEventListener('input', (event) => {
+        const params = new URLSearchParams(new FormData(form)).toString()
+        history.replaceState(null, '', 'spells?' + params)
 
-            let spellsRows = document.querySelectorAll('tr');
-
-            for (let i=1; i < spellsRows.length; i++) {
-                let spellRow = spellsRows[i]
-                if (spellNames.includes(spellRow.children[1].textContent.toLowerCase().trim())) {
-                    spellRow.style.display = 'table-row';
-                } else {
-                    spellRow.style.display = 'none';
-                }
-            }
-        })
+        fetch('/filtered-spells?' + params)
+        .then(response => response.json())
+        .then(spells => filterSpells(spells))
     });
 
     form.onreset = event => {
@@ -212,4 +194,27 @@ window.onclick = function(event) {
   if (event.target == modal) {
     modal.style.display = "none";
   }
+}
+
+const filterSpells = spells => {
+    const spellNames = [];
+    spells.forEach(spell => {
+        spellNames.push(spell.name.toLowerCase())
+    })
+
+    const spellRows = document.querySelectorAll('tr');
+
+    spellRows.forEach(spellRow => {
+        if (spellNames.includes(spellRow.children[1].textContent.toLowerCase().trim())) {
+            spellRow.style.display = 'table-row';
+        } else {
+            spellRow.style.display = 'none';
+        }
+    })
+};
+
+const pageLoadFilter = () => {
+    if (window.filteredSpells) {
+        filterSpells(window.filteredSpells)
+    }
 }
