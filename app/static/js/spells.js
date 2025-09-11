@@ -214,7 +214,7 @@ const filterSpells = spells => {
 };
 
 const pageLoadFilter = () => {
-    if (window.filteredSpells) {
+    if (window.filteredSpells && window.filteredSpells.length > 0) {
         filterSpells(window.filteredSpells)
     }
 }
