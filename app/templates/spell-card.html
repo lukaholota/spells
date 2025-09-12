@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<div class="bg-white rounded shadow p-4 mb-4 flex flex-col
+            gap-2 hover:shadow-lg transition cursor-pointer"
+     hx-get="/spell/{{ spell.spell_id }}"
+     hx-target="#details-panel"
+     hx-swap="innerHTML">
+
+    <div class="flex items-center gap-2">
+        <span class="text-x1 font-bold">{{ spell.name }}</span>
+        <span class="inline-block px-2 bg-blue-100 rounded text-xs">{{ spell.level }}</span>
+        <span class="inline-block px-2 bg-green-100 rounded text-xs">{{ spell.school }}</span>
+        <span class="inline-block px-2 bg-purple-400 rounded text-xs"{{ spell.casting_time }}
+        {% if spell.has_ritual %}<span class="badge badge-accent">Ритуал</span>{% endif %}
+        {% if spell.has_concentration %}<span class="badge badge-accent">Концентрація</span>{% endif %}
+    </div>
+    <button @click.stop="openModal = true" class="ml-auto btn-sm bg-violet-500
+    text-white rounded px-3 py-1 hover:bg-violet-600">Додати в Книгу</button>
+
+</div>
+
+</html>
