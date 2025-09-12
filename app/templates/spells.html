@@ -6,9 +6,6 @@
     <meta name="description" content="Заклинання ДнД українською. Знаходьте, фільтруйте, додавайте в книгу чарів, прив'язуйте до персонажів і багато іншого!">
     
     {% extends "topnav.html" %}
-    {% block css %} 
-    <link href="{{ url_for('static', filename='css/spells.css') }}" rel="stylesheet">
-    {% endblock %}
 </head>
 <body>
     {% block body %}
@@ -119,6 +116,14 @@
             </div>
         </form>
 
+    <div id="details-panel" class="fixed top-0 right-0 h-full w-full sm:w-1/2
+                                    bg-white z-30 transition-transform duration-300"
+         :class="detailsOpen ? 'translate-x-0' : 'translate-x-full'"
+         x-show="detailsOpen" x-transition>
+
+    </div>
+
+
         <div class="spellbook">
             <form name="select-spells-for-spelllist" id="select-spells-for-spelllist" action="/create-spelllist-by-ids"  method="POST" onsubmit="return CreateSpelllist();">
                 <input type="submit" class="btn" value="Роздрукувати обрані заклинання">
@@ -141,42 +146,15 @@
 
             </p>
         </div>
-        <div class="table">
-            <table class="spells-table" id="spells-table" border="1px">
-                <caption>Заклинання</caption>
-                <tr>
-                    <th></th>
-                    <th>Назва</th>
-                    <th>Рівень</th>
-                    <th>Школа</th>
-                    <th>Час використання</th>
-                    <th>Ритуал</th>
-                    <th>Концентрація</th>
-                    <th>Джерело</th>
-                    <th></th>
-                </tr>
-                {% for spell in spells %}
-                    <tr>
-                        <td>
-                            <div class="book-box">
-                                <img src="{{ url_for('static', filename='images/book-inactive.png') }}"
-                                class="book" onclick="manageBook(this)" title="Додати у власну Книгу Чарів"/>
-                            </div>
-                        </td>
-                        <td> <a href="/spell/{{spell.spell_id}}">{{spell.name}}</a> </td>
-                        <td>{{spell.level}}</td>
-                        <td>{{spell.school}}</td>
-                        <td>{{spell.casting_time}}</td>
-                        <td>{{spell.has_ritual}}</td>
-                        <td>{{spell.has_concentration}}</td>
-                        <td>{{spell.source}}</td>
-                        <td>
-                            <input type="checkbox" class="spells-to-add" name="selected_spells" value="{{spell.spell_id}}" form="select-spells-for-spelllist">
-                        </td>
-                    </tr>
-                {% endfor %}
-            </table>
-        </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {% for spell in spells %}
+            {% include "spell-card.html" %}
+          {% endfor %}
+      </div>
+    <div id="detailed-panel" class="fixed right-0 top-0 h-full w-full md:w-2/5
+            bg-white p-4 shadow-lg z-30 transition-transform" x-show="detailsOpen" x-transition>
+
+    </div>
     </div>
 </body>
 <script>

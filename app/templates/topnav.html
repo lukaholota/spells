@@ -9,6 +9,10 @@
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='images/dark-favicon.ico') }}" rel="icon" media="(prefers-color-scheme: light)">
     <link href="{{ url_for('static', filename='images/favicon.ico') }}" rel="icon" media="(prefers-color-scheme: dark)">
+    <!-- HTMX -->
+<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+<!-- Alpine.js -->
+<script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     {% block css %}{% endblock %}
 </head>
 <main>
