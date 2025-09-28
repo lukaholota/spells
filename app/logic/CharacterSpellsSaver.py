@@ -9,11 +9,14 @@ class CharacterSpellsSaver:
 
     def save(self):
         if self.spells:
+            spells_to_add = []
+            character_spell_ids = set(spell.spell_id for spell in self.character.spells)
             for spell in self.spells:
-                if not CharacterSpells.query.filter_by(spell_id=spell.spell_id, character_id=self.character.character_id).first():
+                if spell.spell_id not in character_spell_ids:
                     character_spell = CharacterSpells(spell_id=spell.spell_id, character_id=self.character.character_id)
-                    db.session.add(character_spell)
-            db.session.commit()
+                    spells_to_add.append(character_spell)
+            if spells_to_add:
+                db.session.add_all(spells_to_add)
             return True
         else:
             return False

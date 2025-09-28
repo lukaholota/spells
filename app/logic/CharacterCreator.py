@@ -7,18 +7,20 @@ class CharacterCreator:
         self.user_id = user.user_id
         self.message = ''
 
-    def create(self):
+    def validate(self):
         if Character.query.filter_by(name=self.name, user_id=self.user_id).first():
             self.message = 'У вас уже є такий персонаж'
             return False
 
-        elif not self.name:
+        if not self.name:
             self.message = 'Ім\'я порожнє'
             return False
+        return True
 
-        else:
-            character = Character(name=self.name, user_id=self.user_id)
-            db.session.add(character)
-            db.session.commit()
-            db.session.refresh(character)
-            return character
+
+    def create(self):
+        character = Character(name=self.name, user_id=self.user_id)
+        db.session.add(character)
+        db.session.commit()
+        db.session.refresh(character)
+        return character

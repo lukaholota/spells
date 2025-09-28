@@ -1,4 +1,4 @@
-from app.models import Spellbook, Character, Spell
+from app.models import Spell
 from io import BytesIO
 from xhtml2pdf import pisa
 from flask import render_template
@@ -6,17 +6,9 @@ import os
 from xhtml2pdf.files import pisaFileObject
 
 
-class SpelllistCreator:
+class SpellPrinter:
     def __init__(self):
         spells = []
-
-    def get_spells_from_spellbook(self, spellbook_id):
-        spellbook = Spellbook.query.get(spellbook_id)
-        self.spells = [spell.spell for spell in spellbook.spells]
-
-    def get_spells_from_character(self, character_id):
-        character = Character.query.get(character_id)
-        self.spells = [spell.spell for spell in character.spells]
 
     def get_spells_by_ids(self, ids):
         self.spells = Spell.query.filter(Spell.spell_id.in_(ids)).all()

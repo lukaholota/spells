@@ -4,6 +4,7 @@ from flask_login import LoginManager
 from app.db import db
 from flask_migrate import Migrate
 from flask_caching import Cache
+from flask_marshmallow import Marshmallow
 
 from app.settings import settings
 
@@ -21,6 +22,8 @@ db.init_app(app)
 migrate = Migrate(app, db)
 
 cache = Cache(app)
+
+ma = Marshmallow(app)
 
 from app.models import User
 @login_manager.user_loader

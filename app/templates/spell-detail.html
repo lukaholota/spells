@@ -1,0 +1,76 @@
+<style>
+    .spell-content p {
+        margin-bottom: 1rem
+    }
+    .spell-content table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+        margin: 1rem 0;
+    }
+    .spell-content th, .spell-content td {
+        border: 1px solid rgb(71 85 105);
+        padding: 0.5rem 0.75rem;
+        text-align: left;
+        vertical-align: top;
+    }
+    .spell-content thead th {
+        font-weight: 600;
+    }
+</style>
+<div class="flex items-center justify-between w-full mb-4 p-1 overflow-x-hidden">
+    <h2 class="text-2xl lg:text-3xl flex-1 truncate leading-normal max-w-[80dvw]"
+        x-text="selectedSpell ? selectedSpell.name : ''"></h2>
+    <button @click="closeSpell()"
+            class="bg-slate-700 hover:bg-slate-600 w-8 h-8 rounded-xl flex items-center justify-center content-center">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             class="w-6 h-6 text-gray-300"
+             fill="none"
+             viewBox="0 0 24 24"
+             stroke="currentColor">
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+    </button>
+</div>
+
+<div class="grid grid-cols-1 md:relative bg-slate-700 rounded-l mb-3 text-sm justify-between p-3">
+    <div class="text-slate-400 italic"
+         x-text="`${selectedSpell ? selectedSpell.level : ''}, ${selectedSpell ? selectedSpell.school.toLowerCase() : ''}`"></div>
+    <div class="text-slate-400 md:absolute md:right-4 md:top-3"
+         x-text="`Джерело: ${selectedSpell ? selectedSpell.source : ''}`"></div>
+</div>
+
+<div class="grid grid-cols-2 bg-slate-800 rounded mb-3 text-sm">
+    <div class="border border-slate-700 p-2"><span class="text-slate-400">Час використання:</span>
+        <div x-text="selectedSpell ? selectedSpell.casting_time : ''"></div>
+    </div>
+    <div class="border border-slate-700 p-2"><span class="text-slate-400">Тривалість:</span>
+        <div x-text="selectedSpell ? selectedSpell.duration : ''"></div>
+    </div>
+    <div class="border border-slate-700 p-2"><span class="text-slate-400">Дистанція:</span>
+        <div x-text="selectedSpell ? selectedSpell.range : ''"></div>
+    </div>
+    <div class="border border-slate-700 p-2"><span class="text-slate-400">Компоненти:</span>
+        <div x-text="selectedSpell ? selectedSpell.components : ''"></div>
+    </div>
+</div>
+
+<div class="mt-4 text-base spell-content"
+     x-html="selectedSpell ? selectedSpell.description : ''"></div>
+
+<div>
+    <div><span class="text-slate-400">Класи:</span>
+        <div x-text="selectedSpell
+        ? selectedSpell.classes.map(c => c.class_name).join(', ')
+        : ''"></div>
+    </div>
+    <div x-show="selectedSpell ? selectedSpell.races.length > 0 : ''"><span
+            class="text-slate-400">Раси:</span>
+        <div x-text="selectedSpell
+        ? selectedSpell.races.map(r => r.race_name).join(', ')
+        : ''"></div>
+    </div>
+</div>

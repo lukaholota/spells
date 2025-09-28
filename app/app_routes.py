@@ -1,26 +1,28 @@
-from werkzeug.datastructures.structures import MultiDict
+from flask import render_template, request, redirect, abort, send_file, \
+    jsonify
+from flask_login import logout_user, login_required, current_user
 
 from app.app import app, auth, cache
-from app.logic.CreatureLoader import CreatureLoader
-from flask import render_template, request, redirect, flash, abort, send_file, jsonify
-from flask_login import logout_user, login_required, current_user
-from app.logic.SpellLoader import SpellLoader
-from app.logic.SpellsListLoader import SpellsListLoader
-from app.logic.SpellsFilters import SpellsFilters
-from app.logic.SpellsForm import SpellsForm
-from app.logic.SpellDataSaver import SpellDataSaver
+from app.db import db
 from app.logic.Authenticator import Authenticator
-from app.logic.SpellbookSaver import SpellbookSaver
-from app.logic.SpellbookLoader import SpellbookLoader
-from app.logic.SpellbookSpellDeleter import SpellbookSpellDeleter
 from app.logic.CharacterCreator import CharacterCreator
-from app.logic.CharacterSpellsSaver import CharacterSpellsSaver
 from app.logic.CharacterDeleter import CharacterDeleter
-from app.logic.CharacterSpellsLoader import CharacterSpellsLoader
 from app.logic.CharacterSpellDeleter import CharacterSpellDeleter
-from app.logic.SpelllistCreator import SpelllistCreator
-from app.logic.CreaturesForm import CreaturesForm
+from app.logic.CharacterSpellsLoader import CharacterSpellsLoader
+from app.logic.CharacterSpellsSaver import CharacterSpellsSaver
 from app.logic.CreatureDataSaver import CreatureDataSaver
+from app.logic.CreatureLoader import CreatureLoader
+from app.logic.CreaturesForm import CreaturesForm
+from app.logic.SpellDataSaver import SpellDataSaver
+from app.logic.SpellPrinter import SpellPrinter
+from app.logic.SpellbookLoader import SpellbookLoader
+from app.logic.SpellbookSaver import SpellbookSaver
+from app.logic.SpellbookSpellDeleter import SpellbookSpellDeleter
+from app.logic.SpellsForm import SpellsForm
+from app.logic.SpellsFormCreate import SpellsFormCreate
+from app.logic.helpers.helper_functions import get_spells_by_level
+from app.logic.services.SpellService import SpellService
+from app.schemas.spells import spells_schema
 
 
 @auth.verify_password
@@ -36,66 +38,41 @@ def home():
 
 @app.route('/spell/<spell_id>')
 def load_spell(spell_id):
-    spell_loader = SpellLoader(spell_id)
-    return render_template('spell.html',
-                           spell_name=spell_loader.spell_name,
-                           school=spell_loader.school,
-                           level=spell_loader.level,
-                           casting_time=spell_loader.casting_time,
-                           range=spell_loader.range,
-                           components=spell_loader.components,
-                           duration=spell_loader.duration,
-                           spell_description=spell_loader.description,
-                           spell_classes=spell_loader.classes,
-                           source=spell_loader.source,
-                           spell_races=spell_loader.races
-                           )
+    return redirect(f'/spells?selectedSpellId={spell_id}')
 
 
 @app.route('/spells', methods=['GET'])
-def load_spells_list():
-    spells_filters = SpellsFilters(request.args)
-    spells_form = SpellsForm()
+def load_spells():
     spells = cache.get('spells')
-    filtered_spells = []
     if not spells:
-        spells_list_loader = SpellsListLoader(SpellsFilters(MultiDict()))
-        spells = spells_list_loader.spells
+        service = SpellService()
+        spells = service.get_spells()
         cache.set('spells', spells, timeout=86400)
-    if request.args:
-        spells_list_loader = SpellsListLoader(spells_filters)
-        filtered_spells = spells_list_loader.spells
-    return render_template('spells.html',
-                           spells=spells,
+
+    spells_by_level = get_spells_by_level(spells)
+    level_by_id = {s.spell_id: lvl for lvl, lst in spells_by_level.items() for
+                   s in lst}
+
+    spells_form = SpellsForm()
+    return render_template('spells-v3.html',
+                           spells_by_level=spells_by_level,
                            form=spells_form,
-                           filters=spells_filters,
-                           filtered_spells=
-                           [
-                                {'name': spell.name}
-                               for spell in filtered_spells
-                           ]
-    )
+                           spells=spells_schema.dump(spells),
+                           level_by_id=level_by_id,
+                           )
 
 
-
-@app.route('/filtered-spells', methods=['GET'])
-def apply_filters_to_spelllist():
-    spells_filters = SpellsFilters(request.args)
-    spells_list_loader = SpellsListLoader(spells_filters)
-
-    return jsonify(spells_list_loader.make_list_of_dicts())
-
-
-@app.route('/add-spell',  methods=['GET', 'POST'])
+@app.route('/add-spell', methods=['GET', 'POST'])
 @auth.login_required
 def add_spell():
     results = request.form
     results.selected_classes = results.getlist('classes')
     results.selected_races = results.getlist('races')
-    form = SpellsForm()
+    form = SpellsFormCreate()
     if request.method == 'POST':
         spell_data_saver = SpellDataSaver(results)
         spell_data_saver.add_new_spell()
+        cache.delete('spells_by_level')
         return redirect(f'edit-spell/{spell_data_saver.spell_id}')
 
     return render_template('add-spell.html',
@@ -104,7 +81,7 @@ def add_spell():
                            )
 
 
-@app.route('/edit-spell/<spell_id>',  methods=['GET', 'POST'])
+@app.route('/edit-spell/<spell_id>', methods=['GET', 'POST'])
 @auth.login_required
 def edit_spell(spell_id):
     results = request.form
@@ -115,7 +92,9 @@ def edit_spell(spell_id):
     if request.method == 'POST':
         spell_data_saver.edit_spell()
 
-    form = SpellsForm()
+        cache.delete('spells_by_level')
+
+    form = SpellsFormCreate()
     classes_list = [spell_class.class_name for spell_class in spell.classes]
     races_list = [spell_race.race_name for spell_race in spell.races]
     spell.classes_list = classes_list
@@ -127,11 +106,21 @@ def edit_spell(spell_id):
                            )
 
 
+@app.route('/sign-in')
+def sign_in():
+    next = request.args.get("next", "")
+
+    if '/spellbook' not in next and '/logout' not in next and '/characters' not in next:
+        next = ''
+
+    return redirect(f'spells?sign-in=true&next={next}')
+
+
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
-    return redirect('/spells')
+    return {'success': True}
 
 
 @app.route('/spellbook')
@@ -140,8 +129,21 @@ def spellbook():
     spellbook_loader = SpellbookLoader(current_user)
     spells = spellbook_loader.load()
 
-    character_list = current_user.characters
-    return render_template('spellbook.html', spells=spells, character_list=character_list)
+    character_list = [
+        {'character_id': character.character_id, 'name': character.name} for
+        character in current_user.characters]
+    spells_by_level = get_spells_by_level(spells)
+    level_by_id = {s.spell_id: lvl for lvl, lst in spells_by_level.items() for
+                   s in lst}
+
+    spells_form = SpellsForm()
+    return render_template('spellbook-v2.html',
+                           spells=spells_schema.dump(spells),
+                           character_list=character_list,
+                           spells_by_level=spells_by_level,
+                           level_by_id=level_by_id,
+                           form=spells_form
+                           )
 
 
 @app.route('/add-to-spellbook', methods=['POST'])
@@ -152,7 +154,13 @@ def add_to_spellbook():
     spellbook_saver = SpellbookSaver(current_user)
     spellbook_saver.add_spell_to_spellbook(spell_id)
 
-    return ''
+    cached = cache.get(f'spellbook_spell_ids:{current_user.user_id}')
+    if cached:
+        cached.append(spell_id)
+        cache.set(f'spellbook_spell_ids:{current_user.user_id}',
+                  cached, 99999)
+
+    return {'result': True}
 
 
 @app.route('/hybrid-registration', methods=['POST'])
@@ -176,17 +184,17 @@ def hybrid_registration():
 @app.route('/delete-spellbook-spell', methods=['POST'])
 @login_required
 def delete_spellbook_spell():
-    spell_id = request.form.get('spell_id', '')
+    spell_id = request.get_json().get('spell_id', '')
     spellbook_spell_deleter = SpellbookSpellDeleter(spell_id)
     spellbook_spell_deleter.delete()
 
-    return redirect('/spellbook')
+    cached = cache.get(f'spellbook_spell_ids:{current_user.user_id}')
+    if cached:
+        cached.remove(spell_id)
+        cache.set(f'spellbook_spell_ids:{current_user.user_id}',
+                  cached, 99999)
 
-
-@app.route('/create-character/<source>')
-@login_required
-def create_character(source):
-    return render_template('create-character.html', source=source)
+    return {'result': True}
 
 
 @app.route('/create-character', methods=['POST'])
@@ -194,22 +202,28 @@ def create_character(source):
 def create_character_post():
     data = request.form
     character_creator = CharacterCreator(data, current_user)
-    if not character_creator.create():
-        flash(character_creator.message)
-        return redirect(f'create-character/{data.get("source", "characters")}')
-    return redirect(f'/{data.get("source", "characters")}')
+
+    if not character_creator.validate():
+        return {'result': False, 'message': character_creator.message}
+    character = character_creator.create()
+    return {'result': True, 'message': '',
+            'character': {'character_id': character.character_id,
+                          'name': character.name}}
 
 
 @app.route('/add-spells-to-character', methods=['POST'])
 @login_required
 def add_spells_to_character():
-    character_spells_saver = CharacterSpellsSaver(request.form, current_user)
+    character_spells_saver = CharacterSpellsSaver(request.get_json(),
+                                                  current_user)
     if character_spells_saver.save():
         character_spells_saver.make_spellbook_empty()
-        return redirect(f'/characters/{character_spells_saver.character.character_id}')
+        cache.delete(f'spellbook_spell_ids:{current_user.user_id}')
+        return {'result': True,
+                'redirect_url': f'/characters/{character_spells_saver.character.character_id}'}
     else:
-        flash('Щось пішло шкереберть')
-    return render_template('spellbook.html', character_id=character_spells_saver.character.character_id)
+        db.session.rollback()
+        return {'result': False}
 
 
 @app.route('/profile')
@@ -218,34 +232,45 @@ def profile():
     return render_template('profile.html')
 
 
-@app.route('/characters')
-@login_required
-def characters():
-    character_list = current_user.characters
-    return render_template('characters.html', character_list=character_list)
-
-
 @app.route('/delete-character', methods=['POST'])
 @login_required
 def delete_character():
-    character_id = request.form.get('character_id', '')
+    character_id = request.get_json().get('character_id', '')
     character_deleter = CharacterDeleter(character_id)
-    character_deleter.delete()
-
-    return redirect('/characters')
+    try:
+        character_deleter.delete()
+        return {'result': True}
+    except Exception as e:
+        print(e)
+        db.session.rollback()
+        return {'result': False}
 
 
 @app.route('/characters/<character_id>')
 @login_required
 def character(character_id):
-    if not int(character_id) in [character.character_id for character in current_user.characters]:
-        abort(403)
+    if int(character_id) not in [character.character_id for character in
+                                 current_user.characters]:
+        return redirect('/spells')
     character_spells_loader = CharacterSpellsLoader(character_id)
     spells = character_spells_loader.load()
 
+    character_list = [
+        {'character_id': character.character_id, 'name': character.name} for
+        character in current_user.characters if character.character_id != int(character_id)]
+    spells_by_level = get_spells_by_level(spells)
+    level_by_id = {s.spell_id: lvl for lvl, lst in spells_by_level.items() for
+                   s in lst}
+
+    spells_form = SpellsForm()
+
     return render_template(
-        'character.html',
-        spells=spells,
+        'character-v2.html',
+        spells=spells_schema.dump(spells),
+        character_list=character_list,
+        level_by_id=level_by_id,
+        spells_by_level=spells_by_level,
+        form=spells_form,
         character_name=character_spells_loader.character.name,
         character_id=character_spells_loader.character.character_id
     )
@@ -254,12 +279,11 @@ def character(character_id):
 @app.route('/delete-character-spell', methods=['POST'])
 @login_required
 def delete_character_spell():
-    data = request.form
-    spell_id = data.get('spell_id', '')
+    spell_id = request.get_json().get('spell_id', '')
     character_spell_deleter = CharacterSpellDeleter(spell_id)
     character_spell_deleter.delete()
 
-    return redirect(f'/characters/{data.get("source")}')
+    return {'result': True}
 
 
 @app.route('/sitemap.xml')
@@ -267,40 +291,19 @@ def sitemap():
     return send_file('sitemap_v3.xml')
 
 
-@app.route('/create-spelllist-from-character', methods=['POST'])
-@login_required
-def create_spelllist_from_character():
-    spelllist_creator = SpelllistCreator()
+@app.route('/print-spells', methods=['POST'])
+def print_spells():
+    selected_spells = request.get_json().get('selected_spells', [])
 
-    spelllist_creator.get_spells_from_character(request.form.get('character_id', ''))
-    buffer = spelllist_creator.create_spelllist()
+    spell_printer = SpellPrinter()
+    spell_printer.get_spells_by_ids(selected_spells)
+    buffer = spell_printer.create_spelllist()
     buffer.seek(0)
 
     return send_file(buffer, mimetype='application/pdf')
 
 
-@app.route('/create-spelllist-from-spellbook', methods=['POST'])
-@login_required
-def create_spelllist_from_spellbook():
-    spelllist_creator = SpelllistCreator()
-    spelllist_creator.get_spells_from_spellbook(current_user.spellbook.spellbook_id)
-    buffer = spelllist_creator.create_spelllist()
-    buffer.seek(0)
-
-    return send_file(buffer, mimetype='application/pdf')
-
-
-@app.route('/create-spelllist-by-ids', methods=['POST'])
-def create_spelllist_by_ids():
-    spelllist_creator = SpelllistCreator()
-    spelllist_creator.get_spells_by_ids(request.form.getlist('selected_spells'))
-    buffer = spelllist_creator.create_spelllist()
-    buffer.seek(0)
-
-    return send_file(buffer, mimetype='application/pdf')
-
-
-@app.route('/add-creature',  methods=['GET', 'POST'])
+@app.route('/add-creature', methods=['GET', 'POST'])
 @auth.login_required
 def add_creature():
     results = request.form
@@ -317,7 +320,7 @@ def add_creature():
                            )
 
 
-@app.route('/edit-creature/<id>',  methods=['GET', 'POST'])
+@app.route('/edit-creature/<id>', methods=['GET', 'POST'])
 @auth.login_required
 def edit_creature(id):
     results = request.form
@@ -332,7 +335,7 @@ def edit_creature(id):
         'edit-creature.html',
         creature=creature,
         form=form
-        )
+    )
 
 
 @app.route('/creature/<id>')
@@ -345,10 +348,16 @@ def creature(id):
     )
 
 
-@app.route('/get-spellbook-spells')
+@app.route('/get-spellbook-spell-ids')
 def get_spellbook_spells():
-    spellbook_spells = []
+    spellbook_spell_ids = []
     if current_user.is_authenticated:
-        spellbook_spells = [spell.spell_id for spell in current_user.spellbook.spells]
+        cached = cache.get(f'spellbook_spell_ids:{current_user.user_id}')
+        if cached:
+            return cached
+        spellbook_spell_ids = [spell.spell_id for spell in
+                               current_user.spellbook.spells]
+        cache.set(f'spellbook_spell_ids:{current_user.user_id}',
+                  spellbook_spell_ids, 99999)
 
-    return jsonify(spellbook_spells)
+    return jsonify(spellbook_spell_ids)
