@@ -2,590 +2,620 @@
 <html lang="en" x-data="spellFilters()"
       xmlns:x-transition="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <title>Заклинання з ДнД українською</title>
-    <meta name="description"
-          content="Заклинання ДнД українською. Знаходьте, фільтруйте, додавайте в книгу чарів, прив'язуйте до персонажів і багато іншого!">
-    <style>
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 8px;
-        }
+  <meta charset="UTF-8">
+  <title>Заклинання з ДнД українською</title>
+  <meta name="description"
+        content="Заклинання ДнД українською. Знаходьте, фільтруйте, додавайте в книгу чарів, прив'язуйте до персонажів і багато іншого!">
+  <style>
+      .custom-scrollbar::-webkit-scrollbar {
+          width: 8px;
+      }
 
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #1e293b;
-        }
+      .custom-scrollbar::-webkit-scrollbar-track {
+          background: #1e293b;
+      }
 
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #49515b;
-            border-radius: 4px;
-        }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #49515b;
+          border-radius: 4px;
+      }
 
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #5e6672;
-        }
-    </style>
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #5e6672;
+      }
+  </style>
 </head>
 {% extends "base.html" %}
 {% block body %}
-    <div class="w-full max-w-7xl px-2 md:px-6 custom-scrollbar">
-        <div class="flex flex-col lg:flex-row gap-2 w-full">
-            <div class="left-part"
-                 :class="selectedSpellId ? 'lg:w-2/5' : 'w-full'">
-                <div class="sticky top-0 z-20 bg-slate-900">
-                    <div class="w-full flex flex-col gap-4 pt-6 pb-2 px-1 sm:px-2 md:px-3 lg:px-4 mx-auto">
-                        <h1 class="text-3xl">Заклинання</h1>
-                        <!-- Пошук та Фільтри -->
-                        <div class="flex items-center gap-2 w-full">
-                            <div class="flex bg-slate-800 rounded-xl items-center px-2 py-1 flex-1"
-                                 x-init="$watch('searchQuery', () => applyFilters())">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     class="h-5 w-5 text-slate-400 mr-2 shrink-0"
-                                     viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd"
-                                          d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                          clip-rule="evenodd"></path>
-                                </svg>
-                                <input type="text" placeholder="Пошук..."
-                                       class="bg-transparent text-white w-full px-1 py-1 focus:outline-none"
-                                       x-model.debounce="searchQuery">
-                            </div>
-                            <!-- Кнопка відкриття фільтрів -->
-                            <div class="flex flex-row items-center gap-2">
-                                <button @click="resetFilters()"
-                                        x-cloak
-                                        x-show="!checkFiltersEmpty()"
-                                        class="bg-blue-600 px-3 py-2 rounded-lg hover:bg-blue-700 text-base flex items-center leading-none">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                         fill="none" viewBox="0 0 24 24"
-                                         stroke-width="1.5"
-                                         stroke="currentColor"
-                                         class="w-5 h-5">
-                                        <path stroke-linecap="round"
-                                              stroke-linejoin="round"
-                                              d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"></path>
-                                    </svg>
-                                </button>
+  <div class="w-full max-w-7xl px-2 md:px-6 custom-scrollbar">
+    <div class="flex flex-col lg:flex-row gap-2 w-full">
+      <div class="left-part"
+           :class="selectedSpellId ? 'lg:w-2/5' : 'w-full'">
+        <div class="sticky top-0 z-20 bg-slate-900">
+          <div
+              class="w-full flex flex-col gap-4 pt-6 pb-2 px-1 sm:px-2 md:px-3 lg:px-4 mx-auto">
+            <h1 class="text-3xl">Заклинання</h1>
+            <!-- Пошук та Фільтри -->
+            <div class="flex items-center gap-2 w-full">
+              <div
+                  class="flex bg-slate-800 rounded-xl items-center px-2 py-1 flex-1"
+                  x-init="$watch('searchQuery', () => applyFilters())">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     class="h-5 w-5 text-slate-400 mr-2 shrink-0"
+                     viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd"
+                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                        clip-rule="evenodd"></path>
+                </svg>
+                <input type="text" placeholder="Пошук..."
+                       class="bg-transparent text-white w-full px-1 py-1 focus:outline-none"
+                       x-model.debounce="searchQuery">
+              </div>
+              <!-- Кнопка відкриття фільтрів -->
+              <div class="flex flex-row items-center gap-2">
+                <button @click="resetFilters()"
+                        x-cloak
+                        x-show="!checkFiltersEmpty()"
+                        class="bg-blue-600 px-3 py-2 rounded-lg hover:bg-blue-700 text-base flex items-center leading-none">
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                       fill="none" viewBox="0 0 24 24"
+                       stroke-width="1.5"
+                       stroke="currentColor"
+                       class="w-5 h-5">
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"></path>
+                  </svg>
+                </button>
 
-                                <button @click="filtersModal.open()"
-                                        class="bg-violet-600 text-white px-3 py-2 rounded-lg hover:bg-violet-700 text-base flex items-center"
-                                >
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                         fill="none" viewBox="0 0 24 24"
-                                         stroke-width="1.5"
-                                         stroke="currentColor"
-                                         class="h-5 w-5">
-                                        <path stroke-linecap="round"
-                                              stroke-linejoin="round"
-                                              d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"></path>
-                                    </svg>
-                                    <span class="ml-2"
-                                          :class="{ 'hidden md:inline': !checkFiltersEmpty() }">Фільтри</span>
-                                </button>
+                <button @click="filtersModal.open()"
+                        class="bg-violet-600 text-white px-3 py-2 rounded-lg hover:bg-violet-700 text-base flex items-center"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                       fill="none" viewBox="0 0 24 24"
+                       stroke-width="1.5"
+                       stroke="currentColor"
+                       class="h-5 w-5">
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"></path>
+                  </svg>
+                  <span class="ml-2"
+                        :class="{ 'hidden md:inline': !checkFiltersEmpty() }">Фільтри</span>
+                </button>
 
-                                <!-- Модалка фільтрів -->
-                                <div x-show="filtersModal.isOpened"
-                                     x-transition:enter="ease-out duration-300"
-                                     x-transition:enter-start="opacity-0"
-                                     x-transition:enter-end="opacity-100"
-                                     x-transition:leave="ease-in duration-200"
-                                     x-transition:leave-start="opacity-100"
-                                     x-transition:leave-end="opacity-0"
-                                     @click.self="filtersModal.close()"
-                                     class="fixed inset-0 bg-black/70 z-[60] flex items-center justify-center p-4"
-                                     @keydown.escape.window="filtersModal.close()"
-                                     x-cloak>
-                                    <div
-                                            class="bg-slate-800 rounded-xl w-full max-w-5xl max-h-[75vh] sm:max-h-[84vh] relative flex flex-col md:ml-16"
-                                            x-transition:enter="ease-out duration-300"
-                                            x-transition:enter-start="opacity-0 scale-95"
-                                            x-transition:enter-end="opacity-100 scale-100"
-                                            x-transition:leave="ease-in duration-200"
-                                            x-transition:leave-start="opacity-100 scale-100"
-                                            x-transition:leave-end="opacity-0 scale-95">
+                <!-- Модалка фільтрів -->
+                <div x-show="filtersModal.isOpened"
+                     x-transition:enter="ease-out duration-300"
+                     x-transition:enter-start="opacity-0"
+                     x-transition:enter-end="opacity-100"
+                     x-transition:leave="ease-in duration-200"
+                     x-transition:leave-start="opacity-100"
+                     x-transition:leave-end="opacity-0"
+                     @click.self="filtersModal.close()"
+                     class="fixed inset-0 bg-black/70 z-[60] flex items-center justify-center p-4"
+                     @keydown.escape.window="filtersModal.close()"
+                     x-cloak>
+                  <div
+                      class="bg-slate-800 rounded-xl w-full max-w-5xl max-h-[75vh] sm:max-h-[84vh] relative flex flex-col md:ml-16"
+                      x-transition:enter="ease-out duration-300"
+                      x-transition:enter-start="opacity-0 scale-95"
+                      x-transition:enter-end="opacity-100 scale-100"
+                      x-transition:leave="ease-in duration-200"
+                      x-transition:leave-start="opacity-100 scale-100"
+                      x-transition:leave-end="opacity-0 scale-95">
 
-                                        <div class="bg-slate-700 px-6 py-4 rounded-t-xl flex justify-between items-center relative">
-                                            <h2 class="text=xl font-semibold">
-                                                Фільтри</h2>
-                                            <button @click.stop="filtersModal.close()"
-                                                    class="absolute right-4 top-4 bg-slate-600 hover:bg-slate-700 w-8 h-8 rounded-xl flex items-center justify-center">
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                     class="w-6 h-6 text-gray-300"
-                                                     fill="none"
-                                                     viewBox="0 0 24 24"
-                                                     stroke="currentColor">
-                                                    <path stroke-linecap="round"
-                                                          stroke-linejoin="round"
-                                                          stroke-width="2"
-                                                          d="M6 18L18 6M6 6l12 12"></path>
-                                                </svg>
-                                            </button>
-                                        </div>
-
-                                        <div class="custom-scrollbar overflow-y-auto space-y-6 p-6 flex-1">
-                                            <!-- Рівні -->
-                                            <div>
-                                                <label class="block mb-1 text-sm font-medium">Рівні</label>
-                                                <div class="flex flex-wrap gap-2">
-                                                    {% for level in form.levels %}
-                                                        <button type="button"
-                                                                class="w-8 h-8 flex items-center justify-center rounded-full border border-slate-500
-                                                        hover:bg-slate-600 hover:text-white transition bg-slate-700"
-                                                                :class="{ 'bg-violet-600 text-white hover:bg-violet-700': filters.levels.includes('{{ level }}') }"
-                                                                @click="toggleFilter('levels', '{{ level }}')">
-                                                            {{ level }}
-                                                        </button>
-                                                    {% endfor %}
-                                                </div>
-                                            </div>
-                                            <!-- Класи -->
-                                            <div>
-                                                <label class="block mb-1 text-sm font-medium">Класи</label>
-                                                <div class="flex flex-wrap gap-2">
-                                                    {% for class in form.classes %}
-                                                        <button type="button"
-                                                                class="px-3 py-1 rounded-full bg-slate-700 hover:bg-slate-600 transition text-xs"
-                                                                :class="{ 'bg-violet-600 text-white hover:bg-violet-700': filters.classes.includes('{{ class }}') }"
-                                                                @click="toggleFilter('classes', '{{ class }}')">
-                                                            {{ class }}
-                                                        </button>
-                                                    {% endfor %}
-                                                </div>
-                                            </div>
-
-                                            <!-- Підкласи -->
-
-                                            <div x-data="{ openSubclasses: false }">
-                                                <button @click="openSubclasses = !openSubclasses"
-                                                        class="w-full flex justify-between items-center bg-slate-700 px-3 py-2 rounded-lg">
-                                                    <span>Підкласи</span>
-                                                    <svg x-show="!openSubclasses"
-                                                         xmlns="http://www.w3.org/2000/svg"
-                                                         fill="none"
-                                                         viewBox="0 0 24 24"
-                                                         stroke-width="1.5"
-                                                         stroke="currentColor"
-                                                         class="h-4 w-4">
-                                                        <path stroke-linecap="round"
-                                                              stroke-linejoin="round"
-                                                              d="M12 4.5v15m7.5-7.5h-15"></path>
-                                                    </svg>
-
-                                                    <svg x-show="openSubclasses"
-                                                         xmlns="http://www.w3.org/2000/svg"
-                                                         fill="none"
-                                                         viewBox="0 0 24 24"
-                                                         stroke-width="1.5"
-                                                         stroke="currentColor"
-                                                         class="h-4 w-4">
-                                                        <path stroke-linecap="round"
-                                                              stroke-linejoin="round"
-                                                              d="M5 12h14"></path>
-                                                    </svg>
-
-                                                </button>
-
-                                                <div x-show="openSubclasses" x-transition
-                                                     class="mt-2 flex flex-wrap gap-2">
-                                                    {% for subclass in form.subclasses %}
-                                                        <button type="button"
-                                                                class="px-3 py-1 rounded-full bg-slate-700 hover:bg-slate-600 transition text-xs"
-                                                                :class="{ 'bg-violet-600 text-white hover:bg-violet-700': filters.classes.includes('{{ subclass }}') }"
-                                                                @click="toggleFilter('classes', '{{ subclass }}')">
-                                                            {{ subclass }}
-                                                        </button>
-                                                    {% endfor %}
-                                                </div>
-                                            </div>
-
-                                            <!-- Школи -->
-                                            <div>
-                                                <label class="block mb-1 text-sm font-medium">Школи</label>
-                                                <div class="flex flex-wrap gap-2">
-                                                    {% for school in form.schools %}
-                                                        <button type="button"
-                                                                class="px-3 py-1 rounded-full bg-slate-700 hover:bg-slate-600 transition text-xs"
-                                                                :class="{ 'bg-violet-600 text-white hover:bg-violet-700': filters.schools.includes('{{ school }}') }"
-                                                                @click="toggleFilter('schools', '{{ school }}')">
-                                                            {{ school }}
-                                                        </button>
-                                                    {% endfor %}
-                                                </div>
-                                            </div>
-
-                                            <!-- Час використання -->
-                                            <div>
-                                                <label class="block mb-1 text-sm font-medium">Час
-                                                    використання</label>
-                                                <div class="flex flex-wrap gap-2">
-                                                    {% for casting_time in form.casting_times %}
-                                                        <button type="button"
-                                                                class="px-3 py-1 rounded-full bg-slate-700 hover:bg-slate-600 transition text-xs"
-                                                                :class="{ 'bg-violet-600 text-white hover:bg-violet-700': filters.casting_times.includes('{{ casting_time }}') }"
-                                                                @click="toggleFilter('casting_times', '{{ casting_time }}')">
-                                                            {{ casting_time }}
-                                                        </button>
-                                                    {% endfor %}
-                                                </div>
-                                            </div>
-
-                                            <!-- Ритуал -->
-                                            <div>
-                                                <label class="block mb-1 text-sm font-medium">Ритуал</label>
-                                                <div class="flex gap-2">
-                                                    <button type="button"
-                                                            class="px-3 py-1 rounded-full bg-slate-700 hover:bg-slate-600 transition text-xs"
-                                                            :class="{ 'bg-violet-600 text-white hover:bg-violet-700': filters.rituals.includes('так') }"
-                                                            @click="toggleFilter('rituals', 'так')">
-                                                        Так
-                                                    </button>
-                                                    <button type="button"
-                                                            class="px-3 py-1 rounded-full bg-slate-700 hover:bg-slate-600 transition text-xs"
-                                                            :class="{ 'bg-violet-600 text-white hover:bg-violet-700': filters.rituals.includes('ні') }"
-                                                            @click="toggleFilter('rituals', 'ні')">
-                                                        Ні
-                                                    </button>
-                                                </div>
-                                            </div>
-
-
-                                            <!-- Концентрація -->
-                                            <div>
-                                                <label class="block mb-1 text-sm font-medium">Концентрація</label>
-                                                <div class="flex gap-2">
-                                                    <button type="button"
-                                                            class="px-3 py-1 rounded-full bg-slate-700 hover:bg-slate-600 transition text-xs"
-                                                            :class="{ 'bg-violet-600 text-white hover:bg-violet-700': filters.concentrations.includes('так') }"
-                                                            @click="toggleFilter('concentrations', 'так')">
-                                                        Так
-                                                    </button>
-                                                    <button type="button"
-                                                            class="px-3 py-1 rounded-full bg-slate-700 hover:bg-slate-600 transition text-xs"
-                                                            :class="{ 'bg-violet-600 text-white hover:bg-violet-700': filters.concentrations.includes('ні') }"
-                                                            @click="toggleFilter('concentrations', 'ні')">
-                                                        Ні
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <!-- Джерела -->
-                                            <div>
-                                                <label class="block mb-1 text-sm font-medium">Джерела</label>
-                                                <div class="flex flex-wrap gap-2">
-                                                    {% for source in form.sources %}
-                                                        <button type="button"
-                                                                class="px-3 py-1 rounded-full bg-slate-700 hover:bg-slate-600 transition text-xs"
-                                                                :class="{ 'bg-violet-600 text-white hover:bg-violet-700': filters.sources.includes('{{ source }}') }"
-                                                                @click="toggleFilter('sources', '{{ source }}')">
-                                                            {{ source }}
-                                                        </button>
-                                                    {% endfor %}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="bg-slate-700 px-6 py-3 rounded-b-xl text-center font-semibold">
-                                            Фільтри застосовуються автоматично
-                                            ;)
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div
+                        class="bg-slate-700 px-6 py-4 rounded-t-xl flex justify-between items-center relative">
+                      <h2 class="text=xl font-semibold">
+                        Фільтри</h2>
+                      <button @click.stop="filtersModal.close()"
+                              class="absolute right-4 top-4 bg-slate-600 hover:bg-slate-700 w-8 h-8 rounded-xl flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="w-6 h-6 text-gray-300"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+                          <path stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                      </button>
                     </div>
+
+                    <div
+                        class="custom-scrollbar overflow-y-auto space-y-6 p-6 flex-1">
+                      <!-- Рівні -->
+                      <div>
+                        <label
+                            class="block mb-1 text-sm font-medium">Рівні</label>
+                        <div class="flex flex-wrap gap-2">
+                          {% for level in form.levels %}
+                            <button type="button"
+                                    class="w-8 h-8 flex items-center justify-center rounded-full border border-slate-500
+                                                        hover:bg-slate-600 hover:text-white transition bg-slate-700"
+                                    :class="{ 'bg-violet-600 text-white hover:bg-violet-700': filters.levels.includes('{{ level }}') }"
+                                    @click="toggleFilter('levels', '{{ level }}')">
+                              {{ level }}
+                            </button>
+                          {% endfor %}
+                        </div>
+                      </div>
+                      <!-- Класи -->
+                      <div>
+                        <label
+                            class="block mb-1 text-sm font-medium">Класи</label>
+                        <div class="flex flex-wrap gap-2">
+                          {% for class in form.classes %}
+                            <button type="button"
+                                    class="px-3 py-1 rounded-full bg-slate-700 hover:bg-slate-600 transition text-xs"
+                                    :class="{ 'bg-violet-600 text-white hover:bg-violet-700': filters.classes.includes('{{ class }}') }"
+                                    @click="toggleFilter('classes', '{{ class }}')">
+                              {{ class }}
+                            </button>
+                          {% endfor %}
+                        </div>
+                      </div>
+
+                      <!-- Підкласи -->
+
+                      <div x-data="{ openSubclasses: false }">
+                        <button @click="openSubclasses = !openSubclasses"
+                                class="w-full flex justify-between items-center bg-slate-700 px-3 py-2 rounded-lg">
+                          <span>Підкласи</span>
+                          <svg x-show="!openSubclasses"
+                               xmlns="http://www.w3.org/2000/svg"
+                               fill="none"
+                               viewBox="0 0 24 24"
+                               stroke-width="1.5"
+                               stroke="currentColor"
+                               class="h-4 w-4">
+                            <path stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  d="M12 4.5v15m7.5-7.5h-15"></path>
+                          </svg>
+
+                          <svg x-show="openSubclasses"
+                               xmlns="http://www.w3.org/2000/svg"
+                               fill="none"
+                               viewBox="0 0 24 24"
+                               stroke-width="1.5"
+                               stroke="currentColor"
+                               class="h-4 w-4">
+                            <path stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  d="M5 12h14"></path>
+                          </svg>
+
+                        </button>
+
+                        <div x-show="openSubclasses" x-transition
+                             class="mt-2 flex flex-wrap gap-2">
+                          {% for subclass in form.subclasses %}
+                            <button type="button"
+                                    class="px-3 py-1 rounded-full bg-slate-700 hover:bg-slate-600 transition text-xs"
+                                    :class="{ 'bg-violet-600 text-white hover:bg-violet-700': filters.classes.includes('{{ subclass }}') }"
+                                    @click="toggleFilter('classes', '{{ subclass }}')">
+                              {{ subclass }}
+                            </button>
+                          {% endfor %}
+                        </div>
+                      </div>
+
+                      <!-- Школи -->
+                      <div>
+                        <label
+                            class="block mb-1 text-sm font-medium">Школи</label>
+                        <div class="flex flex-wrap gap-2">
+                          {% for school in form.schools %}
+                            <button type="button"
+                                    class="px-3 py-1 rounded-full bg-slate-700 hover:bg-slate-600 transition text-xs"
+                                    :class="{ 'bg-violet-600 text-white hover:bg-violet-700': filters.schools.includes('{{ school }}') }"
+                                    @click="toggleFilter('schools', '{{ school }}')">
+                              {{ school }}
+                            </button>
+                          {% endfor %}
+                        </div>
+                      </div>
+
+                      <!-- Час використання -->
+                      <div>
+                        <label class="block mb-1 text-sm font-medium">Час
+                          використання</label>
+                        <div class="flex flex-wrap gap-2">
+                          {% for casting_time in form.casting_times %}
+                            <button type="button"
+                                    class="px-3 py-1 rounded-full bg-slate-700 hover:bg-slate-600 transition text-xs"
+                                    :class="{ 'bg-violet-600 text-white hover:bg-violet-700': filters.casting_times.includes('{{ casting_time }}') }"
+                                    @click="toggleFilter('casting_times', '{{ casting_time }}')">
+                              {{ casting_time }}
+                            </button>
+                          {% endfor %}
+                        </div>
+                      </div>
+
+                      <!-- Ритуал -->
+                      <div>
+                        <label
+                            class="block mb-1 text-sm font-medium">Ритуал</label>
+                        <div class="flex gap-2">
+                          <button type="button"
+                                  class="px-3 py-1 rounded-full bg-slate-700 hover:bg-slate-600 transition text-xs"
+                                  :class="{ 'bg-violet-600 text-white hover:bg-violet-700': filters.rituals.includes('так') }"
+                                  @click="toggleFilter('rituals', 'так')">
+                            Так
+                          </button>
+                          <button type="button"
+                                  class="px-3 py-1 rounded-full bg-slate-700 hover:bg-slate-600 transition text-xs"
+                                  :class="{ 'bg-violet-600 text-white hover:bg-violet-700': filters.rituals.includes('ні') }"
+                                  @click="toggleFilter('rituals', 'ні')">
+                            Ні
+                          </button>
+                        </div>
+                      </div>
+
+
+                      <!-- Концентрація -->
+                      <div>
+                        <label class="block mb-1 text-sm font-medium">Концентрація</label>
+                        <div class="flex gap-2">
+                          <button type="button"
+                                  class="px-3 py-1 rounded-full bg-slate-700 hover:bg-slate-600 transition text-xs"
+                                  :class="{ 'bg-violet-600 text-white hover:bg-violet-700': filters.concentrations.includes('так') }"
+                                  @click="toggleFilter('concentrations', 'так')">
+                            Так
+                          </button>
+                          <button type="button"
+                                  class="px-3 py-1 rounded-full bg-slate-700 hover:bg-slate-600 transition text-xs"
+                                  :class="{ 'bg-violet-600 text-white hover:bg-violet-700': filters.concentrations.includes('ні') }"
+                                  @click="toggleFilter('concentrations', 'ні')">
+                            Ні
+                          </button>
+                        </div>
+                      </div>
+                      <!-- Джерела -->
+                      <div>
+                        <label
+                            class="block mb-1 text-sm font-medium">Джерела</label>
+                        <div class="flex flex-wrap gap-2">
+                          {% for source in form.sources %}
+                            <button type="button"
+                                    class="px-3 py-1 rounded-full bg-slate-700 hover:bg-slate-600 transition text-xs"
+                                    :class="{ 'bg-violet-600 text-white hover:bg-violet-700': filters.sources.includes('{{ source }}') }"
+                                    @click="toggleFilter('sources', '{{ source }}')">
+                              {{ source }}
+                            </button>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                        class="bg-slate-700 px-6 py-3 rounded-b-xl text-center font-semibold">
+                      Фільтри застосовуються автоматично
+                      ;)
+                    </div>
+                  </div>
                 </div>
-                <!-- Список заклинань -->
-                <div class="w-full pb-16">
-                    {% for level, spells in spells_by_level.items() %}
-                        <div class="px-1 sm:px-2 md:px-3 lg:px-4 py-2"
-                             x-show="initialState || levelsWithVisibleSpells.has('{{ level }}')">
-                            <div class="rounded-xl bg-slate-700 px-3 py-2 flex items-center gap-3">
-                                <span class="text-lg font-semibold">{{ level }}</span>
-                            </div>
-                            <div class="gap-4 pt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-                                 :class="{
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Список заклинань -->
+        <div class="w-full pb-16">
+          {% for level, spells in spells_by_level.items() %}
+            <div class="px-1 sm:px-2 md:px-3 lg:px-4 py-2"
+                 x-show="initialState || levelsWithVisibleSpells.has('{{ level }}')">
+              <div
+                  class="rounded-xl bg-slate-700 px-3 py-2 flex items-center gap-3">
+                <span class="text-lg font-semibold">{{ level }}</span>
+              </div>
+              <div
+                  class="gap-4 pt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+                  :class="{
                                 'md:grid-cols-1 lg:grid-cols-1': selectedSpellId,
                                 'md:grid-cols-2 lg:grid-cols-3': !selectedSpellId
                         }">
-                                {% for spell in spells %}
-                                    {% include 'spell-card.html' with context %}
-                                {% endfor %}
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
+                {% for spell in spells %}
+                  {% include 'spell-card.html' with context %}
+                {% endfor %}
+              </div>
             </div>
+          {% endfor %}
+        </div>
+      </div>
 
-            <!-- Desktop spell-detail (показує лише на lg+) -->
-            <div x-show="selectedSpellId" x-cloak
-                 class="hidden lg:block w-3/5 relative">
-                <div class="sticky top-4 bg-slate-800 rounded-xl shadow-xl p-5 max-h-[95vh] min-h-[95vh] overflow-y-auto custom-scrollbar">
-                    {% include 'spell-detail.html' %}
-                </div>
-            </div>
+      <!-- Desktop spell-detail (показує лише на lg+) -->
+      <div x-show="selectedSpellId" x-cloak
+           class="hidden lg:block w-3/5 relative">
+        <div
+            class="sticky top-4 bg-slate-800 rounded-xl shadow-xl p-5 max-h-[95vh] min-h-[95vh] overflow-y-auto custom-scrollbar">
+          {% include 'spell-detail.html' %}
+        </div>
+      </div>
 
-            <!-- Mobile spell-detail (тільки до lg) -->
-            <div x-show="selectedSpellId" x-cloak
-                 class="block lg:hidden w-full">
-                <div class="fixed inset-0 z-40 bg-slate-800
+      <!-- Mobile spell-detail (тільки до lg) -->
+      <div x-show="selectedSpellId" x-cloak
+           class="block lg:hidden w-full">
+        <div class="fixed inset-0 z-40 bg-slate-800
                 overflow-y-auto custom-scrollbar
                 p-3 md:ml-14 mb-14 md:mb-0 md:pb-14 max-w-[100vw]
                 ">
-                    {% include 'spell-detail.html' %}
-                </div>
-            </div>
+          {% include 'spell-detail.html' %}
         </div>
-
-        <!-- Floating Print Button -->
-        <button
-                x-cloak
-                x-show="spellsToPrintIds.length > 0"
-                x-transition
-                @click="printSelectedSpells"
-                class="fixed bottom-20 md:bottom-10 right-4 md:right-10 z-50 bg-violet-600 hover:bg-violet-700 text-white shadow-lg rounded-full p-4 flex items-center gap-2"
-                title="Роздрукувати обрані заклинання"
-                style="box-shadow: 0 4px 20px #0005;"
-        >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                 viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                 class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0 1 10.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0 .229 2.523a1.125 1.125 0 0 1-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0 0 21 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 0 0-1.913-.247M6.34 18H5.25A2.25 2.25 0 0 1 3 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 0 1 1.913-.247m10.5 0a48.536 48.536 0 0 0-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5Zm-3 0h.008v.008H15V10.5Z"></path>
-            </svg>
-        </button>
+      </div>
     </div>
-    <script>
-        window.spells = {{ spells|tojson }}
-        window.levelById = {{ level_by_id|tojson }}
-        window.idToSpell = {}
-        window.spells.forEach(s => window.idToSpell[s.spell_id] = s)
-        window.defaultTitle = 'Заклинання з ДнД українською'
 
-        window.getSpellbookSpellIds = () => fetch('/get-spellbook-spell-ids', {
-            headers: {'Content-Type': 'application/json'}
-        }).then(
-            res => res.json()
-        ).then(ids => {
-            Alpine.store('spellbook').setAll(ids)
-        })
-        window.getSpellbookSpellIds()
-    </script>
-    <script>
-        const getSearchParams = (searchQuery, filters, selectedSpellId = null) => {
-            params = new URLSearchParams()
-            if (selectedSpellId) params.set('selectedSpellId', selectedSpellId)
-            if (searchQuery) params.set('searchQuery', searchQuery)
+    <!-- Floating Print Button -->
+    <button
+        x-cloak
+        x-show="spellsToPrintIds.length > 0"
+        x-transition
+        @click="printSelectedSpells"
+        class="fixed bottom-20 md:bottom-10 right-4 md:right-10 z-50 bg-violet-600 hover:bg-violet-700 text-white shadow-lg rounded-full p-4 flex items-center gap-2"
+        title="Роздрукувати обрані заклинання"
+        style="box-shadow: 0 4px 20px #0005;"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+           viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+           class="size-6">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0 1 10.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0 .229 2.523a1.125 1.125 0 0 1-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0 0 21 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 0 0-1.913-.247M6.34 18H5.25A2.25 2.25 0 0 1 3 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 0 1 1.913-.247m10.5 0a48.536 48.536 0 0 0-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5Zm-3 0h.008v.008H15V10.5Z"></path>
+      </svg>
+    </button>
+  </div>
+  <script>
+      window.spells = {{ spells|tojson }}
+      window.levelById = {{ level_by_id|tojson }}
+      window.idToSpell = {}
+      window.spells.forEach(s => window.idToSpell[s.spell_id] = s)
+      window.defaultTitle = 'Заклинання з ДнД українською'
 
-            Object.entries(filters).forEach(([filterName, valueList]) => {
-                valueList.forEach(v => params.append(filterName, v))
-            })
+      window.getSpellbookSpellIds = () => fetch('/get-spellbook-spell-ids', {
+          headers: { 'Content-Type': 'application/json' }
+      }).then(
+          res => res.json()
+      ).then(ids => {
+          Alpine.store('spellbook').setAll(ids)
+      })
+      window.getSpellbookSpellIds()
+  </script>
+  <script>
+      const getSearchParams = (searchQuery, filters, selectedSpellId = null) => {
+          params = new URLSearchParams()
+          if (selectedSpellId) params.set('selectedSpellId', selectedSpellId)
+          if (searchQuery) params.set('searchQuery', searchQuery)
 
-            return params;
-        }
+          Object.entries(filters).forEach(([filterName, valueList]) => {
+              valueList.forEach(v => params.append(filterName, v))
+          })
 
-        function spellFilters() {
-            return {
-                visibleSpells: new Set(),
-                initialState: true,
-                searchQuery: '',
-                filtersModal: {
-                    isOpened: false,
-                    open() {
-                        this.isOpened = true;
-                        Alpine.store('modal').open('filtersModal')
-                    },
-                    close() {
-                        if (Alpine.store('modal').close('filtersModal')) this.isOpened = false
-                    }
-                },
-                levelsWithVisibleSpells: new Set(),
-                filters: {
-                    levels: [],
-                    classes: [],
-                    schools: [],
-                    casting_times: [],
-                    rituals: [],
-                    concentrations: [],
-                    sources: []
-                },
+          return params;
+      }
 
-                toggleFilterSimplified(key, value) {
-                    if (this.filters[key].includes(value)) {
-                        this.filters[key] = this.filters[key].filter(v => v !== value)
-                    } else {
-                        this.filters[key].push(value)
-                    }
-                },
-                toggleFilter(key, value) {
-                    this.toggleFilterSimplified(key, value)
+      function spellFilters() {
+          return {
+              visibleSpells: new Set(),
+              initialState: true,
+              searchQuery: '',
+              filtersModal: {
+                  isOpened: false,
+                  open() {
+                      this.isOpened = true;
+                      Alpine.store('modal').open('filtersModal')
+                  },
+                  close() {
+                      if (Alpine.store('modal').close('filtersModal')) this.isOpened = false
+                  }
+              },
+              levelsWithVisibleSpells: new Set(),
+              filters: {
+                  levels: [],
+                  classes: [],
+                  schools: [],
+                  casting_times: [],
+                  rituals: [],
+                  concentrations: [],
+                  sources: []
+              },
 
-                    this.applyFilters()
-                },
-                applyFilters() {
-                    this.changeUrl()
+              toggleFilterSimplified(key, value) {
+                  if (this.filters[key].includes(value)) {
+                      this.filters[key] = this.filters[key].filter(v => v !== value)
+                  } else {
+                      this.filters[key].push(value)
+                  }
+              },
+              toggleFilter(key, value) {
+                  this.toggleFilterSimplified(key, value)
 
-                    this.visibleSpells = new Set(window.spells.filter(s =>
-                        (this.searchQuery === '' || s.name.toLowerCase().includes(this.searchQuery.toLowerCase())) &&
-                        (this.filters.classes.length === 0 || this.filters.classes.some(
-                            requiredClassName => s.classes.map(c => c.class_name).includes(requiredClassName))) &&
-                        (this.filters.levels.length === 0 || this.filters.levels.includes(s.level[0] === 'з' ? '0' : s.level[0])) &&
-                        (this.filters.schools.length === 0 || this.filters.schools.includes(s.school)) &&
-                        (this.filters.casting_times.length === 0 || this.filters.casting_times.some(ct => s.casting_time.includes(ct))) &&
-                        (this.filters.rituals.length === 0 || this.filters.rituals.includes(s.has_ritual)) &&
-                        (this.filters.concentrations.length === 0 || this.filters.concentrations.includes(s.has_concentration)) &&
-                        (this.filters.sources.length === 0 || this.filters.sources.includes(s.source))
-                    ).map(s => s.spell_id))
+                  this.applyFilters()
+              },
+              applyFilters({ skipUrl = false } = {}) {
+                  if (!skipUrl) this.changeUrl({ push: false })
 
-                    const visibleLevels = new Set()
-                    this.visibleSpells.forEach(id => {
-                        visibleLevels.add(window.levelById[id])
-                    })
+                  this.visibleSpells = new Set(window.spells.filter(s =>
+                      (this.searchQuery === '' || s.name.toLowerCase().includes(this.searchQuery.toLowerCase())) &&
+                      (this.filters.classes.length === 0 || this.filters.classes.some(
+                          requiredClassName => s.classes.map(c => c.class_name).includes(requiredClassName))) &&
+                      (this.filters.levels.length === 0 || this.filters.levels.includes(s.level[0] === 'з' ? '0' : s.level[0])) &&
+                      (this.filters.schools.length === 0 || this.filters.schools.includes(s.school)) &&
+                      (this.filters.casting_times.length === 0 || this.filters.casting_times.some(ct => s.casting_time.includes(ct))) &&
+                      (this.filters.rituals.length === 0 || this.filters.rituals.includes(s.has_ritual)) &&
+                      (this.filters.concentrations.length === 0 || this.filters.concentrations.includes(s.has_concentration)) &&
+                      (this.filters.sources.length === 0 || this.filters.sources.includes(s.source))
+                  ).map(s => s.spell_id))
 
-                    this.levelsWithVisibleSpells = visibleLevels
+                  const visibleLevels = new Set()
+                  this.visibleSpells.forEach(id => {
+                      visibleLevels.add(window.levelById[id])
+                  })
 
-                    this.initialState = false
-                },
+                  this.levelsWithVisibleSpells = visibleLevels
 
-                resetFilters() {
-                    this.searchQuery = ''
-                    this.filters = {
-                        levels: [],
-                        classes: [],
-                        schools: [],
-                        casting_times: [],
-                        rituals: [],
-                        concentrations: [],
-                        sources: []
-                    }
-                    this.applyFilters()
-                },
-                filterByUrl(params) {
-                    if (!window.location.search) return;
+                  this.initialState = false
+              },
 
-                    const filterKeys = [
-                        "levels", "classes", "schools", "casting_times", "rituals", "concentrations", "sources"
-                    ];
+              resetFilters() {
+                  this.searchQuery = ''
+                  this.filters = {
+                      levels: [],
+                      classes: [],
+                      schools: [],
+                      casting_times: [],
+                      rituals: [],
+                      concentrations: [],
+                      sources: []
+                  }
+                  this.applyFilters()
+              },
+              filterByUrl() {
+                  const params = new URLSearchParams(window.location.search)
 
-                    filterKeys.forEach(key => {
-                        const filters = params.getAll(key)
-                        if (filters.length > 0) {
-                            filters.forEach(value => this.toggleFilterSimplified(key, value))
-                        }
-                    })
+                  const filterKeys = [
+                      "levels", "classes", "schools", "casting_times", "rituals", "concentrations", "sources"
+                  ];
 
-                    if (params.get('searchQuery')) this.searchQuery = params.get('searchQuery')
-                    if (params.get('selectedSpellId')) this.selectSpell(Number(params.get('selectedSpellId')))
+                  filterKeys.forEach(key => {
+                      this.filters[key] = params.getAll(key)
+                  })
 
-                    this.applyFilters()
-                },
+                  this.searchQuery = params.get('searchQuery') || '';
+                  const idParam = params.get('selectedSpellId');
+                  if (idParam) {
+                      const id = Number(idParam)
+                      this.selectedSpellId = id;
+                      this.selectedSpell = window.idToSpell[id]
+                      document.title = this.selectedSpell.name
+                  } else {
+                      this.selectedSpellId = null
+                      this.selectedSpell = null
+                      document.title = window.defaultTitle
+                  }
 
-                init() {
-                    const params = new URLSearchParams(window.location.search)
-                    if (params.has('sign-in')) {
-                        if (params.has('next') && params.get('next')) {
-                            Alpine.store('auth').require(params.get('next'))
-                        } else Alpine.store('auth').open()
-                    }
+                  this.applyFilters({ skipUrl: true })
+              },
 
-                    this.filterByUrl(params)
-                },
+              init() {
+                  const params = new URLSearchParams(window.location.search)
+                  if (params.has('sign-in')) {
+                      if (params.has('next') && params.get('next')) {
+                          Alpine.store('auth').require(params.get('next'))
+                      } else Alpine.store('auth').open()
+                  }
 
-                checkFiltersEmpty() {
-                    return !this.searchQuery && Object.values(this.filters).every(f => f.length === 0)
-                },
+                  this.filterByUrl()
 
-                changeUrl() {
-                    const searchParams = getSearchParams(this.searchQuery, this.filters, this.selectedSpellId)
-                    history.replaceState(null, '', window.location.pathname + '?' + searchParams)
-                },
+                  window.addEventListener('popstate', () => {
+                      this.filterByUrl()
+                  })
+              },
 
-                selectedSpellId: null,
-                selectedSpell: null,
-                selectSpell(id) {
-                    id = Number(id)
-                    this.selectedSpellId = id
-                    this.selectedSpell = window.idToSpell[id]
+              checkFiltersEmpty() {
+                  return !this.searchQuery && Object.values(this.filters).every(f => f.length === 0)
+              },
 
-                    this.changeUrl()
+              changeUrl({ push = false }) {
+                  const searchParams = getSearchParams(this.searchQuery, this.filters, this.selectedSpellId)
+                  const url = `${location.pathname}?${searchParams.toString()}`;
+                  const state = { selectedSpellId: this.selectedSpellId };
+                  if (push) {
+                      history.pushState(state, '', url);
+                  } else {
+                      history.replaceState(state, '', url);
+                  }
+              },
 
-                    document.title = this.selectedSpell.name
-                },
-                closeSpell() {
-                    this.selectedSpell = null
-                    this.selectedSpellId = null
+              selectedSpellId: null,
+              selectedSpell: null,
+              selectSpell(id) {
+                  id = Number(id)
+                  this.selectedSpellId = id
+                  this.selectedSpell = window.idToSpell[id]
 
-                    this.changeUrl()
+                  this.changeUrl({ push: true });
 
-                    document.title = window.defaultTitle;
-                },
-                isInBook() {
-                    this.spell
-                },
-                toggleBook(id) {
-                    if (!window.isAuthenticated) {
-                        Alpine.store('auth').open()
-                        return;
-                    }
-                    const spellbook = Alpine.store('spellbook')
-                    if (spellbook.has(id)) {
-                        spellbook.remove(id)
+                  document.title = this.selectedSpell.name
+              },
+              closeSpell() {
+                  this.selectedSpell = null
+                  this.selectedSpellId = null
 
-                        fetch('/delete-spellbook-spell', {
-                            method: 'POST',
-                            body: JSON.stringify({spell_id: id}),
-                            headers: {'Content-Type': 'application/json'}
-                        }).then(res => {
-                            if (!res.ok) {
-                                throw new Error('Щось пішло не так...')
-                            }
-                        }).catch(() => {
-                            Alpine.store('notification').push('Щось пішло не так...')
-                            spellbook.add(id)
-                        })
-                        return;
-                    }
-                    spellbook.add(id)
+                  this.changeUrl({ push: true })
 
-                    fetch('/add-to-spellbook', {
-                        method: 'POST',
-                        body: JSON.stringify({id: id}),
-                        headers: {'Content-Type': 'application/json'}
-                    }).then(res => {
-                            if (!res.ok) {
-                                throw new Error('Щось пішло не так...')
-                            }
-                        }).catch(() => {
-                        Alpine.store('notification').push('Щось пішло не так...')
-                        spellbook.remove(id)
-                    })
+                  document.title = window.defaultTitle;
+              },
+              isInBook() {
+                  this.spell
+              },
+              toggleBook(id) {
+                  if (!window.isAuthenticated) {
+                      Alpine.store('auth').open()
+                      return;
+                  }
+                  const spellbook = Alpine.store('spellbook')
+                  if (spellbook.has(id)) {
+                      spellbook.remove(id)
 
-                },
-                spellsToPrintIds: [],
-                togglePrint(id) {
-                    id = Number(id)
-                    if (this.spellsToPrintIds.includes(id)) {
-                        this.spellsToPrintIds = this.spellsToPrintIds.filter(i => i !== id)
-                    } else {
-                        this.spellsToPrintIds.push(id)
-                    }
-                },
-                printSelectedSpells() {
-                    if (!this.spellsToPrintIds.length) return;
+                      fetch('/delete-spellbook-spell', {
+                          method: 'POST',
+                          body: JSON.stringify({ spell_id: id }),
+                          headers: { 'Content-Type': 'application/json' }
+                      }).then(res => {
+                          if (!res.ok) {
+                              throw new Error('Щось пішло не так...')
+                          }
+                      }).catch(() => {
+                          Alpine.store('notification').push('Щось пішло не так...')
+                          spellbook.add(id)
+                      })
+                      return;
+                  }
+                  spellbook.add(id)
 
-                    fetch('/print-spells', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({selected_spells: this.spellsToPrintIds})
-                    })
-                        .then(response => response.blob())
-                        .then(blob => {
-                            const file = window.URL.createObjectURL(blob);
-                            window.open(file, '_blank')
-                        })
-                        .catch(() => alert('Не вдалося створити PDF ;('))
-                }
-            }
-        }
-    </script>
+                  fetch('/add-to-spellbook', {
+                      method: 'POST',
+                      body: JSON.stringify({ id: id }),
+                      headers: { 'Content-Type': 'application/json' }
+                  }).then(res => {
+                      if (!res.ok) {
+                          throw new Error('Щось пішло не так...')
+                      }
+                  }).catch(() => {
+                      Alpine.store('notification').push('Щось пішло не так...')
+                      spellbook.remove(id)
+                  })
+
+              },
+              spellsToPrintIds: [],
+              togglePrint(id) {
+                  id = Number(id)
+                  if (this.spellsToPrintIds.includes(id)) {
+                      this.spellsToPrintIds = this.spellsToPrintIds.filter(i => i !== id)
+                  } else {
+                      this.spellsToPrintIds.push(id)
+                  }
+              },
+              printSelectedSpells() {
+                  if (!this.spellsToPrintIds.length) return;
+
+                  fetch('/print-spells', {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({ selected_spells: this.spellsToPrintIds })
+                  })
+                      .then(response => response.blob())
+                      .then(blob => {
+                          const file = window.URL.createObjectURL(blob);
+                          window.open(file, '_blank')
+                      })
+                      .catch(() => alert('Не вдалося створити PDF ;('))
+              }
+          }
+      }
+  </script>
 
 {% endblock %}
 
