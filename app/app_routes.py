@@ -190,9 +190,12 @@ def delete_spellbook_spell():
 
     cached = cache.get(f'spellbook_spell_ids:{current_user.user_id}')
     if cached:
-        cached.remove(spell_id)
-        cache.set(f'spellbook_spell_ids:{current_user.user_id}',
-                  cached, 99999)
+        if spell_id in cached:
+            cached.remove(spell_id)
+            cache.set(f'spellbook_spell_ids:{current_user.user_id}',
+                      cached, 99999)
+        else:
+            cache.delete(f'spellbook_spell_ids:{current_user.user_id}')
 
     return {'result': True}
 
