@@ -150,15 +150,11 @@ def spellbook():
 def add_to_spellbook():
     if current_user.is_authenticated == False:
         abort(403)
-    spell_id = request.get_json()['id']
+    spell_id = int(request.get_json().get('spell_id'))
     spellbook_saver = SpellbookSaver(current_user)
     spellbook_saver.add_spell_to_spellbook(spell_id)
 
-    cached = cache.get(f'spellbook_spell_ids:{current_user.user_id}')
-    if cached:
-        cached.append(spell_id)
-        cache.set(f'spellbook_spell_ids:{current_user.user_id}',
-                  cached, 99999)
+    cache.delete(f'spellbook_spell_ids:{current_user.user_id}')
 
     return {'result': True}
 
@@ -184,18 +180,11 @@ def hybrid_registration():
 @app.route('/delete-spellbook-spell', methods=['POST'])
 @login_required
 def delete_spellbook_spell():
-    spell_id = request.get_json().get('spell_id', '')
+    spell_id = int(request.get_json().get('spell_id'))
     spellbook_spell_deleter = SpellbookSpellDeleter(spell_id)
     spellbook_spell_deleter.delete()
 
-    cached = cache.get(f'spellbook_spell_ids:{current_user.user_id}')
-    if cached:
-        if spell_id in cached:
-            cached.remove(spell_id)
-            cache.set(f'spellbook_spell_ids:{current_user.user_id}',
-                      cached, 99999)
-        else:
-            cache.delete(f'spellbook_spell_ids:{current_user.user_id}')
+    cache.delete(f'spellbook_spell_ids:{current_user.user_id}')
 
     return {'result': True}
 
