@@ -282,6 +282,10 @@ def delete_character_spell():
 def sitemap():
     return send_file('sitemap_v3.xml')
 
+@app.route('/robots.txt')
+def robots():
+    return send_file('robots.txt')
+
 
 @app.route('/print-spells', methods=['POST'])
 def print_spells():
